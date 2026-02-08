@@ -17,8 +17,7 @@ final class SetupViewModel: ObservableObject {
     let mode: RestConfigurationMode
 
     // MARK: - Dependencies
-    private let createRestTimeUseCase: CreateRestTimeUseCase
-    private let updateRestTimeUseCase: UpdateRestTimeUseCase
+    private let saveRestTimeUseCase: SaveRestTimeUseCase
     private let fetchRestTimeUseCase: FetchRestTimeUseCase
     private let notificationManager: NotificationManager
 
@@ -27,14 +26,12 @@ final class SetupViewModel: ObservableObject {
 
     init(
         mode: RestConfigurationMode,
-        createRestTimeUseCase: CreateRestTimeUseCase,
-        updateRestTimeUseCase: UpdateRestTimeUseCase,
+        saveRestTimeUseCase: SaveRestTimeUseCase,
         fetchRestTimeUseCase: FetchRestTimeUseCase,
         notificationManager: NotificationManager
     ) {
         self.mode = mode
-        self.createRestTimeUseCase = createRestTimeUseCase
-        self.updateRestTimeUseCase = updateRestTimeUseCase
+        self.saveRestTimeUseCase = saveRestTimeUseCase
         self.fetchRestTimeUseCase = fetchRestTimeUseCase
         self.notificationManager = notificationManager
 
@@ -64,12 +61,7 @@ final class SetupViewModel: ObservableObject {
             allowedApps: Array(selectedApps)
         )
 
-        switch mode {
-        case .mandatory:
-            createRestTimeUseCase.execute(restTime: entity)
-        case .editable:
-            updateRestTimeUseCase.execute(restTime: entity)
-        }
+        saveRestTimeUseCase.execute(restTime: entity, isNew: mode == .mandatory)
 
         // Schedule notifications
         let manager = notificationManager
@@ -94,7 +86,7 @@ final class SetupViewModel: ObservableObject {
     // MARK: - Private
 
     private func loadExistingConfig() {
-        let config = fetchRestTimeUseCase.execute()
+        guard let config = fetchRestTimeUseCase.execute() else { return }
         let calendar = Calendar.current
         let now = Date()
 

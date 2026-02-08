@@ -19,6 +19,8 @@
 		AA00000CAAAA000C00000001 /* StatCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000CAAAA000C00000002 /* StatCard.swift */; };
 		AA00000DAAAA000D00000001 /* CountdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000DAAAA000D00000002 /* CountdownView.swift */; };
 		AA00000EAAAA000E00000001 /* AllowedAppChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000EAAAA000E00000002 /* AllowedAppChip.swift */; };
+		ED29B0482F3908B500ADC708 /* CompleteRestSessionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED29B0472F3908B500ADC708 /* CompleteRestSessionUseCase.swift */; };
+		ED29B04A2F39091500ADC708 /* FetchCurrentSessionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED29B0492F39091500ADC708 /* FetchCurrentSessionUseCase.swift */; };
 		EDA78AF12F374BCB00181F03 /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AF02F374BCB00181F03 /* AppDependencies.swift */; };
 		EDA78AF72F374C0400181F03 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AF62F374C0400181F03 /* Router.swift */; };
 		EDA78AF92F374C1800181F03 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AF82F374C1800181F03 /* Route.swift */; };
@@ -29,8 +31,7 @@
 		EDA78B082F374D9000181F03 /* TimeToRestEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B072F374D9000181F03 /* TimeToRestEntity.swift */; };
 		EDA78B0A2F374DA900181F03 /* FetchRestTimeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B092F374DA900181F03 /* FetchRestTimeUseCase.swift */; };
 		EDA78B0C2F3766DC00181F03 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B0B2F3766DC00181F03 /* NotificationManager.swift */; };
-		EDA78B0E2F3779CA00181F03 /* UpdateRestTimeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B0D2F3779CA00181F03 /* UpdateRestTimeUseCase.swift */; };
-		EDA78B122F377A6E00181F03 /* CreateRestTimeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B112F377A6E00181F03 /* CreateRestTimeUseCase.swift */; };
+		EDA78B0E2F3779CA00181F03 /* SaveRestTimeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B0D2F3779CA00181F03 /* SaveRestTimeUseCase.swift */; };
 		EDA78B142F37A9DE00181F03 /* RestSessionEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B132F37A9DE00181F03 /* RestSessionEntity.swift */; };
 		EDA78B162F37A9FB00181F03 /* RestStatsEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B152F37A9FB00181F03 /* RestStatsEntity.swift */; };
 		EDA78B1D2F37AF1600181F03 /* BreakRestUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B1C2F37AF1600181F03 /* BreakRestUseCase.swift */; };
@@ -55,6 +56,8 @@
 		AA00000CAAAA000C00000002 /* StatCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatCard.swift; sourceTree = "<group>"; };
 		AA00000DAAAA000D00000002 /* CountdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownView.swift; sourceTree = "<group>"; };
 		AA00000EAAAA000E00000002 /* AllowedAppChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllowedAppChip.swift; sourceTree = "<group>"; };
+		ED29B0472F3908B500ADC708 /* CompleteRestSessionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteRestSessionUseCase.swift; sourceTree = "<group>"; };
+		ED29B0492F39091500ADC708 /* FetchCurrentSessionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCurrentSessionUseCase.swift; sourceTree = "<group>"; };
 		EDA78AF02F374BCB00181F03 /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
 		EDA78AF62F374C0400181F03 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		EDA78AF82F374C1800181F03 /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
@@ -65,8 +68,7 @@
 		EDA78B072F374D9000181F03 /* TimeToRestEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeToRestEntity.swift; sourceTree = "<group>"; };
 		EDA78B092F374DA900181F03 /* FetchRestTimeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRestTimeUseCase.swift; sourceTree = "<group>"; };
 		EDA78B0B2F3766DC00181F03 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
-		EDA78B0D2F3779CA00181F03 /* UpdateRestTimeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateRestTimeUseCase.swift; sourceTree = "<group>"; };
-		EDA78B112F377A6E00181F03 /* CreateRestTimeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRestTimeUseCase.swift; sourceTree = "<group>"; };
+		EDA78B0D2F3779CA00181F03 /* SaveRestTimeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveRestTimeUseCase.swift; sourceTree = "<group>"; };
 		EDA78B132F37A9DE00181F03 /* RestSessionEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestSessionEntity.swift; sourceTree = "<group>"; };
 		EDA78B152F37A9FB00181F03 /* RestStatsEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestStatsEntity.swift; sourceTree = "<group>"; };
 		EDA78B1C2F37AF1600181F03 /* BreakRestUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakRestUseCase.swift; sourceTree = "<group>"; };
@@ -134,6 +136,15 @@
 				AA00000CAAAA000C00000002 /* StatCard.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		ED29B0462F39089D00ADC708 /* RestSession */ = {
+			isa = PBXGroup;
+			children = (
+				ED29B0472F3908B500ADC708 /* CompleteRestSessionUseCase.swift */,
+				ED29B0492F39091500ADC708 /* FetchCurrentSessionUseCase.swift */,
+			);
+			path = RestSession;
 			sourceTree = "<group>";
 		};
 		EDA78AEF2F374BB400181F03 /* App */ = {
@@ -226,6 +237,7 @@
 		EDA78B042F374D5E00181F03 /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
+				ED29B0462F39089D00ADC708 /* RestSession */,
 				EDA78B1B2F37AEFC00181F03 /* CalculateStats */,
 				EDA78B1A2F37AEE700181F03 /* BreakRestTime */,
 				EDA78B172F37AD3900181F03 /* StartRestTime */,
@@ -237,8 +249,7 @@
 			isa = PBXGroup;
 			children = (
 				EDA78B092F374DA900181F03 /* FetchRestTimeUseCase.swift */,
-				EDA78B0D2F3779CA00181F03 /* UpdateRestTimeUseCase.swift */,
-				EDA78B112F377A6E00181F03 /* CreateRestTimeUseCase.swift */,
+				EDA78B0D2F3779CA00181F03 /* SaveRestTimeUseCase.swift */,
 				AA000001AAAA000100000002 /* StartRestSessionUseCase.swift */,
 			);
 			path = StartRestTime;
@@ -375,13 +386,12 @@
 				EDA78AF12F374BCB00181F03 /* AppDependencies.swift in Sources */,
 				EDA78B232F388EA000181F03 /* RestSessionRepository.swift in Sources */,
 				EDA78B012F374CF900181F03 /* TimeToRestRepository.swift in Sources */,
-				EDA78B122F377A6E00181F03 /* CreateRestTimeUseCase.swift in Sources */,
 				EDA78AFB2F374C2800181F03 /* RouteViewFactory.swift in Sources */,
 				EDA78AF92F374C1800181F03 /* Route.swift in Sources */,
 				EDE2F94A2F374530006CB2F6 /* TimeToRestApp.swift in Sources */,
 				EDA78B1F2F37AF2C00181F03 /* CalculateStatsUseCase.swift in Sources */,
 				EDA78B252F38985300181F03 /* RestConfigurationMode.swift in Sources */,
-				EDA78B0E2F3779CA00181F03 /* UpdateRestTimeUseCase.swift in Sources */,
+				EDA78B0E2F3779CA00181F03 /* SaveRestTimeUseCase.swift in Sources */,
 				AA000001AAAA000100000001 /* StartRestSessionUseCase.swift in Sources */,
 				AA000002AAAA000200000001 /* HomeViewModel.swift in Sources */,
 				AA000003AAAA000300000001 /* SetupViewModel.swift in Sources */,
@@ -393,6 +403,8 @@
 				AA00000BAAAA000B00000001 /* StatsScreen.swift in Sources */,
 				AA00000CAAAA000C00000001 /* StatCard.swift in Sources */,
 				AA00000DAAAA000D00000001 /* CountdownView.swift in Sources */,
+				ED29B0482F3908B500ADC708 /* CompleteRestSessionUseCase.swift in Sources */,
+				ED29B04A2F39091500ADC708 /* FetchCurrentSessionUseCase.swift in Sources */,
 				AA00000EAAAA000E00000001 /* AllowedAppChip.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -526,6 +538,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VZ82ZJHYB5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -557,6 +570,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VZ82ZJHYB5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

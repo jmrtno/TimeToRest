@@ -1,6 +1,13 @@
+//
+//  FetchCurrentSessionUseCase.swift
+//  TimeToRest
+//
+//  Created by Javier Martín on 8/2/26.
+//
+
 import Foundation
 
-// MARK: - CreateRestTimeUseCase
+// MARK: - FetchCurrentSessionUseCase
 /// A use case that encapsulates a single business operation.
 ///
 /// Use cases represent the application's business rules and orchestrate the flow
@@ -15,13 +22,13 @@ import Foundation
 ///
 /// ## Usage
 /// ```swift
-/// let useCase = CreateRestTimeUseCase(repository: repository)
+/// let useCase = FetchCurrentSessionUseCase(repository: repository)
 /// let result = useCase.execute(parameters)
 /// ```
-final class CreateRestTimeUseCase {
-    private let repository: TimeToRestRepositoryContract
+final class FetchCurrentSessionUseCase {
+    private let repository: RestSessionRepositoryContract
     
-    init(repository: TimeToRestRepositoryContract) {
+    init(repository: RestSessionRepositoryContract) {
         self.repository = repository
     }
     
@@ -29,7 +36,9 @@ final class CreateRestTimeUseCase {
     ///
     /// - Parameter input: The input required for this operation (modify as needed)
     /// - Returns: The result of the operation (modify return type as needed)
-    func execute(restTime: TimeToRestEntity) {
-        repository.save(restTime)
+    func execute(now: Date = Date()) -> RestSessionEntity? {
+        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: now) ?? now
+        return repository.fetch(for: now)
+        ?? repository.fetch(for: yesterday)
     }
 }

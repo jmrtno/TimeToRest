@@ -41,12 +41,12 @@ final class AppDependencies {
         FetchRestTimeUseCase(repository: timeToRestRepository)
     }()
 
-    lazy var createRestTimeUseCase: CreateRestTimeUseCase = {
-        CreateRestTimeUseCase(repository: timeToRestRepository)
+    lazy var saveRestTimeUseCase: SaveRestTimeUseCase = {
+        SaveRestTimeUseCase(repository: timeToRestRepository)
     }()
 
-    lazy var updateRestTimeUseCase: UpdateRestTimeUseCase = {
-        UpdateRestTimeUseCase(repository: timeToRestRepository)
+    lazy var updateRestTimeUseCase: SaveRestTimeUseCase = {
+        SaveRestTimeUseCase(repository: timeToRestRepository)
     }()
 
     // MARK: - Use Cases (Rest sessions)
@@ -66,6 +66,18 @@ final class AppDependencies {
 
     lazy var calculateStatsUseCase: CalculateStatsUseCase = {
         CalculateStatsUseCase(
+            repository: restSessionRepository
+        )
+    }()
+    
+    lazy var fetchCurrentSessionUseCase: FetchCurrentSessionUseCase = {
+        FetchCurrentSessionUseCase(
+            repository: restSessionRepository
+        )
+    }()
+    
+    lazy var completeRestSessionUseCase: CompleteRestSessionUseCase = {
+        CompleteRestSessionUseCase(
             repository: restSessionRepository
         )
     }()
