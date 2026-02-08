@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 // MARK: - AppDependencies
 /// A container that manages the creation and lifecycle of all application dependencies.
@@ -18,8 +19,6 @@ import Foundation
 /// let dependencies = AppDependencies()
 /// let viewModel = SomeViewModel(useCase: dependencies.someUseCase)
 /// ```
-import Foundation
-
 final class AppDependencies {
 
     // MARK: - Data layer (Repositories)
@@ -32,11 +31,11 @@ final class AppDependencies {
         RestSessionRepository()
     }()
 
-    private lazy var notificationManager: NotificationManager = {
+    lazy var notificationManager: NotificationManager = {
         NotificationManager()
     }()
 
-    // MARK: - Use Cases (TimeToRest)
+    // MARK: - Use Cases (TimeToRest configuration)
 
     lazy var fetchRestTimeUseCase: FetchRestTimeUseCase = {
         FetchRestTimeUseCase(repository: timeToRestRepository)
@@ -52,8 +51,11 @@ final class AppDependencies {
 
     // MARK: - Use Cases (Rest sessions)
 
-    lazy var startRestUseCase: CalculateStatsUseCase = {
-        CalculateStatsUseCase(repository: restSessionRepository)
+    lazy var startRestSessionUseCase: StartRestSessionUseCase = {
+        StartRestSessionUseCase(
+            sessionRepository: restSessionRepository,
+            configRepository: timeToRestRepository
+        )
     }()
 
     lazy var breakRestUseCase: BreakRestUseCase = {

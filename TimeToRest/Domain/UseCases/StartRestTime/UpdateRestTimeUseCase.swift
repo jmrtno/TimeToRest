@@ -36,8 +36,7 @@ final class UpdateRestTimeUseCase {
     ///
     /// - Parameter input: The input required for this operation (modify as needed)
     /// - Returns: The result of the operation (modify return type as needed)
-    func execute(restTimeId: UUID) {
-        guard var restTime = repository.find(by: restTimeId) else { return }
+    func execute(restTime: TimeToRestEntity) {
         repository.update(restTime)
     }
 }

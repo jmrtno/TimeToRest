@@ -1,4 +1,5 @@
 import Foundation
+import Combine
 
 // MARK: - RestSessionRepository
 /// A concrete repository implementation for data persistence and retrieval.
@@ -46,7 +47,7 @@ final class RestSessionRepository: RestSessionRepositoryContract {
 
     func fetch(for day: Date) -> RestSessionEntity? {
         let calendar = Calendar.current
-        return fetchAll().first {
+        return fetchAll().last {
             calendar.isDate($0.day, inSameDayAs: day)
         }
     }

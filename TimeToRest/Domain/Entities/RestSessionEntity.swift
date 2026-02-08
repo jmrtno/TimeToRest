@@ -35,6 +35,7 @@ struct RestSessionEntity: Identifiable, Codable, Equatable {
     // MARK: - Result
     let didBreakRest: Bool
     let breakedAt: Date?
+    let isCompleted: Bool
     let avoidedMinutes: Int
 
     // MARK: - Init
@@ -45,6 +46,7 @@ struct RestSessionEntity: Identifiable, Codable, Equatable {
         delayInMinutes: Int,
         didBreakRest: Bool,
         breakedAt: Date? = nil,
+        isCompleted: Bool = false,
         avoidedMinutes: Int
     ) {
         self.id = id
@@ -53,6 +55,20 @@ struct RestSessionEntity: Identifiable, Codable, Equatable {
         self.delayInMinutes = delayInMinutes
         self.didBreakRest = didBreakRest
         self.breakedAt = breakedAt
+        self.isCompleted = isCompleted
         self.avoidedMinutes = avoidedMinutes
+    }
+
+    // MARK: - Codable (backward compatibility for isCompleted)
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(UUID.self, forKey: .id)
+        day = try container.decode(Date.self, forKey: .day)
+        startedAt = try container.decode(Date.self, forKey: .startedAt)
+        delayInMinutes = try container.decode(Int.self, forKey: .delayInMinutes)
+        didBreakRest = try container.decode(Bool.self, forKey: .didBreakRest)
+        breakedAt = try container.decodeIfPresent(Date.self, forKey: .breakedAt)
+        isCompleted = try container.decodeIfPresent(Bool.self, forKey: .isCompleted) ?? false
+        avoidedMinutes = try container.decode(Int.self, forKey: .avoidedMinutes)
     }
 }

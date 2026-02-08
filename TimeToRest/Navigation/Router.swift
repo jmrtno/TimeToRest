@@ -46,14 +46,6 @@ final class Router: ObservableObject {
     func popToRoot() {
         navigationPath.removeAll()
     }
-    
-    /// Replaces the entire navigation stack with new routes.
-    /// - Parameter routes: The new routes to set
-    func replace(with routes: [Route]) {
-        navigationPath = routes
-    }
-
-    // MARK: - Modal control
 
     // MARK: - Modal control
     func presentRestConfiguration(mode: RestConfigurationMode) {

@@ -1,39 +1,17 @@
 import Foundation
 import UserNotifications
 
-/// Protocolo de delegado para eventos de notificaciones
-/// Permite que GeofenceService sepa cuando se recibe una notificación en primer plano
-protocol NotificationManagerDelegate: AnyObject {
-    func didReceiveNotificationInForeground(identifier: String) // Notificación recibida con app activa
-}
-
 /// Wrapper de UserNotifications que abstrae la complejidad del manejo de notificaciones
 /// Responsabilidades:
 /// - Gestionar permisos de notificaciones
 /// - Programar notificaciones locales para reminders
 /// - Manejar presentación de notificaciones en primer plano
-/// Flujo: GeofenceService → NotificationManager → UNUserNotificationCenter → Sistema
 final class NotificationManager: NSObject {
     /// Centro de notificaciones del sistema para toda la funcionalidad
-    private let notificationCenter: UNUserNotificationCenter
-    
-    weak var delegate: NotificationManagerDelegate?
+    private nonisolated let notificationCenter: UNUserNotificationCenter
     
     /// Estado actual de autorización de notificaciones
-    /// Se mantiene en caché para acceso rápido y consultas de estado
     private(set) var authorizationStatus: UNAuthorizationStatus = .notDetermined
-    
-    var isAuthorized: Bool {
-        authorizationStatus == .authorized
-    }
-    
-    var isDenied: Bool {
-        authorizationStatus == .denied
-    }
-    
-    var isNotDetermined: Bool {
-        authorizationStatus == .notDetermined
-    }
     
     /// Configura UNUserNotificationCenter con el delegado para manejar eventos
     /// Actualiza el estado de autorización al iniciar para tener datos consistentes
@@ -48,7 +26,7 @@ final class NotificationManager: NSObject {
     /// - alert: muestra el banner de notificación
     /// - sound: reproduce sonido al llegar
     /// - badge: muestra número en ícono de app
-    func requestAuthorization(completion: @escaping (Bool) -> Void) {
+    func requestAuthorization(completion: @escaping @Sendable (Bool) -> Void) {
         notificationCenter.requestAuthorization(options: [.alert, .sound, .badge]) { [weak self] granted, _ in
             DispatchQueue.main.async {
                 self?.refreshAuthorizationStatus()
@@ -65,75 +43,115 @@ final class NotificationManager: NSObject {
         }
     }
     
-    /// Programa una notificación inmediata para un reminder de salida
-    /// Se usa cuando el usuario sale de una región geofence
-    /// El identificador único permite cancelarla después si es necesario
-    func scheduleExitNotification(for restTime: TimeToRestEntity) {
+    // MARK: - Rest Time Notifications
+
+    /// Schedules the nightly rest reminder at the configured start time.
+    /// Fires daily at the configured hour.
+    func scheduleRestReminder(for restTime: TimeToRestEntity) {
+        cancelAllRestNotifications()
+
+        guard let hour = restTime.startTime.hour,
+              let minute = restTime.startTime.minute else { return }
+
+        // Main notification at start time
         let content = UNMutableNotificationContent()
-        content.title = "Time to Rest"
-        content.body = "It's time to put down the phone and relax."
+        content.title = "🌙 Time to Rest"
+        content.body = "Remember the commitment you made."
         content.sound = .default
         content.categoryIdentifier = "REST_TIME"
-        
+
+        var dateComponents = DateComponents()
+        dateComponents.hour = hour
+        dateComponents.minute = minute
+
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         let request = UNNotificationRequest(
-            identifier: restTime.restIdentifier,
-            content: content,
-            trigger: nil
-        )
-        
-        notificationCenter.add(request) { _ in }
-    }
-    
-    /// Cancela una notificación específica (pendiente y entregada)
-    /// Se usa cuando se deshabilita un reminder o se elimina una región
-    func cancelNotification(for restTime: TimeToRestEntity) {
-        notificationCenter.removePendingNotificationRequests(withIdentifiers: [restTime.restIdentifier])
-        notificationCenter.removeDeliveredNotifications(withIdentifiers: [restTime.restIdentifier])
-    }
-    
-    func cancelNotification(identifier: String) {
-        notificationCenter.removePendingNotificationRequests(withIdentifiers: [identifier])
-        notificationCenter.removeDeliveredNotifications(withIdentifiers: [identifier])
-    }
-    
-    // MARK: - Debug Methods
-    
-    /// Programa notificación con retraso para pruebas de debugging
-    /// Útil para simular eventos de geofence sin moverse físicamente
-    func scheduleDelayedNotification(for restTime: TimeToRestEntity, delay: TimeInterval) {
-        let content = UNMutableNotificationContent()
-        content.title = "Did I Forget?"
-        content.body = "It's time to put down the phone and relax."
-        content.sound = .default
-        content.categoryIdentifier = "REST_TIME"
-        
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: delay, repeats: false)
-        
-        let request = UNNotificationRequest(
-            identifier: "debug_\(restTime.restIdentifier)",
+            identifier: "rest_start_\(restTime.restIdentifier)",
             content: content,
             trigger: trigger
         )
-        
+        notificationCenter.add(request) { _ in }
+
+        // Pre-reminder 10 minutes before
+        let preContent = UNMutableNotificationContent()
+        preContent.title = "⏰ Almost Time"
+        preContent.body = "Last chance to put down the phone."
+        preContent.sound = .default
+        preContent.categoryIdentifier = "REST_PRE_REMINDER"
+
+        var preComponents = DateComponents()
+        var preMinute = minute - 10
+        var preHour = hour
+        if preMinute < 0 {
+            preMinute += 60
+            preHour -= 1
+            if preHour < 0 { preHour += 24 }
+        }
+        preComponents.hour = preHour
+        preComponents.minute = preMinute
+
+        let preTrigger = UNCalendarNotificationTrigger(dateMatching: preComponents, repeats: true)
+        let preRequest = UNNotificationRequest(
+            identifier: "rest_pre_\(restTime.restIdentifier)",
+            content: preContent,
+            trigger: preTrigger
+        )
+        notificationCenter.add(preRequest) { _ in }
+    }
+
+    /// Schedules strict mode notifications with more direct messaging.
+    func scheduleStrictReminder(for restTime: TimeToRestEntity) {
+        cancelAllRestNotifications()
+
+        guard let hour = restTime.startTime.hour,
+              let minute = restTime.startTime.minute else { return }
+
+        let content = UNMutableNotificationContent()
+        content.title = "🌙 Time to Rest"
+        content.body = "This is exactly what you wanted to avoid."
+        content.sound = .default
+        content.categoryIdentifier = "REST_TIME"
+
+        var dateComponents = DateComponents()
+        dateComponents.hour = hour
+        dateComponents.minute = minute
+
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        let request = UNNotificationRequest(
+            identifier: "rest_start_\(restTime.restIdentifier)",
+            content: content,
+            trigger: trigger
+        )
         notificationCenter.add(request) { _ in }
     }
+
+    /// Cancels all rest-related notifications.
+    func cancelAllRestNotifications() {
+        notificationCenter.getPendingNotificationRequests { [weak self] requests in
+            let ids = requests
+                .filter { $0.identifier.hasPrefix("rest_") }
+                .map { $0.identifier }
+            self?.notificationCenter.removePendingNotificationRequests(withIdentifiers: ids)
+        }
+        notificationCenter.removeAllDeliveredNotifications()
+    }
+
 }
 
 extension NotificationManager: UNUserNotificationCenterDelegate {
     /// Maneja notificaciones en primer plano (app activa)
     /// Fuerza presentación para mejor experiencia de usuario
-    func userNotificationCenter(
+    nonisolated func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
         withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void
     ) {
-        delegate?.didReceiveNotificationInForeground(identifier: notification.request.identifier)
         completionHandler([.banner, .sound, .badge])
     }
     
     /// Maneja interacción del usuario con notificación (tap, etc.)
     /// Extensible para navegación o acciones específicas
-    func userNotificationCenter(
+    nonisolated func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse,
         withCompletionHandler completionHandler: @escaping () -> Void

@@ -7,13 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AA000001AAAA000100000001 /* StartRestSessionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001AAAA000100000002 /* StartRestSessionUseCase.swift */; };
+		AA000002AAAA000200000001 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000002AAAA000200000002 /* HomeViewModel.swift */; };
+		AA000003AAAA000300000001 /* SetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000003AAAA000300000002 /* SetupViewModel.swift */; };
+		AA000005AAAA000500000001 /* BreakBlockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000005AAAA000500000002 /* BreakBlockViewModel.swift */; };
+		AA000006AAAA000600000001 /* StatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000006AAAA000600000002 /* StatsViewModel.swift */; };
+		AA000007AAAA000700000001 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000007AAAA000700000002 /* HomeScreen.swift */; };
+		AA000008AAAA000800000001 /* SetupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000008AAAA000800000002 /* SetupScreen.swift */; };
+		AA00000AAAAA000A00000001 /* BreakBlockScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000AAAAA000A00000002 /* BreakBlockScreen.swift */; };
+		AA00000BAAAA000B00000001 /* StatsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000BAAAA000B00000002 /* StatsScreen.swift */; };
+		AA00000CAAAA000C00000001 /* StatCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000CAAAA000C00000002 /* StatCard.swift */; };
+		AA00000DAAAA000D00000001 /* CountdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000DAAAA000D00000002 /* CountdownView.swift */; };
+		AA00000EAAAA000E00000001 /* AllowedAppChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000EAAAA000E00000002 /* AllowedAppChip.swift */; };
 		EDA78AF12F374BCB00181F03 /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AF02F374BCB00181F03 /* AppDependencies.swift */; };
 		EDA78AF72F374C0400181F03 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AF62F374C0400181F03 /* Router.swift */; };
 		EDA78AF92F374C1800181F03 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AF82F374C1800181F03 /* Route.swift */; };
 		EDA78AFB2F374C2800181F03 /* RouteViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AFA2F374C2800181F03 /* RouteViewFactory.swift */; };
 		EDA78AFD2F374CA900181F03 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AFC2F374CA900181F03 /* AppCoordinator.swift */; };
 		EDA78B012F374CF900181F03 /* TimeToRestRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B002F374CF900181F03 /* TimeToRestRepository.swift */; };
-		EDA78B062F374D7600181F03 /* TimeToRestRepositoryContractContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B052F374D7600181F03 /* TimeToRestRepositoryContractContract.swift */; };
+		EDA78B062F374D7600181F03 /* TimeToRestRepositoryContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B052F374D7600181F03 /* TimeToRestRepositoryContract.swift */; };
 		EDA78B082F374D9000181F03 /* TimeToRestEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B072F374D9000181F03 /* TimeToRestEntity.swift */; };
 		EDA78B0A2F374DA900181F03 /* FetchRestTimeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B092F374DA900181F03 /* FetchRestTimeUseCase.swift */; };
 		EDA78B0C2F3766DC00181F03 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B0B2F3766DC00181F03 /* NotificationManager.swift */; };
@@ -21,7 +33,6 @@
 		EDA78B122F377A6E00181F03 /* CreateRestTimeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B112F377A6E00181F03 /* CreateRestTimeUseCase.swift */; };
 		EDA78B142F37A9DE00181F03 /* RestSessionEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B132F37A9DE00181F03 /* RestSessionEntity.swift */; };
 		EDA78B162F37A9FB00181F03 /* RestStatsEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B152F37A9FB00181F03 /* RestStatsEntity.swift */; };
-		EDA78B192F37AD9600181F03 /* RestDayResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B182F37AD9600181F03 /* RestDayResult.swift */; };
 		EDA78B1D2F37AF1600181F03 /* BreakRestUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B1C2F37AF1600181F03 /* BreakRestUseCase.swift */; };
 		EDA78B1F2F37AF2C00181F03 /* CalculateStatsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B1E2F37AF2C00181F03 /* CalculateStatsUseCase.swift */; };
 		EDA78B212F388E0200181F03 /* RestSessionRepositoryContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B202F388E0200181F03 /* RestSessionRepositoryContract.swift */; };
@@ -32,13 +43,25 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AA000001AAAA000100000002 /* StartRestSessionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartRestSessionUseCase.swift; sourceTree = "<group>"; };
+		AA000002AAAA000200000002 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		AA000003AAAA000300000002 /* SetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupViewModel.swift; sourceTree = "<group>"; };
+		AA000005AAAA000500000002 /* BreakBlockViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakBlockViewModel.swift; sourceTree = "<group>"; };
+		AA000006AAAA000600000002 /* StatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewModel.swift; sourceTree = "<group>"; };
+		AA000007AAAA000700000002 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
+		AA000008AAAA000800000002 /* SetupScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupScreen.swift; sourceTree = "<group>"; };
+		AA00000AAAAA000A00000002 /* BreakBlockScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakBlockScreen.swift; sourceTree = "<group>"; };
+		AA00000BAAAA000B00000002 /* StatsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsScreen.swift; sourceTree = "<group>"; };
+		AA00000CAAAA000C00000002 /* StatCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatCard.swift; sourceTree = "<group>"; };
+		AA00000DAAAA000D00000002 /* CountdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownView.swift; sourceTree = "<group>"; };
+		AA00000EAAAA000E00000002 /* AllowedAppChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllowedAppChip.swift; sourceTree = "<group>"; };
 		EDA78AF02F374BCB00181F03 /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
 		EDA78AF62F374C0400181F03 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		EDA78AF82F374C1800181F03 /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
 		EDA78AFA2F374C2800181F03 /* RouteViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteViewFactory.swift; sourceTree = "<group>"; };
 		EDA78AFC2F374CA900181F03 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		EDA78B002F374CF900181F03 /* TimeToRestRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeToRestRepository.swift; sourceTree = "<group>"; };
-		EDA78B052F374D7600181F03 /* TimeToRestRepositoryContractContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeToRestRepositoryContractContract.swift; sourceTree = "<group>"; };
+		EDA78B052F374D7600181F03 /* TimeToRestRepositoryContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeToRestRepositoryContract.swift; sourceTree = "<group>"; };
 		EDA78B072F374D9000181F03 /* TimeToRestEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeToRestEntity.swift; sourceTree = "<group>"; };
 		EDA78B092F374DA900181F03 /* FetchRestTimeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRestTimeUseCase.swift; sourceTree = "<group>"; };
 		EDA78B0B2F3766DC00181F03 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
@@ -46,7 +69,6 @@
 		EDA78B112F377A6E00181F03 /* CreateRestTimeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRestTimeUseCase.swift; sourceTree = "<group>"; };
 		EDA78B132F37A9DE00181F03 /* RestSessionEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestSessionEntity.swift; sourceTree = "<group>"; };
 		EDA78B152F37A9FB00181F03 /* RestStatsEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestStatsEntity.swift; sourceTree = "<group>"; };
-		EDA78B182F37AD9600181F03 /* RestDayResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestDayResult.swift; sourceTree = "<group>"; };
 		EDA78B1C2F37AF1600181F03 /* BreakRestUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakRestUseCase.swift; sourceTree = "<group>"; };
 		EDA78B1E2F37AF2C00181F03 /* CalculateStatsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateStatsUseCase.swift; sourceTree = "<group>"; };
 		EDA78B202F388E0200181F03 /* RestSessionRepositoryContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestSessionRepositoryContract.swift; sourceTree = "<group>"; };
@@ -68,6 +90,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AA00000FAAAA000F00000001 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				AA000007AAAA000700000002 /* HomeScreen.swift */,
+				AA000008AAAA000800000002 /* SetupScreen.swift */,
+				AA00000AAAAA000A00000002 /* BreakBlockScreen.swift */,
+				AA00000BAAAA000B00000002 /* StatsScreen.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		AA000010AAAA001000000001 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				AA000002AAAA000200000002 /* HomeViewModel.swift */,
+				AA000003AAAA000300000002 /* SetupViewModel.swift */,
+				AA000005AAAA000500000002 /* BreakBlockViewModel.swift */,
+				AA000006AAAA000600000002 /* StatsViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		AA000011AAAA001100000001 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				AA00000CAAAA000C00000002 /* StatCard.swift */,
+				AA00000DAAAA000D00000002 /* CountdownView.swift */,
+				AA00000EAAAA000E00000002 /* AllowedAppChip.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
 		EDA78AEF2F374BB400181F03 /* App */ = {
 			isa = PBXGroup;
 			children = (
@@ -79,6 +133,9 @@
 		EDA78AF22F374BD900181F03 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				AA00000FAAAA000F00000001 /* Screens */,
+				AA000010AAAA001000000001 /* ViewModels */,
+				AA000011AAAA001100000001 /* Components */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -134,7 +191,7 @@
 		EDA78B022F374D5100181F03 /* Contracts */ = {
 			isa = PBXGroup;
 			children = (
-				EDA78B052F374D7600181F03 /* TimeToRestRepositoryContractContract.swift */,
+				EDA78B052F374D7600181F03 /* TimeToRestRepositoryContract.swift */,
 				EDA78B202F388E0200181F03 /* RestSessionRepositoryContract.swift */,
 			);
 			path = Contracts;
@@ -143,7 +200,6 @@
 		EDA78B032F374D5800181F03 /* Entities */ = {
 			isa = PBXGroup;
 			children = (
-				EDA78B182F37AD9600181F03 /* RestDayResult.swift */,
 				EDA78B152F37A9FB00181F03 /* RestStatsEntity.swift */,
 				EDA78B132F37A9DE00181F03 /* RestSessionEntity.swift */,
 				EDA78B072F374D9000181F03 /* TimeToRestEntity.swift */,
@@ -167,6 +223,7 @@
 				EDA78B092F374DA900181F03 /* FetchRestTimeUseCase.swift */,
 				EDA78B0D2F3779CA00181F03 /* UpdateRestTimeUseCase.swift */,
 				EDA78B112F377A6E00181F03 /* CreateRestTimeUseCase.swift */,
+				AA000001AAAA000100000002 /* StartRestSessionUseCase.swift */,
 			);
 			path = StartRestTime;
 			sourceTree = "<group>";
@@ -293,14 +350,13 @@
 				EDA78AFD2F374CA900181F03 /* AppCoordinator.swift in Sources */,
 				EDA78B162F37A9FB00181F03 /* RestStatsEntity.swift in Sources */,
 				EDA78B0A2F374DA900181F03 /* FetchRestTimeUseCase.swift in Sources */,
-				EDA78B062F374D7600181F03 /* TimeToRestRepositoryContractContract.swift in Sources */,
+				EDA78B062F374D7600181F03 /* TimeToRestRepositoryContract.swift in Sources */,
 				EDA78B212F388E0200181F03 /* RestSessionRepositoryContract.swift in Sources */,
 				EDA78B0C2F3766DC00181F03 /* NotificationManager.swift in Sources */,
 				EDA78B142F37A9DE00181F03 /* RestSessionEntity.swift in Sources */,
 				EDA78B1D2F37AF1600181F03 /* BreakRestUseCase.swift in Sources */,
 				EDA78AF72F374C0400181F03 /* Router.swift in Sources */,
 				EDA78AF12F374BCB00181F03 /* AppDependencies.swift in Sources */,
-				EDA78B192F37AD9600181F03 /* RestDayResult.swift in Sources */,
 				EDA78B232F388EA000181F03 /* RestSessionRepository.swift in Sources */,
 				EDA78B012F374CF900181F03 /* TimeToRestRepository.swift in Sources */,
 				EDA78B122F377A6E00181F03 /* CreateRestTimeUseCase.swift in Sources */,
@@ -310,6 +366,18 @@
 				EDA78B1F2F37AF2C00181F03 /* CalculateStatsUseCase.swift in Sources */,
 				EDA78B252F38985300181F03 /* RestConfigurationMode.swift in Sources */,
 				EDA78B0E2F3779CA00181F03 /* UpdateRestTimeUseCase.swift in Sources */,
+				AA000001AAAA000100000001 /* StartRestSessionUseCase.swift in Sources */,
+				AA000002AAAA000200000001 /* HomeViewModel.swift in Sources */,
+				AA000003AAAA000300000001 /* SetupViewModel.swift in Sources */,
+				AA000005AAAA000500000001 /* BreakBlockViewModel.swift in Sources */,
+				AA000006AAAA000600000001 /* StatsViewModel.swift in Sources */,
+				AA000007AAAA000700000001 /* HomeScreen.swift in Sources */,
+				AA000008AAAA000800000001 /* SetupScreen.swift in Sources */,
+				AA00000AAAAA000A00000001 /* BreakBlockScreen.swift in Sources */,
+				AA00000BAAAA000B00000001 /* StatsScreen.swift in Sources */,
+				AA00000CAAAA000C00000001 /* StatCard.swift in Sources */,
+				AA00000DAAAA000D00000001 /* CountdownView.swift in Sources */,
+				AA00000EAAAA000E00000001 /* AllowedAppChip.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

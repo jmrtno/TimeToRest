@@ -23,7 +23,6 @@ struct TimeToRestEntity: Identifiable, Codable, Equatable {
     let id: UUID
 
     // MARK: - Core configuration
-    let isEnabled: Bool
     let startTime: DateComponents
     let endTime: DateComponents
 
@@ -33,27 +32,22 @@ struct TimeToRestEntity: Identifiable, Codable, Equatable {
 
     // MARK: - State (lightweight)
     let createdAt: Date
-    let lastRestStartDate: Date?
 
     // MARK: - Init principal
     init(
         id: UUID = UUID(),
-        isEnabled: Bool = true,
         startTime: DateComponents,
         endTime: DateComponents,
         isStrictModeEnabled: Bool = false,
         allowedApps: [AllowedApp] = [.phone, .emergency],
-        createdAt: Date = Date(),
-        lastRestStartDate: Date? = nil
+        createdAt: Date = Date()
     ) {
         self.id = id
-        self.isEnabled = isEnabled
         self.startTime = startTime
         self.endTime = endTime
         self.isStrictModeEnabled = isStrictModeEnabled
         self.allowedApps = allowedApps
         self.createdAt = createdAt
-        self.lastRestStartDate = lastRestStartDate
     }
 
     // MARK: - Identifier
@@ -64,13 +58,11 @@ struct TimeToRestEntity: Identifiable, Codable, Equatable {
     // MARK: - Init vacío (primer render / preview)
     static let firstConfig = TimeToRestEntity(
         id: UUID(),
-        isEnabled: false,
         startTime: DateComponents(hour: 23, minute: 30),
         endTime: DateComponents(hour: 7, minute: 0),
         isStrictModeEnabled: false,
         allowedApps: [.phone, .emergency],
-        createdAt: Date(),
-        lastRestStartDate: nil
+        createdAt: Date()
     )
 }
 

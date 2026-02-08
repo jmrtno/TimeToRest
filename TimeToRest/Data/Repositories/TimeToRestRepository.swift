@@ -27,6 +27,10 @@ final class TimeToRestRepository: TimeToRestRepositoryContract {
         self.userDefaults = userDefaults
     }
     
+    func hasConfiguration() -> Bool {
+        userDefaults.data(forKey: storageKey) != nil
+    }
+    
     func fetch() -> TimeToRestEntity {
         guard let data = userDefaults.data(forKey: storageKey) else {
             return .firstConfig
@@ -46,11 +50,6 @@ final class TimeToRestRepository: TimeToRestRepositoryContract {
     
     func update(_ restTime: TimeToRestEntity) {
         persist(restTime)
-    }
-    
-    func find(by id: UUID) -> TimeToRestEntity? {
-        let current = fetch()
-        return current.id == id ? current : nil
     }
     
     // MARK: - Private Helpers

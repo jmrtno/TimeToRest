@@ -21,8 +21,8 @@ import Foundation
 /// }
 /// ```
 protocol TimeToRestRepositoryContract {
+    func hasConfiguration() -> Bool
     func fetch() -> TimeToRestEntity
     func save(_ restTime: TimeToRestEntity)
     func update(_ restTime: TimeToRestEntity)
-    func find(by id: UUID) -> TimeToRestEntity?
 }

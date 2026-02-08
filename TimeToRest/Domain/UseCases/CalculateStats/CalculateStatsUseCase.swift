@@ -27,16 +27,17 @@ struct CalculateStatsUseCase {
 
         for session in sessions.sorted(by: { $0.day < $1.day }) {
 
-            // Rachas
+            // Streaks: only count sessions with a definitive outcome
             if session.didBreakRest {
                 tempStreak = 0
-            } else {
+            } else if session.isCompleted {
                 tempStreak += 1
                 currentStreak = tempStreak
                 bestStreak = max(bestStreak, tempStreak)
             }
+            // Sessions that are neither broken nor completed are still in progress — skip
 
-            // Breaks esta semana
+            // Breaks esta semana (today's broken session does count here)
             let sessionWeek = calendar.dateComponents(
                 [.weekOfYear, .yearForWeekOfYear],
                 from: session.day

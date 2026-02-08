@@ -13,10 +13,10 @@ import SwiftUI
 /// - Keep view creation logic in one place
 ///
 /// ## Usage
-/// The factory is used by AppCoordinator to create views:
+/// The factory is used by AppCoordinator to create pushed views:
 /// ```swift
 /// let factory = RouteViewFactory(dependencies: dependencies)
-/// let view = factory.view(for: .home)
+/// let view = factory.view(for: .breakBlock)
 /// ```
 struct RouteViewFactory {
 
@@ -28,22 +28,22 @@ struct RouteViewFactory {
     func view(for route: Route) -> some View {
         switch route {
 
-        case .home:
-            // HomeScreen(
-            //     viewModel: HomeViewModel(
-            //         startRestUseCase: dependencies.startRestUseCase,
-            //         router: dependencies.router
-            //     )
-            // )
-            Text("Home Screen")
+        case .breakBlock:
+            BreakBlockScreen(
+                viewModel: BreakBlockViewModel(
+                    breakRestUseCase: dependencies.breakRestUseCase,
+                    calculateStatsUseCase: dependencies.calculateStatsUseCase,
+                    sessionRepository: dependencies.restSessionRepository,
+                    isStrictMode: dependencies.fetchRestTimeUseCase.execute().isStrictModeEnabled
+                )
+            )
 
         case .stats:
-            // StatsScreen(
-            //     viewModel: StatsViewModel(
-            //         calculateStatsUseCase: dependencies.calculateStatsUseCase
-            //     )
-            // )
-            Text("Stats Screen")
+            StatsScreen(
+                viewModel: StatsViewModel(
+                    calculateStatsUseCase: dependencies.calculateStatsUseCase
+                )
+            )
         }
     }
 
@@ -51,8 +51,17 @@ struct RouteViewFactory {
 
     @ViewBuilder
     func restConfigurationView(mode: RestConfigurationMode) -> some View {
-
-        Text("Rest Configuration Modal")
+        NavigationStack {
+            SetupScreen(
+                viewModel: SetupViewModel(
+                    mode: mode,
+                    createRestTimeUseCase: dependencies.createRestTimeUseCase,
+                    updateRestTimeUseCase: dependencies.updateRestTimeUseCase,
+                    fetchRestTimeUseCase: dependencies.fetchRestTimeUseCase,
+                    notificationManager: dependencies.notificationManager
+                )
+            )
+        }
     }
 }
 

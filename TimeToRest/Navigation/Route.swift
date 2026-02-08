@@ -1,5 +1,3 @@
-import Foundation
-
 // MARK: - Route
 /// An enum that defines all navigable destinations in the application.
 ///
@@ -25,13 +23,13 @@ import Foundation
 /// }
 /// ```
 enum Route: Hashable, Identifiable {
-    case home
+    case breakBlock
     case stats
 
     var id: String {
         switch self {
-        case .home:
-            return "home"
+        case .breakBlock:
+            return "breakBlock"
         case .stats:
             return "stats"
         }
