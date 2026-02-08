@@ -29,7 +29,10 @@ final class FetchRestTimeUseCase {
     ///
     /// - Parameter input: The input required for this operation (modify as needed)
     /// - Returns: The result of the operation (modify return type as needed)
-    func execute() -> TimeToRestEntity {
-        repository.fetch()
+    func execute() -> TimeToRestEntity? {
+        guard repository.hasConfiguration() else {
+            return nil
+        }
+        return repository.fetch()
     }
 }

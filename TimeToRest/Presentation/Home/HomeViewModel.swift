@@ -29,8 +29,8 @@ final class HomeViewModel: ObservableObject {
     private let fetchRestTimeUseCase: FetchRestTimeUseCase
     private let calculateStatsUseCase: CalculateStatsUseCase
     private let startRestSessionUseCase: StartRestSessionUseCase
-    private let configRepository: TimeToRestRepositoryContract
-    private let sessionRepository: RestSessionRepositoryContract
+    private let completeRestSessionUseCase: CompleteRestSessionUseCase
+    private let fetchCurrentSessionUseCase: FetchCurrentSessionUseCase
 
     private var windowCheckTimer: Timer?
 
@@ -38,14 +38,14 @@ final class HomeViewModel: ObservableObject {
         fetchRestTimeUseCase: FetchRestTimeUseCase,
         calculateStatsUseCase: CalculateStatsUseCase,
         startRestSessionUseCase: StartRestSessionUseCase,
-        configRepository: TimeToRestRepositoryContract,
-        sessionRepository: RestSessionRepositoryContract
+        completeRestSessionUseCase: CompleteRestSessionUseCase,
+        fetchCurrentSessionUseCase: FetchCurrentSessionUseCase
     ) {
         self.fetchRestTimeUseCase = fetchRestTimeUseCase
         self.calculateStatsUseCase = calculateStatsUseCase
         self.startRestSessionUseCase = startRestSessionUseCase
-        self.configRepository = configRepository
-        self.sessionRepository = sessionRepository
+        self.completeRestSessionUseCase = completeRestSessionUseCase
+        self.fetchCurrentSessionUseCase = fetchCurrentSessionUseCase
     }
 
     // MARK: - Lifecycle
@@ -61,9 +61,7 @@ final class HomeViewModel: ObservableObject {
 
     /// Reloads all data from repositories. Call when returning from pushed screens.
     func reload() {
-        hasConfiguration = configRepository.hasConfiguration()
-        guard hasConfiguration else { return }
-        loadConfig()
+        guard loadConfig() else { return }
         loadStats()
         checkIfBrokenTonight()
         restoreSessionIfNeeded()
@@ -76,17 +74,22 @@ final class HomeViewModel: ObservableObject {
         didBreakTonight = false
         session = nil
         lateMessage = nil
-        hasConfiguration = configRepository.hasConfiguration()
-        guard hasConfiguration else { return }
-        loadConfig()
+        guard loadConfig() else { return }
         loadStats()
         checkNightWindow()
     }
 
     // MARK: - Data loading
 
-    func loadConfig() {
-        config = fetchRestTimeUseCase.execute()
+    @discardableResult
+    func loadConfig() -> Bool {
+        guard let fetched = fetchRestTimeUseCase.execute() else {
+            hasConfiguration = false
+            return false
+        }
+        hasConfiguration = true
+        config = fetched
+        return true
     }
 
     func loadStats() {
@@ -139,39 +142,14 @@ final class HomeViewModel: ObservableObject {
     /// Marks the current session as completed (user didn't break rest).
     /// Checks both today and yesterday to handle overnight windows.
     private func completeCurrentSession() {
-        let now = Date()
-        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: now) ?? now
-
-        /// Find the most recent unfinished session (today or yesterday for overnight windows)
-        let candidate = sessionRepository.fetch(for: now)
-            ?? sessionRepository.fetch(for: yesterday)
-
-        /// Ensure there is an existing session that hasn't been broken and isn't completed; otherwise, exit.
-        guard let current = candidate,
-              !current.didBreakRest,
-              !current.isCompleted else { return }
-
-        let completed = RestSessionEntity(
-            id: current.id,
-            day: current.day,
-            startedAt: current.startedAt,
-            delayInMinutes: current.delayInMinutes,
-            didBreakRest: false,
-            breakedAt: nil,
-            isCompleted: true,
-            avoidedMinutes: current.avoidedMinutes
-        )
-        sessionRepository.update(completed)
+        completeRestSessionUseCase.execute()
     }
 
     /// Restores the in-memory session from persistence if we're in the night window
     /// and the session was lost (e.g. after returning from a pushed screen).
     private func restoreSessionIfNeeded() {
         guard session == nil, !didBreakTonight else { return }
-        let now = Date()
-        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: now) ?? now
-        if let persisted = sessionRepository.fetch(for: now)
-            ?? sessionRepository.fetch(for: yesterday),
+        if let persisted = fetchCurrentSessionUseCase.execute(),
            !persisted.didBreakRest, !persisted.isCompleted {
             session = persisted
             if persisted.delayInMinutes > 0 {
@@ -183,12 +161,7 @@ final class HomeViewModel: ObservableObject {
     /// Checks persisted session to see if rest was already broken tonight.
     /// Checks both today and yesterday to handle overnight windows.
     private func checkIfBrokenTonight() {
-        let now = Date()
-        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: now) ?? now
-        let candidate = sessionRepository.fetch(for: now)
-            ?? sessionRepository.fetch(for: yesterday)
-
-        if let session = candidate, session.didBreakRest {
+        if fetchCurrentSessionUseCase.execute()?.didBreakRest == true {
             didBreakTonight = true
         }
     }

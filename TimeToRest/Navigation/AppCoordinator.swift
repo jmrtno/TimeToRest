@@ -10,7 +10,7 @@ struct AppCoordinator: View {
     @StateObject private var router: Router
     @StateObject private var homeViewModel: HomeViewModel
     private let viewFactory: RouteViewFactory
-    private let timeToRestRepository: TimeToRestRepositoryContract
+    private let fetchRestTimeUseCase: FetchRestTimeUseCase
 
     init(dependencies: AppDependencies) {
         _router = StateObject(wrappedValue: Router())
@@ -18,11 +18,11 @@ struct AppCoordinator: View {
             fetchRestTimeUseCase: dependencies.fetchRestTimeUseCase,
             calculateStatsUseCase: dependencies.calculateStatsUseCase,
             startRestSessionUseCase: dependencies.startRestSessionUseCase,
-            configRepository: dependencies.timeToRestRepository,
-            sessionRepository: dependencies.restSessionRepository
+            completeRestSessionUseCase: dependencies.completeRestSessionUseCase,
+            fetchCurrentSessionUseCase: dependencies.fetchCurrentSessionUseCase
         ))
         self.viewFactory = RouteViewFactory(dependencies: dependencies)
-        self.timeToRestRepository = dependencies.timeToRestRepository
+        self.fetchRestTimeUseCase = dependencies.fetchRestTimeUseCase
     }
 
     var body: some View {
@@ -50,7 +50,7 @@ struct AppCoordinator: View {
     }
 
     private func checkInitialConfiguration() {
-        if !timeToRestRepository.hasConfiguration() {
+        if fetchRestTimeUseCase.execute() == nil {
             router.presentRestConfiguration(mode: .mandatory)
         }
     }

@@ -17,7 +17,7 @@ struct SetupScreen: View {
                 VStack(spacing: 32) {
                     headerSection
                     timePickersSection
-                    allowedAppsSection
+                    // allowedAppsSection 
                     strictModeToggle
                     saveButton
                     footerText

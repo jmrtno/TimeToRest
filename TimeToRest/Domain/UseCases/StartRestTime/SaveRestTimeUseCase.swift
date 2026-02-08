@@ -1,13 +1,6 @@
-//
-//  UpdateRestTimeUseCase.swift
-//  TimeToRest
-//
-//  Created by Javier Martín on 7/2/26.
-//
-
 import Foundation
 
-// MARK: - UpdateRestTimeUseCase
+// MARK: - SaveRestTimeUseCase
 /// A use case that encapsulates a single business operation.
 ///
 /// Use cases represent the application's business rules and orchestrate the flow
@@ -25,7 +18,7 @@ import Foundation
 /// let useCase = UpdateRestTimeUseCase(repository: repository)
 /// let result = useCase.execute(parameters)
 /// ```
-final class UpdateRestTimeUseCase {
+final class SaveRestTimeUseCase {
     private let repository: TimeToRestRepositoryContract
     
     init(repository: TimeToRestRepositoryContract) {
@@ -36,7 +29,11 @@ final class UpdateRestTimeUseCase {
     ///
     /// - Parameter input: The input required for this operation (modify as needed)
     /// - Returns: The result of the operation (modify return type as needed)
-    func execute(restTime: TimeToRestEntity) {
-        repository.update(restTime)
+    func execute(restTime: TimeToRestEntity, isNew: Bool) {
+        if isNew {
+            repository.save(restTime)
+        } else {
+            repository.update(restTime)
+        }
     }
 }

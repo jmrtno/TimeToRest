@@ -33,8 +33,8 @@ struct RouteViewFactory {
                 viewModel: BreakBlockViewModel(
                     breakRestUseCase: dependencies.breakRestUseCase,
                     calculateStatsUseCase: dependencies.calculateStatsUseCase,
-                    sessionRepository: dependencies.restSessionRepository,
-                    isStrictMode: dependencies.fetchRestTimeUseCase.execute().isStrictModeEnabled
+                    fetchCurrentSessionUseCase: dependencies.fetchCurrentSessionUseCase,
+                    isStrictMode: dependencies.fetchRestTimeUseCase.execute()?.isStrictModeEnabled ?? false
                 )
             )
 
@@ -55,8 +55,7 @@ struct RouteViewFactory {
             SetupScreen(
                 viewModel: SetupViewModel(
                     mode: mode,
-                    createRestTimeUseCase: dependencies.createRestTimeUseCase,
-                    updateRestTimeUseCase: dependencies.updateRestTimeUseCase,
+                    saveRestTimeUseCase: dependencies.saveRestTimeUseCase,
                     fetchRestTimeUseCase: dependencies.fetchRestTimeUseCase,
                     notificationManager: dependencies.notificationManager
                 )

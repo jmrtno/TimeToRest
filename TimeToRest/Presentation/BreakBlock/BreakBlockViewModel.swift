@@ -17,7 +17,7 @@ final class BreakBlockViewModel: ObservableObject {
     // MARK: - Dependencies
     private let breakRestUseCase: BreakRestUseCase
     private let calculateStatsUseCase: CalculateStatsUseCase
-    private let sessionRepository: RestSessionRepositoryContract
+    private let fetchCurrentSessionUseCase: FetchCurrentSessionUseCase
     private let isStrictMode: Bool
 
     let totalCountdown: Int
@@ -53,12 +53,12 @@ final class BreakBlockViewModel: ObservableObject {
     init(
         breakRestUseCase: BreakRestUseCase,
         calculateStatsUseCase: CalculateStatsUseCase,
-        sessionRepository: RestSessionRepositoryContract,
+        fetchCurrentSessionUseCase: FetchCurrentSessionUseCase,
         isStrictMode: Bool
     ) {
         self.breakRestUseCase = breakRestUseCase
         self.calculateStatsUseCase = calculateStatsUseCase
-        self.sessionRepository = sessionRepository
+        self.fetchCurrentSessionUseCase = fetchCurrentSessionUseCase
         self.isStrictMode = isStrictMode
         let total = isStrictMode ? 20 : 10
         self.totalCountdown = total
@@ -82,7 +82,7 @@ final class BreakBlockViewModel: ObservableObject {
         guard canBreak else { return }
 
         let today = Date()
-        guard let session = sessionRepository.fetch(for: today) else { return }
+        guard let session = fetchCurrentSessionUseCase.execute() else { return }
 
         let _ = breakRestUseCase.execute(session: session)
         didBreak = true

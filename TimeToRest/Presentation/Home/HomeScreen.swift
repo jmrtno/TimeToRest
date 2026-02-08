@@ -141,8 +141,8 @@ struct HomeScreen: View {
                 Button {
                     router.presentRestConfiguration(mode: .editable)
                 } label: {
-                    Image(systemName: "pencil.circle.fill")
-                        .font(.title2)
+                    Image(systemName: "gear")
+                        .font(.title)
                         .foregroundStyle(.white.opacity(0.5))
                 }
             }
