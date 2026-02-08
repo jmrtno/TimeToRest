@@ -1,0 +1,66 @@
+import Foundation
+
+// MARK: - TimeToRest
+/// A concrete repository implementation for data persistence and retrieval.
+///
+/// This class implements the repository contract and handles the actual data operations.
+/// It encapsulates the logic for accessing data sources and translates between
+/// domain entities and storage-specific data models.
+///
+/// ## Responsibilities
+/// - Implement all methods defined in the repository contract
+/// - Handle data serialization/deserialization
+/// - Manage data source connections and error handling
+/// - Provide data caching if needed
+///
+/// ## Usage
+/// Inject this repository into use cases through the dependency container:
+/// ```swift
+/// let repository = TimeToRest()
+/// let useCase = SomeUseCase(repository: repository)
+/// ```
+final class TimeToRestRepository: TimeToRestRepositoryContract {
+    private let storageKey = "TimeToRest"
+    private let userDefaults: UserDefaults
+    
+    init(userDefaults: UserDefaults = .standard) {
+        self.userDefaults = userDefaults
+    }
+    
+    func fetch() -> TimeToRestEntity {
+        guard let data = userDefaults.data(forKey: storageKey) else {
+            return .firstConfig
+        }
+        
+        do {
+            let restTime = try JSONDecoder().decode(TimeToRestEntity.self, from: data)
+            return restTime
+        } catch {
+            return .firstConfig
+        }
+    }
+    
+    func save(_ restTime: TimeToRestEntity) {
+        persist(restTime)
+    }
+    
+    func update(_ restTime: TimeToRestEntity) {
+        persist(restTime)
+    }
+    
+    func find(by id: UUID) -> TimeToRestEntity? {
+        let current = fetch()
+        return current.id == id ? current : nil
+    }
+    
+    // MARK: - Private Helpers
+    
+    private func persist<T: Encodable>(_ items: T) {
+        do {
+            let data = try JSONEncoder().encode(items)
+            userDefaults.set(data, forKey: storageKey)
+        } catch {
+            // Handle encoding error appropriately
+        }
+    }
+}

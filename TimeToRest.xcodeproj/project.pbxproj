@@ -1,0 +1,524 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EDA78AF12F374BCB00181F03 /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AF02F374BCB00181F03 /* AppDependencies.swift */; };
+		EDA78AF72F374C0400181F03 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AF62F374C0400181F03 /* Router.swift */; };
+		EDA78AF92F374C1800181F03 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AF82F374C1800181F03 /* Route.swift */; };
+		EDA78AFB2F374C2800181F03 /* RouteViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AFA2F374C2800181F03 /* RouteViewFactory.swift */; };
+		EDA78AFD2F374CA900181F03 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AFC2F374CA900181F03 /* AppCoordinator.swift */; };
+		EDA78B012F374CF900181F03 /* TimeToRestRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B002F374CF900181F03 /* TimeToRestRepository.swift */; };
+		EDA78B062F374D7600181F03 /* TimeToRestRepositoryContractContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B052F374D7600181F03 /* TimeToRestRepositoryContractContract.swift */; };
+		EDA78B082F374D9000181F03 /* TimeToRestEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B072F374D9000181F03 /* TimeToRestEntity.swift */; };
+		EDA78B0A2F374DA900181F03 /* FetchRestTimeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B092F374DA900181F03 /* FetchRestTimeUseCase.swift */; };
+		EDA78B0C2F3766DC00181F03 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B0B2F3766DC00181F03 /* NotificationManager.swift */; };
+		EDA78B0E2F3779CA00181F03 /* UpdateRestTimeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B0D2F3779CA00181F03 /* UpdateRestTimeUseCase.swift */; };
+		EDA78B122F377A6E00181F03 /* CreateRestTimeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B112F377A6E00181F03 /* CreateRestTimeUseCase.swift */; };
+		EDA78B142F37A9DE00181F03 /* RestSessionEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B132F37A9DE00181F03 /* RestSessionEntity.swift */; };
+		EDA78B162F37A9FB00181F03 /* RestStatsEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B152F37A9FB00181F03 /* RestStatsEntity.swift */; };
+		EDA78B192F37AD9600181F03 /* RestDayResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B182F37AD9600181F03 /* RestDayResult.swift */; };
+		EDA78B1D2F37AF1600181F03 /* BreakRestUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B1C2F37AF1600181F03 /* BreakRestUseCase.swift */; };
+		EDA78B1F2F37AF2C00181F03 /* CalculateStatsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B1E2F37AF2C00181F03 /* CalculateStatsUseCase.swift */; };
+		EDA78B212F388E0200181F03 /* RestSessionRepositoryContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B202F388E0200181F03 /* RestSessionRepositoryContract.swift */; };
+		EDA78B232F388EA000181F03 /* RestSessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B222F388EA000181F03 /* RestSessionRepository.swift */; };
+		EDA78B252F38985300181F03 /* RestConfigurationMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B242F38985300181F03 /* RestConfigurationMode.swift */; };
+		EDA78B282F389D3900181F03 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDA78B272F389D3900181F03 /* Assets.xcassets */; };
+		EDE2F94A2F374530006CB2F6 /* TimeToRestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE2F9472F374530006CB2F6 /* TimeToRestApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		EDA78AF02F374BCB00181F03 /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
+		EDA78AF62F374C0400181F03 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		EDA78AF82F374C1800181F03 /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
+		EDA78AFA2F374C2800181F03 /* RouteViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteViewFactory.swift; sourceTree = "<group>"; };
+		EDA78AFC2F374CA900181F03 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		EDA78B002F374CF900181F03 /* TimeToRestRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeToRestRepository.swift; sourceTree = "<group>"; };
+		EDA78B052F374D7600181F03 /* TimeToRestRepositoryContractContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeToRestRepositoryContractContract.swift; sourceTree = "<group>"; };
+		EDA78B072F374D9000181F03 /* TimeToRestEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeToRestEntity.swift; sourceTree = "<group>"; };
+		EDA78B092F374DA900181F03 /* FetchRestTimeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchRestTimeUseCase.swift; sourceTree = "<group>"; };
+		EDA78B0B2F3766DC00181F03 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		EDA78B0D2F3779CA00181F03 /* UpdateRestTimeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateRestTimeUseCase.swift; sourceTree = "<group>"; };
+		EDA78B112F377A6E00181F03 /* CreateRestTimeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateRestTimeUseCase.swift; sourceTree = "<group>"; };
+		EDA78B132F37A9DE00181F03 /* RestSessionEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestSessionEntity.swift; sourceTree = "<group>"; };
+		EDA78B152F37A9FB00181F03 /* RestStatsEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestStatsEntity.swift; sourceTree = "<group>"; };
+		EDA78B182F37AD9600181F03 /* RestDayResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestDayResult.swift; sourceTree = "<group>"; };
+		EDA78B1C2F37AF1600181F03 /* BreakRestUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakRestUseCase.swift; sourceTree = "<group>"; };
+		EDA78B1E2F37AF2C00181F03 /* CalculateStatsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculateStatsUseCase.swift; sourceTree = "<group>"; };
+		EDA78B202F388E0200181F03 /* RestSessionRepositoryContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestSessionRepositoryContract.swift; sourceTree = "<group>"; };
+		EDA78B222F388EA000181F03 /* RestSessionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestSessionRepository.swift; sourceTree = "<group>"; };
+		EDA78B242F38985300181F03 /* RestConfigurationMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestConfigurationMode.swift; sourceTree = "<group>"; };
+		EDA78B272F389D3900181F03 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EDE2F9372F3744ED006CB2F6 /* TimeToRest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeToRest.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EDE2F9472F374530006CB2F6 /* TimeToRestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeToRestApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EDE2F9342F3744ED006CB2F6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EDA78AEF2F374BB400181F03 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				EDA78AF02F374BCB00181F03 /* AppDependencies.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		EDA78AF22F374BD900181F03 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		EDA78AF32F374BE200181F03 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				EDA78AFF2F374CD600181F03 /* Repositories */,
+				EDA78AFE2F374CCE00181F03 /* Infraestructure */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		EDA78AF42F374BE600181F03 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				EDA78B042F374D5E00181F03 /* UseCases */,
+				EDA78B032F374D5800181F03 /* Entities */,
+				EDA78B022F374D5100181F03 /* Contracts */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		EDA78AF52F374BEB00181F03 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				EDA78B242F38985300181F03 /* RestConfigurationMode.swift */,
+				EDA78AF62F374C0400181F03 /* Router.swift */,
+				EDA78AF82F374C1800181F03 /* Route.swift */,
+				EDA78AFA2F374C2800181F03 /* RouteViewFactory.swift */,
+				EDA78AFC2F374CA900181F03 /* AppCoordinator.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+		EDA78AFE2F374CCE00181F03 /* Infraestructure */ = {
+			isa = PBXGroup;
+			children = (
+				EDA78B0B2F3766DC00181F03 /* NotificationManager.swift */,
+			);
+			path = Infraestructure;
+			sourceTree = "<group>";
+		};
+		EDA78AFF2F374CD600181F03 /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				EDA78B002F374CF900181F03 /* TimeToRestRepository.swift */,
+				EDA78B222F388EA000181F03 /* RestSessionRepository.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		EDA78B022F374D5100181F03 /* Contracts */ = {
+			isa = PBXGroup;
+			children = (
+				EDA78B052F374D7600181F03 /* TimeToRestRepositoryContractContract.swift */,
+				EDA78B202F388E0200181F03 /* RestSessionRepositoryContract.swift */,
+			);
+			path = Contracts;
+			sourceTree = "<group>";
+		};
+		EDA78B032F374D5800181F03 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				EDA78B182F37AD9600181F03 /* RestDayResult.swift */,
+				EDA78B152F37A9FB00181F03 /* RestStatsEntity.swift */,
+				EDA78B132F37A9DE00181F03 /* RestSessionEntity.swift */,
+				EDA78B072F374D9000181F03 /* TimeToRestEntity.swift */,
+			);
+			path = Entities;
+			sourceTree = "<group>";
+		};
+		EDA78B042F374D5E00181F03 /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				EDA78B1B2F37AEFC00181F03 /* CalculateStats */,
+				EDA78B1A2F37AEE700181F03 /* BreakRestTime */,
+				EDA78B172F37AD3900181F03 /* StartRestTime */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		EDA78B172F37AD3900181F03 /* StartRestTime */ = {
+			isa = PBXGroup;
+			children = (
+				EDA78B092F374DA900181F03 /* FetchRestTimeUseCase.swift */,
+				EDA78B0D2F3779CA00181F03 /* UpdateRestTimeUseCase.swift */,
+				EDA78B112F377A6E00181F03 /* CreateRestTimeUseCase.swift */,
+			);
+			path = StartRestTime;
+			sourceTree = "<group>";
+		};
+		EDA78B1A2F37AEE700181F03 /* BreakRestTime */ = {
+			isa = PBXGroup;
+			children = (
+				EDA78B1C2F37AF1600181F03 /* BreakRestUseCase.swift */,
+			);
+			path = BreakRestTime;
+			sourceTree = "<group>";
+		};
+		EDA78B1B2F37AEFC00181F03 /* CalculateStats */ = {
+			isa = PBXGroup;
+			children = (
+				EDA78B1E2F37AF2C00181F03 /* CalculateStatsUseCase.swift */,
+			);
+			path = CalculateStats;
+			sourceTree = "<group>";
+		};
+		EDE2F92E2F3744ED006CB2F6 = {
+			isa = PBXGroup;
+			children = (
+				EDE2F9482F374530006CB2F6 /* TimeToRest */,
+				EDE2F9382F3744ED006CB2F6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EDE2F9382F3744ED006CB2F6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EDE2F9372F3744ED006CB2F6 /* TimeToRest.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EDE2F9482F374530006CB2F6 /* TimeToRest */ = {
+			isa = PBXGroup;
+			children = (
+				EDA78AF32F374BE200181F03 /* Data */,
+				EDA78AF42F374BE600181F03 /* Domain */,
+				EDA78AF22F374BD900181F03 /* Presentation */,
+				EDA78AF52F374BEB00181F03 /* Navigation */,
+				EDA78AEF2F374BB400181F03 /* App */,
+				EDE2F9472F374530006CB2F6 /* TimeToRestApp.swift */,
+				EDA78B272F389D3900181F03 /* Assets.xcassets */,
+			);
+			path = TimeToRest;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EDE2F9362F3744ED006CB2F6 /* TimeToRest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EDE2F9422F3744ED006CB2F6 /* Build configuration list for PBXNativeTarget "TimeToRest" */;
+			buildPhases = (
+				EDE2F9332F3744ED006CB2F6 /* Sources */,
+				EDE2F9342F3744ED006CB2F6 /* Frameworks */,
+				EDE2F9352F3744ED006CB2F6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TimeToRest;
+			packageProductDependencies = (
+			);
+			productName = TimeToRest;
+			productReference = EDE2F9372F3744ED006CB2F6 /* TimeToRest.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EDE2F92F2F3744ED006CB2F6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2620;
+				LastUpgradeCheck = 2620;
+				TargetAttributes = {
+					EDE2F9362F3744ED006CB2F6 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+				};
+			};
+			buildConfigurationList = EDE2F9322F3744ED006CB2F6 /* Build configuration list for PBXProject "TimeToRest" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EDE2F92E2F3744ED006CB2F6;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = EDE2F9382F3744ED006CB2F6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EDE2F9362F3744ED006CB2F6 /* TimeToRest */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EDE2F9352F3744ED006CB2F6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDA78B282F389D3900181F03 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EDE2F9332F3744ED006CB2F6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDA78B082F374D9000181F03 /* TimeToRestEntity.swift in Sources */,
+				EDA78AFD2F374CA900181F03 /* AppCoordinator.swift in Sources */,
+				EDA78B162F37A9FB00181F03 /* RestStatsEntity.swift in Sources */,
+				EDA78B0A2F374DA900181F03 /* FetchRestTimeUseCase.swift in Sources */,
+				EDA78B062F374D7600181F03 /* TimeToRestRepositoryContractContract.swift in Sources */,
+				EDA78B212F388E0200181F03 /* RestSessionRepositoryContract.swift in Sources */,
+				EDA78B0C2F3766DC00181F03 /* NotificationManager.swift in Sources */,
+				EDA78B142F37A9DE00181F03 /* RestSessionEntity.swift in Sources */,
+				EDA78B1D2F37AF1600181F03 /* BreakRestUseCase.swift in Sources */,
+				EDA78AF72F374C0400181F03 /* Router.swift in Sources */,
+				EDA78AF12F374BCB00181F03 /* AppDependencies.swift in Sources */,
+				EDA78B192F37AD9600181F03 /* RestDayResult.swift in Sources */,
+				EDA78B232F388EA000181F03 /* RestSessionRepository.swift in Sources */,
+				EDA78B012F374CF900181F03 /* TimeToRestRepository.swift in Sources */,
+				EDA78B122F377A6E00181F03 /* CreateRestTimeUseCase.swift in Sources */,
+				EDA78AFB2F374C2800181F03 /* RouteViewFactory.swift in Sources */,
+				EDA78AF92F374C1800181F03 /* Route.swift in Sources */,
+				EDE2F94A2F374530006CB2F6 /* TimeToRestApp.swift in Sources */,
+				EDA78B1F2F37AF2C00181F03 /* CalculateStatsUseCase.swift in Sources */,
+				EDA78B252F38985300181F03 /* RestConfigurationMode.swift in Sources */,
+				EDA78B0E2F3779CA00181F03 /* UpdateRestTimeUseCase.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		EDE2F9402F3744ED006CB2F6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		EDE2F9412F3744ED006CB2F6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		EDE2F9432F3744ED006CB2F6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.javidev.TimeToRest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EDE2F9442F3744ED006CB2F6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.javidev.TimeToRest;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EDE2F9322F3744ED006CB2F6 /* Build configuration list for PBXProject "TimeToRest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EDE2F9402F3744ED006CB2F6 /* Debug */,
+				EDE2F9412F3744ED006CB2F6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EDE2F9422F3744ED006CB2F6 /* Build configuration list for PBXNativeTarget "TimeToRest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EDE2F9432F3744ED006CB2F6 /* Debug */,
+				EDE2F9442F3744ED006CB2F6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EDE2F92F2F3744ED006CB2F6 /* Project object */;
+}
