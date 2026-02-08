@@ -90,36 +90,50 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		AA00000FAAAA000F00000001 /* Screens */ = {
+		AA00000FAAAA000F00000001 /* Setup */ = {
 			isa = PBXGroup;
 			children = (
-				AA000007AAAA000700000002 /* HomeScreen.swift */,
 				AA000008AAAA000800000002 /* SetupScreen.swift */,
-				AA00000AAAAA000A00000002 /* BreakBlockScreen.swift */,
-				AA00000BAAAA000B00000002 /* StatsScreen.swift */,
+				AA000003AAAA000300000002 /* SetupViewModel.swift */,
+				AA00000EAAAA000E00000002 /* AllowedAppChip.swift */,
 			);
-			path = Screens;
+			path = Setup;
 			sourceTree = "<group>";
 		};
-		AA000010AAAA001000000001 /* ViewModels */ = {
+		AA000010AAAA001000000001 /* Stats */ = {
+			isa = PBXGroup;
+			children = (
+				AA000006AAAA000600000002 /* StatsViewModel.swift */,
+				AA00000BAAAA000B00000002 /* StatsScreen.swift */,
+			);
+			path = Stats;
+			sourceTree = "<group>";
+		};
+		AA000011AAAA001100000001 /* BreakBlock */ = {
+			isa = PBXGroup;
+			children = (
+				AA00000DAAAA000D00000002 /* CountdownView.swift */,
+				AA000005AAAA000500000002 /* BreakBlockViewModel.swift */,
+				AA00000AAAAA000A00000002 /* BreakBlockScreen.swift */,
+			);
+			path = BreakBlock;
+			sourceTree = "<group>";
+		};
+		ED29B0442F38F24400ADC708 /* Home */ = {
 			isa = PBXGroup;
 			children = (
 				AA000002AAAA000200000002 /* HomeViewModel.swift */,
-				AA000003AAAA000300000002 /* SetupViewModel.swift */,
-				AA000005AAAA000500000002 /* BreakBlockViewModel.swift */,
-				AA000006AAAA000600000002 /* StatsViewModel.swift */,
+				AA000007AAAA000700000002 /* HomeScreen.swift */,
 			);
-			path = ViewModels;
+			path = Home;
 			sourceTree = "<group>";
 		};
-		AA000011AAAA001100000001 /* Components */ = {
+		ED29B0452F38F2EA00ADC708 /* Common */ = {
 			isa = PBXGroup;
 			children = (
 				AA00000CAAAA000C00000002 /* StatCard.swift */,
-				AA00000DAAAA000D00000002 /* CountdownView.swift */,
-				AA00000EAAAA000E00000002 /* AllowedAppChip.swift */,
 			);
-			path = Components;
+			path = Common;
 			sourceTree = "<group>";
 		};
 		EDA78AEF2F374BB400181F03 /* App */ = {
@@ -133,9 +147,11 @@
 		EDA78AF22F374BD900181F03 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				AA00000FAAAA000F00000001 /* Screens */,
-				AA000010AAAA001000000001 /* ViewModels */,
-				AA000011AAAA001100000001 /* Components */,
+				ED29B0452F38F2EA00ADC708 /* Common */,
+				ED29B0442F38F24400ADC708 /* Home */,
+				AA00000FAAAA000F00000001 /* Setup */,
+				AA000010AAAA001000000001 /* Stats */,
+				AA000011AAAA001100000001 /* BreakBlock */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";

@@ -147,7 +147,7 @@ struct HomeScreen: View {
                 }
             }
 
-            if viewModel.config.isStrictModeEnabled {
+            if viewModel.isStrictMode {
                 HStack(spacing: 6) {
                     Image(systemName: "exclamationmark.triangle.fill")
                         .font(.caption)

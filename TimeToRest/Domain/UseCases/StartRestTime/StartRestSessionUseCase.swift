@@ -1,11 +1,24 @@
 import Foundation
 
 // MARK: - StartRestSessionUseCase
-/// Creates a new rest session when the user opens the app during the night window.
+/// A use case that encapsulates a single business operation.
 ///
-/// Calculates the delay between the configured start time and the actual moment
-/// the user opened the app, then persists the session.
-struct StartRestSessionUseCase {
+/// Use cases represent the application's business rules and orchestrate the flow
+/// of data between entities and repositories. They are the entry points to the
+/// domain layer from the presentation layer.
+///
+/// ## Design Principles
+/// - Single Responsibility: Each use case handles one specific business operation
+/// - Dependency Injection: Repositories and services are injected via initializer
+/// - Framework Independence: No UI or infrastructure dependencies
+/// - Testability: Easy to unit test with mock dependencies
+///
+/// ## Usage
+/// ```swift
+/// let useCase = CreateRestTimeUseCase(repository: repository)
+/// let result = useCase.execute(parameters)
+/// ```
+final class StartRestSessionUseCase {
 
     private let sessionRepository: RestSessionRepositoryContract
     private let configRepository: TimeToRestRepositoryContract

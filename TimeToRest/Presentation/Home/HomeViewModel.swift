@@ -99,12 +99,12 @@ final class HomeViewModel: ObservableObject {
         let wasInWindow = isWithinNightWindow
         isWithinNightWindow = Self.isCurrentlyInNightWindow(config: config)
 
-        // Entering the night window → start a rest session
+        /// Entering the night window → start a rest session
         if isWithinNightWindow && !wasInWindow {
             startRestSession()
         }
 
-        // Leaving the night window → mark session completed, clear state, reset break flag
+        /// Leaving the night window → mark session completed, clear state, reset break flag
         if !isWithinNightWindow && wasInWindow {
             completeCurrentSession()
             session = nil
@@ -113,12 +113,12 @@ final class HomeViewModel: ObservableObject {
             loadStats()
         }
 
-        // If already in window on appear and no session yet (and not broken), start one
+        /// If already in window on appear and no session yet (and not broken), start one
         if isWithinNightWindow && !didBreakTonight && session == nil {
             startRestSession()
         }
 
-        // If we're outside the window, check for any unfinished session and mark it completed
+        /// If we're outside the window, check for any unfinished session and mark it completed
         if !isWithinNightWindow {
             completeCurrentSession()
         }
@@ -142,10 +142,11 @@ final class HomeViewModel: ObservableObject {
         let now = Date()
         let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: now) ?? now
 
-        // Find the most recent unfinished session (today or yesterday for overnight windows)
+        /// Find the most recent unfinished session (today or yesterday for overnight windows)
         let candidate = sessionRepository.fetch(for: now)
             ?? sessionRepository.fetch(for: yesterday)
 
+        /// Ensure there is an existing session that hasn't been broken and isn't completed; otherwise, exit.
         guard let current = candidate,
               !current.didBreakRest,
               !current.isCompleted else { return }
@@ -249,3 +250,4 @@ final class HomeViewModel: ObservableObject {
         return String(format: "%02d:%02d", h, m)
     }
 }
+
