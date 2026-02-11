@@ -56,7 +56,7 @@ final class NotificationManager: NSObject {
         // Main notification at start time
         let content = UNMutableNotificationContent()
         content.title = "🌙 Time to Rest"
-        content.body = "Remember the commitment you made."
+        content.body = "Keep the app open to trak your progress. See you in the morning!"
         content.sound = .default
         content.categoryIdentifier = "REST_TIME"
 
@@ -75,7 +75,7 @@ final class NotificationManager: NSObject {
         // Pre-reminder 10 minutes before
         let preContent = UNMutableNotificationContent()
         preContent.title = "⏰ Almost Time"
-        preContent.body = "Last chance to put down the phone."
+        preContent.body = "Last chance to put down the phone. Remember to keep the app open to trak your progress."
         preContent.sound = .default
         preContent.categoryIdentifier = "REST_PRE_REMINDER"
 
@@ -108,7 +108,7 @@ final class NotificationManager: NSObject {
 
         let content = UNMutableNotificationContent()
         content.title = "🌙 Time to Rest"
-        content.body = "This is exactly what you wanted to avoid."
+        content.body = "This is exactly what you wanted to avoid. Keep the app open"
         content.sound = .default
         content.categoryIdentifier = "REST_TIME"
 

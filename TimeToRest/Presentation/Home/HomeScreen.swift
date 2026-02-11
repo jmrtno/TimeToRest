@@ -77,6 +77,10 @@ struct HomeScreen: View {
             }
 
             Spacer()
+            
+            Text("Keep the app open to track your streak")
+                .font(.footnote)
+                .foregroundStyle(.white.opacity(0.3))
 
             VStack(spacing: 16) {
                 // Break the block
