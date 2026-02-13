@@ -81,7 +81,6 @@ final class BreakBlockViewModel: ObservableObject {
     func breakRest() {
         guard canBreak else { return }
 
-        let today = Date()
         guard let session = fetchCurrentSessionUseCase.execute() else { return }
 
         let _ = breakRestUseCase.execute(session: session)

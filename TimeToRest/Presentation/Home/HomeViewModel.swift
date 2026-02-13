@@ -2,19 +2,17 @@ import Foundation
 import Combine
 
 // MARK: - HomeViewModel
-/// ViewModel for the main home screen.
-/// The home screen transforms into night mode when the rest window is active.
-/// A periodic timer checks the window so the UI updates automatically.
+/// ViewModel for the home shell.
+/// Handles only night-window/session state used to switch to inline night mode.
 @MainActor
 final class HomeViewModel: ObservableObject {
 
     // MARK: - Published state
     @Published var config: TimeToRestEntity = .firstConfig
-    @Published var stats: RestStatsEntity = .empty
     @Published var isWithinNightWindow: Bool = false
     @Published var hasConfiguration: Bool = false
 
-    // MARK: - Night mode state (inline, not a separate screen)
+    // MARK: - Night mode state
     @Published var session: RestSessionEntity?
     @Published var lateMessage: String?
     @Published var didBreakTonight: Bool = false
@@ -27,7 +25,6 @@ final class HomeViewModel: ObservableObject {
 
     // MARK: - Dependencies
     private let fetchRestTimeUseCase: FetchRestTimeUseCase
-    private let calculateStatsUseCase: CalculateStatsUseCase
     private let startRestSessionUseCase: StartRestSessionUseCase
     private let completeRestSessionUseCase: CompleteRestSessionUseCase
     private let fetchCurrentSessionUseCase: FetchCurrentSessionUseCase
@@ -36,13 +33,11 @@ final class HomeViewModel: ObservableObject {
 
     init(
         fetchRestTimeUseCase: FetchRestTimeUseCase,
-        calculateStatsUseCase: CalculateStatsUseCase,
         startRestSessionUseCase: StartRestSessionUseCase,
         completeRestSessionUseCase: CompleteRestSessionUseCase,
         fetchCurrentSessionUseCase: FetchCurrentSessionUseCase
     ) {
         self.fetchRestTimeUseCase = fetchRestTimeUseCase
-        self.calculateStatsUseCase = calculateStatsUseCase
         self.startRestSessionUseCase = startRestSessionUseCase
         self.completeRestSessionUseCase = completeRestSessionUseCase
         self.fetchCurrentSessionUseCase = fetchCurrentSessionUseCase
@@ -59,10 +54,9 @@ final class HomeViewModel: ObservableObject {
         stopWindowCheckTimer()
     }
 
-    /// Reloads all data from repositories. Call when returning from pushed screens.
+    /// Reloads data relevant to night mode/session handling.
     func reload() {
         guard loadConfig() else { return }
-        loadStats()
         checkIfBrokenTonight()
         restoreSessionIfNeeded()
         checkNightWindow()
@@ -75,7 +69,6 @@ final class HomeViewModel: ObservableObject {
         session = nil
         lateMessage = nil
         guard loadConfig() else { return }
-        loadStats()
         checkNightWindow()
     }
 
@@ -92,36 +85,31 @@ final class HomeViewModel: ObservableObject {
         return true
     }
 
-    func loadStats() {
-        stats = calculateStatsUseCase.execute()
-    }
-
     // MARK: - Night window
 
     func checkNightWindow() {
         let wasInWindow = isWithinNightWindow
         isWithinNightWindow = Self.isCurrentlyInNightWindow(config: config)
 
-        /// Entering the night window → start a rest session
+        // Entering the night window -> start a rest session.
         if isWithinNightWindow && !wasInWindow {
             startRestSession()
         }
 
-        /// Leaving the night window → mark session completed, clear state, reset break flag
+        // Leaving the night window -> mark session completed and reset session state.
         if !isWithinNightWindow && wasInWindow {
             completeCurrentSession()
             session = nil
             lateMessage = nil
             didBreakTonight = false
-            loadStats()
         }
 
-        /// If already in window on appear and no session yet (and not broken), start one
+        // If already in window on appear and no session yet (and not broken), start one.
         if isWithinNightWindow && !didBreakTonight && session == nil {
             startRestSession()
         }
 
-        /// If we're outside the window, check for any unfinished session and mark it completed
+        // If we're outside the window, check for any unfinished session and mark it completed.
         if !isWithinNightWindow {
             completeCurrentSession()
         }
@@ -140,7 +128,6 @@ final class HomeViewModel: ObservableObject {
     }
 
     /// Marks the current session as completed (user didn't break rest).
-    /// Checks both today and yesterday to handle overnight windows.
     private func completeCurrentSession() {
         completeRestSessionUseCase.execute()
     }
@@ -159,7 +146,6 @@ final class HomeViewModel: ObservableObject {
     }
 
     /// Checks persisted session to see if rest was already broken tonight.
-    /// Checks both today and yesterday to handle overnight windows.
     private func checkIfBrokenTonight() {
         if fetchCurrentSessionUseCase.execute()?.didBreakRest == true {
             didBreakTonight = true
@@ -208,19 +194,4 @@ final class HomeViewModel: ObservableObject {
             return currentTotal >= startTotal && currentTotal < endTotal
         }
     }
-
-    // MARK: - Formatted helpers
-
-    var formattedStartTime: String {
-        let h = config.startTime.hour ?? 23
-        let m = config.startTime.minute ?? 30
-        return String(format: "%02d:%02d", h, m)
-    }
-
-    var formattedEndTime: String {
-        let h = config.endTime.hour ?? 7
-        let m = config.endTime.minute ?? 0
-        return String(format: "%02d:%02d", h, m)
-    }
 }
-

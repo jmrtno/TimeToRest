@@ -92,3 +92,6 @@ iOSInjectionProject/
 
 # macOS
 .DS_Store
+
+# Local Codex/Windsurf instructions
+AGENTS.md

@@ -32,7 +32,6 @@ final class CalculateStatsUseCase {
         var currentStreak = 0
         var bestStreak = 0
         var breaksThisWeek = 0
-        var totalAvoidedMinutes = 0
 
         var tempStreak = 0
         let calendar = Calendar.current
@@ -67,15 +66,75 @@ final class CalculateStatsUseCase {
                 breaksThisWeek += 1
             }
 
-            // Minutos evitados
-            totalAvoidedMinutes += session.avoidedMinutes
         }
 
+        let averageStartTimeMinutesLast30 = calculateAverageStartTimeMinutes(for: sessions)
+        let breakStatusLast15Days = calculateBreakStatusLast15Days(for: sessions, now: now)
+
         return RestStatsEntity(
-            currentStreak: currentStreak,
-            bestStreak: bestStreak,
-            breaksThisWeek: breaksThisWeek,
-            totalAvoidedMinutes: totalAvoidedMinutes
+                currentStreak: currentStreak,
+                bestStreak: bestStreak,
+                breaksThisWeek: breaksThisWeek,
+                averageStartTimeMinutesLast30: averageStartTimeMinutesLast30,
+                breakStatusLast15Days: breakStatusLast15Days
         )
+    }
+
+    /// Calculates a moving average start time using only the latest 30 sessions.
+    /// If there are fewer than 30 sessions, it averages all available ones.
+    private func calculateAverageStartTimeMinutes(for sessions: [RestSessionEntity]) -> Int? {
+        let recentSessions = sessions
+            .sorted(by: { $0.startedAt < $1.startedAt })
+            .suffix(30)
+
+        guard !recentSessions.isEmpty else { return nil }
+
+        let calendar = Calendar.current
+        let minutesInDay = 24.0 * 60.0
+
+        // Circular mean avoids wrong averages around midnight (e.g. 23:50 and 00:10).
+        let sums = recentSessions.reduce((sin: 0.0, cos: 0.0)) { partial, session in
+            let components = calendar.dateComponents([.hour, .minute], from: session.startedAt)
+            let hour = components.hour ?? 0
+            let minute = components.minute ?? 0
+            let totalMinutes = Double(hour * 60 + minute)
+            let angle = (2.0 * Double.pi * totalMinutes) / minutesInDay
+
+            return (
+                sin: partial.sin + Foundation.sin(angle),
+                cos: partial.cos + Foundation.cos(angle)
+            )
+        }
+
+        var meanAngle = Foundation.atan2(sums.sin, sums.cos)
+        if meanAngle < 0 {
+            meanAngle += 2.0 * Double.pi
+        }
+
+        let meanMinutes = Int((meanAngle * minutesInDay / (2.0 * Double.pi)).rounded()) % 1440
+        return meanMinutes
+    }
+
+    /// Returns exactly 15 points (today and previous 14 days).
+    /// Days without break are represented with didBreak = false.
+    private func calculateBreakStatusLast15Days(
+        for sessions: [RestSessionEntity],
+        now: Date
+    ) -> [DailyBreakStatusPoint] {
+        let calendar = Calendar.current
+
+        let brokenByDay = Dictionary(grouping: sessions.filter { $0.didBreakRest }) { session in
+            calendar.startOfDay(for: session.day)
+        }
+
+        return stride(from: 14, through: 0, by: -1).compactMap { offset in
+            guard let rawDay = calendar.date(byAdding: .day, value: -offset, to: now) else {
+                return nil
+            }
+
+            let day = calendar.startOfDay(for: rawDay)
+            let didBreak = brokenByDay[day] != nil
+            return DailyBreakStatusPoint(day: day, didBreak: didBreak)
+        }
     }
 }

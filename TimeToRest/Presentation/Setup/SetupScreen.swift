@@ -14,16 +14,14 @@ struct SetupScreen: View {
             Color.black.ignoresSafeArea()
 
             ScrollView {
-                VStack(spacing: 32) {
+                VStack(alignment: .leading, spacing: 20) {
                     headerSection
                     timePickersSection
                     // allowedAppsSection 
                     strictModeToggle
-                    saveButton
                     footerText
                 }
                 .padding(.horizontal, 24)
-                .padding(.top, 40)
             }
         }
         .preferredColorScheme(.dark)
@@ -37,6 +35,12 @@ struct SetupScreen: View {
                     .foregroundStyle(.white.opacity(0.6))
                 }
             }
+            ToolbarItem(placement: .confirmationAction) {
+                Button(viewModel.mode == .mandatory ? "Start Resting" : "Save") {
+                    viewModel.save()
+                } 
+                .foregroundStyle(.white.opacity(0.6))
+            }
         }
         .onAppear {
             viewModel.onSave = {
@@ -48,23 +52,21 @@ struct SetupScreen: View {
     // MARK: - Header
 
     private var headerSection: some View {
-        VStack(spacing: 12) {
-            Text("🌙")
-                .font(.system(size: 56))
-
+        VStack(alignment: .leading, spacing: 12) {
             if viewModel.mode == .mandatory {
                 Text("Let's set a limit for tonight.")
-                    .font(.title2.bold())
+                    .font(.title.bold())
                     .foregroundStyle(.white)
-                    .multilineTextAlignment(.center)
+                    .padding(.top, 12)
 
                 Text("It takes less than 30 seconds")
                     .font(.subheadline)
                     .foregroundStyle(.white.opacity(0.5))
             } else {
-                Text("Edit your schedule")
-                    .font(.title2.bold())
+                Text("Configuration")
+                    .font(.title.bold())
                     .foregroundStyle(.white)
+                    .padding(.top, 12)
             }
         }
     }
@@ -72,15 +74,16 @@ struct SetupScreen: View {
     // MARK: - Time Pickers
 
     private var timePickersSection: some View {
-        VStack(spacing: 20) {
+        VStack(alignment: .leading, spacing: 20) {
+            Text("Night Schedule")
+                .textCase(.uppercase)
+                .font(.system(size: 14, weight: .bold))
+                .foregroundStyle(.white.opacity(0.4))
             timeRow(label: "Start time", selection: $viewModel.startTime)
             timeRow(label: "End time", selection: $viewModel.endTime)
         }
         .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color.white.opacity(0.06))
-        )
+        .glassEffect(in: .rect(cornerRadius: 24))
     }
 
     private func timeRow(label: String, selection: Binding<Date>) -> some View {
@@ -129,8 +132,15 @@ struct SetupScreen: View {
     private var strictModeToggle: some View {
         HStack {
             VStack(alignment: .leading, spacing: 4) {
+                Text("Advanced")
+                    .textCase(.uppercase)
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundStyle(.white.opacity(0.4))
+                    .padding(.bottom, 16)
                 HStack(spacing: 6) {
-                    Text("😈")
+                    Image(systemName: "shield")
+                        .font(.system(size: 18, weight: .medium))
+                        .foregroundStyle(.indigo)
                     Text("Strict mode")
                         .font(.headline)
                         .foregroundStyle(.white)
@@ -148,33 +158,7 @@ struct SetupScreen: View {
                 .labelsHidden()
         }
         .padding(16)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color.white.opacity(0.06))
-        )
-    }
-
-    // MARK: - Save Button
-
-    private var saveButton: some View {
-        Button {
-            viewModel.save()
-        } label: {
-            HStack {
-                Text(viewModel.mode == .mandatory ? "Start Resting" : "Save Changes")
-                if viewModel.mode == .mandatory {
-                    Text("🌙")
-                }
-            }
-            .font(.headline)
-            .foregroundStyle(.black)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 16)
-            .background(
-                RoundedRectangle(cornerRadius: 14)
-                    .fill(Color.orange)
-            )
-        }
+        .glassEffect(in: .rect(cornerRadius: 24))
     }
 
     // MARK: - Footer
