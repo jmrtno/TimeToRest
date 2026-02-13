@@ -38,10 +38,11 @@ struct HomeScreen: View {
 
     private var dayContent: some View {
         ScrollView {
-            VStack(spacing: 32) {
+            VStack(spacing: 24) {
                 headerSection
+                streak
                 scheduleCard
-                quickStatsSection
+                infoCardsSection
                 actionsSection
             }
             .padding(.horizontal, 24)
@@ -110,92 +111,146 @@ struct HomeScreen: View {
     // MARK: - Header
 
     private var headerSection: some View {
-        VStack(spacing: 8) {
-            Text("🌙")
-                .font(.system(size: 48))
+        HStack {
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Hello, time to rest")
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundStyle(.white)
 
-            Text("Time To Rest")
-                .font(.system(size: 28, weight: .bold, design: .rounded))
-                .foregroundStyle(.white)
-
-            Text("Do you really need your phone right now?")
-                .font(.subheadline)
-                .foregroundStyle(.white.opacity(0.6))
+                Text("Next rest: \(viewModel.formattedStartTime)")
+                    .foregroundStyle(.white.opacity(0.6))
+                
+            }
+            .padding(.top, 15)
+            
+            Spacer()
+            
+            Image("home-icon")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 100)
         }
-        .padding(.top, 20)
+        
     }
+    
+    private var streak: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack(spacing: 12) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(Color.orange.opacity(0.1))
+                        .frame(width: 48, height: 48)
+                    
+                    Image(systemName: "trophy")
+                        .font(.system(size: 24, weight: .medium))
+                        .foregroundStyle(.orange)
+                }
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Racha actual")
+                        .font(.system(size: 17, weight: .medium))
+                        .foregroundStyle(.white.opacity(0.9))
+                    
+                    Text("\(viewModel.stats.currentStreak) días seguidos")
+                        .font(.system(size: 14, weight: .regular))
+                        .foregroundStyle(.white.opacity(0.5))
+                }
+                Spacer()
+            }
+            
+            HStack(spacing: 8) {
+                let startDay = max(1, viewModel.stats.currentStreak - 6)
+                
+                ForEach(0..<7, id: \.self) { index in
+                    let dayNumber = startDay + index
+                    let isCompleted = dayNumber <= viewModel.stats.currentStreak && index < 5
+                    
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(isCompleted ? Color.orange : Color.gray.opacity(0.3))
+                        .frame(height: 32)
+                        .overlay(
+                            Text("\(dayNumber)")
+                                .font(.system(size: 12,).weight(.bold))
+                                .foregroundStyle(isCompleted ? .white : Color.gray.opacity(0.6))
+                        )
+                }
+            }
+        }
+        .padding(.horizontal, 24)
+        .padding(.vertical, 24)
+        .background(
+            RoundedRectangle(cornerRadius: 24)
+                .fill(Color.black.opacity(0.8))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 24)
+                        .stroke(Color.white.opacity(0.05), lineWidth: 1)
+                )
+        )
+        .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 4)
+    }
+
 
     // MARK: - Schedule Card
 
     private var scheduleCard: some View {
-        VStack(spacing: 16) {
+        Button {
+            router.presentRestConfiguration(mode: .editable)
+        } label: {
             HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Your schedule")
-                        .font(.headline)
-                        .foregroundStyle(.white)
-
-                    Text("\(viewModel.formattedStartTime) → \(viewModel.formattedEndTime)")
-                        .font(.system(size: 22, weight: .semibold, design: .monospaced))
-                        .foregroundStyle(.white.opacity(0.9))
+                // Icono circular
+                HStack(spacing: 16) {
+                    ZStack {
+                        Circle()
+                            .fill(Color.black.opacity(0.1))
+                            .frame(width: 48, height: 48)
+                        
+                        Image(systemName: "moon")
+                            .font(.system(size: 20, weight: .medium))
+                            .foregroundStyle(.black)
+                    }
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Rest Schedule")
+                            .font(.headline)
+                            .foregroundStyle(.black)
+                        
+                        Text("Configuration")
+                            .font(.subheadline)
+                            .foregroundStyle(.black.opacity(0.6))
+                    }
                 }
-
+                
                 Spacer()
-
-                Button {
-                    router.presentRestConfiguration(mode: .editable)
-                } label: {
-                    Image(systemName: "gear")
-                        .font(.title)
-                        .foregroundStyle(.white.opacity(0.5))
-                }
+                
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundStyle(.black.opacity(0.5))
             }
-
-            if viewModel.isStrictMode {
-                HStack(spacing: 6) {
-                    Image(systemName: "exclamationmark.triangle.fill")
-                        .font(.caption)
-                    Text("Strict mode enabled")
-                        .font(.caption)
-                }
-                .foregroundStyle(.orange)
-                .frame(maxWidth: .infinity, alignment: .leading)
-            }
+            .padding(.horizontal, 24)
+            .padding(.vertical, 24)
+            .background(
+                RoundedRectangle(cornerRadius: 24)
+                    .fill(Color.white)
+            )
+            .foregroundStyle(.black)
+            .scaleEffect(viewModel.isPressed ? 0.95 : 1.0)
+            .animation(.easeInOut(duration: 0.1), value: viewModel.isPressed)
         }
-        .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 16)
-                .fill(Color.white.opacity(0.06))
-        )
+        .buttonStyle(PlainButtonStyle())
+        .onLongPressGesture(minimumDuration: 0, maximumDistance: .infinity, pressing: { pressing in
+            viewModel.isPressed = pressing
+        }, perform: {})
     }
 
-    // MARK: - Quick Stats
+    // MARK: - Info Cards
 
-    private var quickStatsSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("This week")
-                .font(.headline)
-                .foregroundStyle(.white.opacity(0.7))
-
-            HStack(spacing: 12) {
-                StatCard(
-                    icon: "🔥",
-                    title: "Streak",
-                    value: "\(viewModel.stats.currentStreak)"
-                )
-
-                StatCard(
-                    icon: "🏆",
-                    title: "Best",
-                    value: "\(viewModel.stats.bestStreak)"
-                )
-
-                StatCard(
-                    icon: "⏱️",
-                    title: "Avoided",
-                    value: "\(viewModel.stats.totalAvoidedMinutes)m"
-                )
-            }
+    private var infoCardsSection: some View {
+        HStack(spacing: 16) {
+            // Modo Estricto Card
+            GlassCard(icon: "shield", title: "Streak mode", value: viewModel.isStrictMode ? "Activated" : "Deactivated", iconColor: .indigo)
+            
+            // Horario Card
+            GlassCard(icon: "clock", title: "Schedule", value: "\(viewModel.formattedStartTime) - \(viewModel.formattedEndTime)", iconColor: .gray)
         }
     }
 

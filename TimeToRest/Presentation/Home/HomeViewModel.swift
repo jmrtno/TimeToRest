@@ -13,6 +13,7 @@ final class HomeViewModel: ObservableObject {
     @Published var stats: RestStatsEntity = .empty
     @Published var isWithinNightWindow: Bool = false
     @Published var hasConfiguration: Bool = false
+    @Published var isPressed: Bool = false
 
     // MARK: - Night mode state (inline, not a separate screen)
     @Published var session: RestSessionEntity?

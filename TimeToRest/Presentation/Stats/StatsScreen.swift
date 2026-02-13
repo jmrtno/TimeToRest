@@ -49,33 +49,33 @@ struct StatsScreen: View {
 
     private var statsGrid: some View {
         VStack(spacing: 12) {
-            HStack(spacing: 12) {
-                StatCard(
-                    icon: "🔥",
-                    title: "Current Streak",
-                    value: "\(viewModel.stats.currentStreak)"
-                )
-
-                StatCard(
-                    icon: "🏆",
-                    title: "Best Streak",
-                    value: "\(viewModel.stats.bestStreak)"
-                )
-            }
-
-            HStack(spacing: 12) {
-                StatCard(
-                    icon: "📉",
-                    title: "Breaks This Week",
-                    value: "\(viewModel.stats.breaksThisWeek)"
-                )
-
-                StatCard(
-                    icon: "⏱️",
-                    title: "Minutes Avoided",
-                    value: "\(viewModel.stats.totalAvoidedMinutes)"
-                )
-            }
+//            HStack(spacing: 12) {
+//                GlassCard(
+//                    icon: "🔥",
+//                    title: "Current Streak",
+//                    value: "\(viewModel.stats.currentStreak)"
+//                )
+//
+//                GlassCard(
+//                    icon: "🏆",
+//                    title: "Best Streak",
+//                    value: "\(viewModel.stats.bestStreak)"
+//                )
+//            }
+//
+//            HStack(spacing: 12) {
+//                GlassCard(
+//                    icon: "📉",
+//                    title: "Breaks This Week",
+//                    value: "\(viewModel.stats.breaksThisWeek)"
+//                )
+//
+//                GlassCard(
+//                    icon: "⏱️",
+//                    title: "Minutes Avoided",
+//                    value: "\(viewModel.stats.totalAvoidedMinutes)"
+//                )
+//            }
         }
     }
 
