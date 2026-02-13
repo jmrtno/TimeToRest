@@ -162,7 +162,7 @@ struct RestView: View {
     private var infoCardsSection: some View {
         HStack(spacing: 16) {
             // Modo Estricto Card
-            GlassCard(icon: "shield", title: "Streak mode", value: viewModel.isStrictMode ? "Activated" : "Deactivated", iconColor: .indigo)
+            GlassCard(icon: "shield", title: "Strict mode", value: viewModel.isStrictMode ? "Activated" : "Deactivated", iconColor: .indigo)
             
             // Horario Card
             GlassCard(icon: "clock", title: "Schedule", value: "\(viewModel.formattedStartTime) - \(viewModel.formattedEndTime)", iconColor: .gray)

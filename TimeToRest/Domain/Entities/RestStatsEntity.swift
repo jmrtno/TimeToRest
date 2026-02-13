@@ -22,11 +22,13 @@ struct RestStatsEntity: Equatable {
     let bestStreak: Int
     let breaksThisWeek: Int
     let totalAvoidedMinutes: Int
+    let averageStartTimeMinutesLast30: Int?
 
     static let empty = RestStatsEntity(
         currentStreak: 0,
         bestStreak: 0,
         breaksThisWeek: 0,
-        totalAvoidedMinutes: 0
+        totalAvoidedMinutes: 0,
+        averageStartTimeMinutesLast30: nil
     )
 }

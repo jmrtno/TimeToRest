@@ -71,11 +71,49 @@ final class CalculateStatsUseCase {
             totalAvoidedMinutes += session.avoidedMinutes
         }
 
+        let averageStartTimeMinutesLast30 = calculateAverageStartTimeMinutes(for: sessions)
+
         return RestStatsEntity(
-            currentStreak: currentStreak,
-            bestStreak: bestStreak,
-            breaksThisWeek: breaksThisWeek,
-            totalAvoidedMinutes: totalAvoidedMinutes
+                currentStreak: currentStreak,
+                bestStreak: bestStreak,
+                breaksThisWeek: breaksThisWeek,
+                totalAvoidedMinutes: totalAvoidedMinutes,
+                averageStartTimeMinutesLast30: averageStartTimeMinutesLast30
         )
+    }
+
+    /// Calculates a moving average start time using only the latest 30 sessions.
+    /// If there are fewer than 30 sessions, it averages all available ones.
+    private func calculateAverageStartTimeMinutes(for sessions: [RestSessionEntity]) -> Int? {
+        let recentSessions = sessions
+            .sorted(by: { $0.startedAt < $1.startedAt })
+            .suffix(30)
+
+        guard !recentSessions.isEmpty else { return nil }
+
+        let calendar = Calendar.current
+        let minutesInDay = 24.0 * 60.0
+
+        // Circular mean avoids wrong averages around midnight (e.g. 23:50 and 00:10).
+        let sums = recentSessions.reduce((sin: 0.0, cos: 0.0)) { partial, session in
+            let components = calendar.dateComponents([.hour, .minute], from: session.startedAt)
+            let hour = components.hour ?? 0
+            let minute = components.minute ?? 0
+            let totalMinutes = Double(hour * 60 + minute)
+            let angle = (2.0 * Double.pi * totalMinutes) / minutesInDay
+
+            return (
+                sin: partial.sin + Foundation.sin(angle),
+                cos: partial.cos + Foundation.cos(angle)
+            )
+        }
+
+        var meanAngle = Foundation.atan2(sums.sin, sums.cos)
+        if meanAngle < 0 {
+            meanAngle += 2.0 * Double.pi
+        }
+
+        let meanMinutes = Int((meanAngle * minutesInDay / (2.0 * Double.pi)).rounded()) % 1440
+        return meanMinutes
     }
 }

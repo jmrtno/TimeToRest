@@ -26,10 +26,14 @@ final class StatsViewModel: ObservableObject {
     func loadStats() {
         stats = calculateStatsUseCase.execute()
     }
-    
-//    var formattedAverageTime: String {
-//        let h = config.startTime.hour ?? 23
-//        let m = config.startTime.minute ?? 30
-//        return String(format: "%02d:%02d", h, m)
-//    }
+
+    var formattedAverageStartTime: String {
+        guard let averageMinutes = stats.averageStartTimeMinutesLast30 else {
+            return "--:--"
+        }
+
+        let hour = averageMinutes / 60
+        let minute = averageMinutes % 60
+        return String(format: "%02d:%02d", hour, minute)
+    }
 }
