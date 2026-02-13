@@ -21,6 +21,7 @@
 		AA00000EAAAA000E00000001 /* AllowedAppChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000EAAAA000E00000002 /* AllowedAppChip.swift */; };
 		ED29B0482F3908B500ADC708 /* CompleteRestSessionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED29B0472F3908B500ADC708 /* CompleteRestSessionUseCase.swift */; };
 		ED29B04A2F39091500ADC708 /* FetchCurrentSessionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED29B0492F39091500ADC708 /* FetchCurrentSessionUseCase.swift */; };
+		ED49C33C2F3F891E00ED2EFF /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED49C33B2F3F891E00ED2EFF /* CustomTabBar.swift */; };
 		EDA78AF12F374BCB00181F03 /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AF02F374BCB00181F03 /* AppDependencies.swift */; };
 		EDA78AF72F374C0400181F03 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AF62F374C0400181F03 /* Router.swift */; };
 		EDA78AF92F374C1800181F03 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AF82F374C1800181F03 /* Route.swift */; };
@@ -58,6 +59,7 @@
 		AA00000EAAAA000E00000002 /* AllowedAppChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllowedAppChip.swift; sourceTree = "<group>"; };
 		ED29B0472F3908B500ADC708 /* CompleteRestSessionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteRestSessionUseCase.swift; sourceTree = "<group>"; };
 		ED29B0492F39091500ADC708 /* FetchCurrentSessionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCurrentSessionUseCase.swift; sourceTree = "<group>"; };
+		ED49C33B2F3F891E00ED2EFF /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		EDA78AF02F374BCB00181F03 /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
 		EDA78AF62F374C0400181F03 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		EDA78AF82F374C1800181F03 /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 		ED29B0452F38F2EA00ADC708 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				ED49C33B2F3F891E00ED2EFF /* CustomTabBar.swift */,
 				AA00000CAAAA000C00000002 /* GlassCard.swift */,
 			);
 			path = Common;
@@ -381,6 +384,7 @@
 				EDA78B212F388E0200181F03 /* RestSessionRepositoryContract.swift in Sources */,
 				EDA78B0C2F3766DC00181F03 /* NotificationManager.swift in Sources */,
 				EDA78B142F37A9DE00181F03 /* RestSessionEntity.swift in Sources */,
+				ED49C33C2F3F891E00ED2EFF /* CustomTabBar.swift in Sources */,
 				EDA78B1D2F37AF1600181F03 /* BreakRestUseCase.swift in Sources */,
 				EDA78AF72F374C0400181F03 /* Router.swift in Sources */,
 				EDA78AF12F374BCB00181F03 /* AppDependencies.swift in Sources */,

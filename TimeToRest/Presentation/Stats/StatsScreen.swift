@@ -10,14 +10,19 @@ struct StatsScreen: View {
         ZStack {
             Color.black.ignoresSafeArea()
 
-            ScrollView {
-                VStack(spacing: 32) {
-                    headerSection
-                    statsGrid
-                    motivationSection
+            VStack(spacing: 0) {
+                ScrollView {
+                    VStack(spacing: 32) {
+                        headerSection
+                        statsGrid
+                        motivationSection
+                    }
+                    .padding(.horizontal, 24)
+                    .padding(.top, 20)
                 }
-                .padding(.horizontal, 24)
-                .padding(.top, 20)
+                
+                // Barra de navegación inferior
+                CustomTabBar()
             }
         }
         .preferredColorScheme(.dark)

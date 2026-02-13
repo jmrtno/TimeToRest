@@ -13,10 +13,16 @@ struct HomeScreen: View {
         ZStack {
             Color.black.ignoresSafeArea()
 
-            if viewModel.showNightMode {
-                nightModeContent
-            } else {
-                dayContent
+            VStack(spacing: 0) {
+                // Contenido principal
+                if viewModel.showNightMode {
+                    nightModeContent
+                } else {
+                    dayContent
+                }
+                
+                // Barra de navegación inferior
+                CustomTabBar()
             }
         }
         .preferredColorScheme(.dark)
@@ -258,23 +264,8 @@ struct HomeScreen: View {
 
     private var actionsSection: some View {
         VStack(spacing: 12) {
-            Button {
-                router.push(.stats)
-            } label: {
-                HStack {
-                    Image(systemName: "chart.bar.fill")
-                    Text("View Statistics")
-                }
-                .font(.headline)
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 14)
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.white.opacity(0.1))
-                )
-            }
+            // Espacio vacío ya que la navegación ahora está en la barra inferior
         }
-        .padding(.bottom, 40)
+        .padding(.bottom, 20)
     }
 }
