@@ -11,6 +11,7 @@ struct AppCoordinator: View {
     @StateObject private var homeViewModel: HomeViewModel
     private let viewFactory: RouteViewFactory
     private let fetchRestTimeUseCase: FetchRestTimeUseCase
+    private let calculateStatsUseCase: CalculateStatsUseCase
 
     init(dependencies: AppDependencies) {
         _router = StateObject(wrappedValue: Router())
@@ -23,11 +24,12 @@ struct AppCoordinator: View {
         ))
         self.viewFactory = RouteViewFactory(dependencies: dependencies)
         self.fetchRestTimeUseCase = dependencies.fetchRestTimeUseCase
+        self.calculateStatsUseCase = dependencies.calculateStatsUseCase
     }
 
     var body: some View {
         NavigationStack(path: $router.navigationPath) {
-            HomeScreen(viewModel: homeViewModel)
+            HomeScreen(viewModel: homeViewModel, calculateStatsUseCase: calculateStatsUseCase)
                 .navigationDestination(for: Route.self) { route in
                     viewFactory.view(for: route)
                 }

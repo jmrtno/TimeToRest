@@ -37,13 +37,6 @@ struct RouteViewFactory {
                     isStrictMode: dependencies.fetchRestTimeUseCase.execute()?.isStrictModeEnabled ?? false
                 )
             )
-
-        case .stats:
-            StatsScreen(
-                viewModel: StatsViewModel(
-                    calculateStatsUseCase: dependencies.calculateStatsUseCase
-                )
-            )
         }
     }
 

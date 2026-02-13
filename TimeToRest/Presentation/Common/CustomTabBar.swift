@@ -7,31 +7,22 @@ import SwiftUI
 /// El botón seleccionado se muestra en naranja.
 struct CustomTabBar: View {
     
-    @EnvironmentObject private var router: Router
-    @State private var selectedTab: TabItem = .home
-    
-    enum TabItem {
-        case home
-        case stats
-    }
+    @Binding var currentView: HomeScreen.ViewType
     
     var body: some View {
         HStack(spacing: 0) {
             // Botón de Modo Noche (Home)
             Button {
-                selectedTab = .home
-                if !router.navigationPath.isEmpty {
-                    router.popToRoot()
-                }
+                currentView = .home
             } label: {
                 VStack(spacing: 4) {
-                    Image(systemName: "moon.fill")
-                        .font(.system(size: 20, weight: .medium))
-                        .foregroundStyle(selectedTab == .home ? .orange : .gray)
+                    Image(systemName: currentView == .home ? "moon.fill" : "moon")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundStyle(currentView == .home ? .orange : .gray)
                     
-                    Text("Descanso")
+                    Text("Rest")
                         .font(.system(size: 11, weight: .medium))
-                        .foregroundStyle(selectedTab == .home ? .orange : .gray)
+                        .foregroundStyle(currentView == .home ? .orange : .gray)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)
@@ -40,17 +31,16 @@ struct CustomTabBar: View {
             
             // Botón de Estadísticas
             Button {
-                selectedTab = .stats
-                router.push(.stats)
+                currentView = .stats
             } label: {
                 VStack(spacing: 4) {
-                    Image(systemName: "chart.bar.fill")
-                        .font(.system(size: 20, weight: .medium))
-                        .foregroundStyle(selectedTab == .stats ? .orange : .gray)
+                    Image(systemName: currentView == .stats ? "chart.bar.fill" : "chart.bar")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundStyle(currentView == .stats ? .orange : .gray)
                     
-                    Text("Estadísticas")
+                    Text("Statistics")
                         .font(.system(size: 11, weight: .medium))
-                        .foregroundStyle(selectedTab == .stats ? .orange : .gray)
+                        .foregroundStyle(currentView == .stats ? .orange : .gray)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)
@@ -58,7 +48,7 @@ struct CustomTabBar: View {
             .buttonStyle(PlainButtonStyle())
         }
         .padding(.horizontal, 24)
-        .padding(.vertical, 12)
+        .padding(.top, 4)
         .background(
             Color.black.opacity(0.9)
                 .overlay(
@@ -68,19 +58,5 @@ struct CustomTabBar: View {
                     alignment: .top
                 )
         )
-        .onAppear {
-            updateSelectedTab()
-        }
-        .onChange(of: router.navigationPath) { _, newPath in
-            updateSelectedTab()
-        }
-    }
-    
-    private func updateSelectedTab() {
-        if router.navigationPath.isEmpty {
-            selectedTab = .home
-        } else if router.navigationPath.contains(.stats) {
-            selectedTab = .stats
-        }
     }
 }

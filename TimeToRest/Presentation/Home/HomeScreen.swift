@@ -8,6 +8,20 @@ struct HomeScreen: View {
 
     @ObservedObject var viewModel: HomeViewModel
     @EnvironmentObject private var router: Router
+    @State private var currentView: ViewType = .home
+    @StateObject private var statsViewModel: StatsViewModel
+    
+    enum ViewType {
+        case home
+        case stats
+    }
+    
+    init(viewModel: HomeViewModel, calculateStatsUseCase: CalculateStatsUseCase) {
+        self.viewModel = viewModel
+        self._statsViewModel = StateObject(wrappedValue: StatsViewModel(
+            calculateStatsUseCase: calculateStatsUseCase
+        ))
+    }
 
     var body: some View {
         ZStack {
@@ -18,11 +32,15 @@ struct HomeScreen: View {
                 if viewModel.showNightMode {
                     nightModeContent
                 } else {
-                    dayContent
+                    if currentView == .home {
+                        dayContent
+                    } else {
+                        statsContent
+                    }
                 }
                 
                 // Barra de navegación inferior
-                CustomTabBar()
+                CustomTabBar(currentView: $currentView)
             }
         }
         .preferredColorScheme(.dark)
@@ -114,6 +132,93 @@ struct HomeScreen: View {
         .padding(.horizontal, 24)
     }
 
+    // MARK: - Stats Content
+    
+    private var statsContent: some View {
+        ScrollView {
+            VStack(spacing: 32) {
+                statsHeaderSection
+                statsGrid
+                motivationSection
+            }
+            .padding(.horizontal, 24)
+            .padding(.top, 20)
+        }
+        .onAppear {
+            statsViewModel.onAppear()
+        }
+    }
+    
+    // MARK: - Stats Header
+    
+    private var statsHeaderSection: some View {
+        VStack(spacing: 8) {
+            Text("📊")
+                .font(.system(size: 48))
+
+            Text("Your Progress")
+                .font(.system(size: 28, weight: .bold, design: .rounded))
+                .foregroundStyle(.white)
+
+            Text("Every night counts")
+                .font(.subheadline)
+                .foregroundStyle(.white.opacity(0.5))
+        }
+        .padding(.top, 20)
+    }
+
+    // MARK: - Stats Grid
+
+    private var statsGrid: some View {
+        VStack(spacing: 12) {
+            // El contenido está comentado en el original, lo mantengo así
+        }
+    }
+
+    // MARK: - Motivation
+
+    private var motivationSection: some View {
+        VStack(spacing: 12) {
+            if statsViewModel.stats.currentStreak > 0 {
+                motivationCard(
+                    message: streakMessage,
+                    color: .orange
+                )
+            }
+
+            if statsViewModel.stats.breaksThisWeek == 0 {
+                motivationCard(
+                    message: "Perfect week so far! Keep it up 💪",
+                    color: .green
+                )
+            }
+        }
+        .padding(.bottom, 40)
+    }
+
+    private func motivationCard(message: String, color: Color) -> some View {
+        Text(message)
+            .font(.subheadline)
+            .foregroundStyle(color)
+            .frame(maxWidth: .infinity)
+            .padding(16)
+            .background(
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(color.opacity(0.1))
+            )
+    }
+
+    private var streakMessage: String {
+        let streak = statsViewModel.stats.currentStreak
+        switch streak {
+        case 1: return "1 night down. The journey begins 🌱"
+        case 2...4: return "\(streak) nights! Building momentum 🔥"
+        case 5...9: return "\(streak) nights! You're on fire 🔥🔥"
+        case 10...29: return "\(streak) nights! Incredible discipline 💪"
+        default: return "\(streak) nights! You're unstoppable 🚀"
+        }
+    }
+
     // MARK: - Header
 
     private var headerSection: some View {
@@ -153,11 +258,11 @@ struct HomeScreen: View {
                 }
                 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Racha actual")
+                    Text("Current streak")
                         .font(.system(size: 17, weight: .medium))
                         .foregroundStyle(.white.opacity(0.9))
                     
-                    Text("\(viewModel.stats.currentStreak) días seguidos")
+                    Text("\(viewModel.stats.currentStreak) days in a row")
                         .font(.system(size: 14, weight: .regular))
                         .foregroundStyle(.white.opacity(0.5))
                 }
@@ -184,15 +289,7 @@ struct HomeScreen: View {
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 24)
-        .background(
-            RoundedRectangle(cornerRadius: 24)
-                .fill(Color.black.opacity(0.8))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 24)
-                        .stroke(Color.white.opacity(0.05), lineWidth: 1)
-                )
-        )
-        .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 4)
+        .glassEffect(in: .rect(cornerRadius: 24))
     }
 
 
