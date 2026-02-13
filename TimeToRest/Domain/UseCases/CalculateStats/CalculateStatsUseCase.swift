@@ -32,7 +32,6 @@ final class CalculateStatsUseCase {
         var currentStreak = 0
         var bestStreak = 0
         var breaksThisWeek = 0
-        var totalAvoidedMinutes = 0
 
         var tempStreak = 0
         let calendar = Calendar.current
@@ -67,18 +66,17 @@ final class CalculateStatsUseCase {
                 breaksThisWeek += 1
             }
 
-            // Minutos evitados
-            totalAvoidedMinutes += session.avoidedMinutes
         }
 
         let averageStartTimeMinutesLast30 = calculateAverageStartTimeMinutes(for: sessions)
+        let breakStatusLast15Days = calculateBreakStatusLast15Days(for: sessions, now: now)
 
         return RestStatsEntity(
                 currentStreak: currentStreak,
                 bestStreak: bestStreak,
                 breaksThisWeek: breaksThisWeek,
-                totalAvoidedMinutes: totalAvoidedMinutes,
-                averageStartTimeMinutesLast30: averageStartTimeMinutesLast30
+                averageStartTimeMinutesLast30: averageStartTimeMinutesLast30,
+                breakStatusLast15Days: breakStatusLast15Days
         )
     }
 
@@ -115,5 +113,28 @@ final class CalculateStatsUseCase {
 
         let meanMinutes = Int((meanAngle * minutesInDay / (2.0 * Double.pi)).rounded()) % 1440
         return meanMinutes
+    }
+
+    /// Returns exactly 15 points (today and previous 14 days).
+    /// Days without break are represented with didBreak = false.
+    private func calculateBreakStatusLast15Days(
+        for sessions: [RestSessionEntity],
+        now: Date
+    ) -> [DailyBreakStatusPoint] {
+        let calendar = Calendar.current
+
+        let brokenByDay = Dictionary(grouping: sessions.filter { $0.didBreakRest }) { session in
+            calendar.startOfDay(for: session.day)
+        }
+
+        return stride(from: 14, through: 0, by: -1).compactMap { offset in
+            guard let rawDay = calendar.date(byAdding: .day, value: -offset, to: now) else {
+                return nil
+            }
+
+            let day = calendar.startOfDay(for: rawDay)
+            let didBreak = brokenByDay[day] != nil
+            return DailyBreakStatusPoint(day: day, didBreak: didBreak)
+        }
     }
 }

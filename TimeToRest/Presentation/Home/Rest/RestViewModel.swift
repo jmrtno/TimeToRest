@@ -56,6 +56,10 @@ final class RestViewModel: ObservableObject {
 
     func loadStats() {
         stats = calculateStatsUseCase.execute()
+
+#if DEBUG
+        stats = .debugConsistentMock()
+#endif
     }
 
     // MARK: - UI helpers

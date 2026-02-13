@@ -87,14 +87,19 @@ struct RestView: View {
                 ForEach(0..<7, id: \.self) { index in
                     let dayNumber = startDay + index
                     let isCompleted = dayNumber <= viewModel.stats.currentStreak && index < 5
+                    let isBestStreakDay = dayNumber == viewModel.stats.bestStreak
                     
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(isCompleted ? Color.orange : Color.gray.opacity(0.3))
+                        .fill(
+                            isBestStreakDay
+                            ? .blue
+                            : isCompleted ? Color.orange : Color.gray.opacity(0.3)
+                        )
                         .frame(height: 32)
                         .overlay(
                             Text("\(dayNumber)")
                                 .font(.system(size: 12,).weight(.bold))
-                                .foregroundStyle(isCompleted ? .white : Color.gray.opacity(0.6))
+                                .foregroundStyle(isCompleted || isBestStreakDay ? .white : Color.gray.opacity(0.6))
                         )
                 }
             }

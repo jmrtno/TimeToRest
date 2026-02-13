@@ -25,6 +25,10 @@ final class StatsViewModel: ObservableObject {
 
     func loadStats() {
         stats = calculateStatsUseCase.execute()
+        
+#if DEBUG
+        stats = .debugConsistentMock()
+#endif
     }
 
     var formattedAverageStartTime: String {
@@ -35,5 +39,23 @@ final class StatsViewModel: ObservableObject {
         let hour = averageMinutes / 60
         let minute = averageMinutes % 60
         return String(format: "%02d:%02d", hour, minute)
+    }
+
+    var breakRateDailySeries: [Bool] {
+        stats.breakStatusLast15Days.map(\.didBreak)
+    }
+
+    var breakFreeDaysCount: Int {
+        stats.breakStatusLast15Days.filter { !$0.didBreak }.count
+    }
+
+    var breakDaysCount: Int {
+        stats.breakStatusLast15Days.filter(\.didBreak).count
+    }
+
+    var breakRatePercentage: Int {
+        let totalDays = stats.breakStatusLast15Days.count
+        guard totalDays > 0 else { return 0 }
+        return Int((Double(breakDaysCount) / Double(totalDays) * 100.0).rounded())
     }
 }
