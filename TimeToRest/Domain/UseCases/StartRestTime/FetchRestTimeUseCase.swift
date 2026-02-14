@@ -18,7 +18,7 @@ import Foundation
 /// let useCase = GetDataUseCase(repository: repository)
 /// let result = useCase.execute(parameters)
 /// ```
-final class FetchRestTimeUseCase {
+struct FetchRestTimeUseCase {
     private let repository: TimeToRestRepositoryContract
     
     init(repository: TimeToRestRepositoryContract) {

@@ -18,7 +18,7 @@ import Foundation
 /// let useCase = CreateRestTimeUseCase(repository: repository)
 /// let result = useCase.execute(parameters)
 /// ```
-final class StartRestSessionUseCase {
+struct StartRestSessionUseCase {
 
     private let sessionRepository: RestSessionRepositoryContract
     private let configRepository: TimeToRestRepositoryContract

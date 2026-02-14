@@ -25,7 +25,7 @@ import Foundation
 /// let useCase = FetchCurrentSessionUseCase(repository: repository)
 /// let result = useCase.execute(parameters)
 /// ```
-final class FetchCurrentSessionUseCase {
+struct FetchCurrentSessionUseCase {
     private let repository: RestSessionRepositoryContract
     
     init(repository: RestSessionRepositoryContract) {
