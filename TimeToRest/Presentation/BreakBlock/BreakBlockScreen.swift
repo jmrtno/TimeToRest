@@ -56,7 +56,7 @@ struct BreakBlockScreen: View {
             }
 
             // Countdown
-            CountdownView(
+            CountdownScreen(
                 remaining: viewModel.countdownRemaining,
                 total: viewModel.totalCountdown
             )

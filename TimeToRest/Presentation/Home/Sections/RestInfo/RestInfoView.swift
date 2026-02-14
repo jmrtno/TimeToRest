@@ -1,21 +1,36 @@
 import SwiftUI
 
-// MARK: - HomeScreen
-/// The main screen of the app.
-/// Transforms inline into night mode when the rest window is active.
-/// No separate night mode screen — the home screen itself changes.
-struct RestView: View {
+// MARK: - RestInfoView
+
+struct RestInfoView: View {
     
-    @ObservedObject var viewModel: RestViewModel
+    @ObservedObject var viewModel: RestInfoViewModel
     @EnvironmentObject private var router: Router
     
-    init(viewModel: RestViewModel) {
+    @Environment(\.verticalSizeClass) private var vSizeClass
+
+    var isLandscapeCompact: Bool {
+        vSizeClass == .compact
+    }
+    
+    init(viewModel: RestInfoViewModel) {
         self.viewModel = viewModel
     }
     
-    // MARK: - Day Content (normal mode)
-
     var body: some View {
+        if isLandscapeCompact {
+            ScrollView {
+                restContent
+            }
+        } else {
+            restContent
+        }
+        
+    }
+
+    // MARK: - Day Content
+    
+    private var restContent: some View {
         VStack(spacing: 24) {
             headerSection
             streak

@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		AA000001AAAA000100000001 /* StartRestSessionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000001AAAA000100000002 /* StartRestSessionUseCase.swift */; };
-		AA000002AAAA000200000001 /* RestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000002AAAA000200000002 /* RestViewModel.swift */; };
+		AA000002AAAA000200000001 /* RestInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000002AAAA000200000002 /* RestInfoViewModel.swift */; };
 		AA000003AAAA000300000001 /* SetupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000003AAAA000300000002 /* SetupViewModel.swift */; };
 		AA000005AAAA000500000001 /* BreakBlockViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000005AAAA000500000002 /* BreakBlockViewModel.swift */; };
 		AA000006AAAA000600000001 /* StatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000006AAAA000600000002 /* StatsViewModel.swift */; };
@@ -16,13 +16,14 @@
 		AA000008AAAA000800000001 /* SetupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000008AAAA000800000002 /* SetupScreen.swift */; };
 		AA00000AAAAA000A00000001 /* BreakBlockScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000AAAAA000A00000002 /* BreakBlockScreen.swift */; };
 		AA00000CAAAA000C00000001 /* GlassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000CAAAA000C00000002 /* GlassCard.swift */; };
-		AA00000DAAAA000D00000001 /* CountdownView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000DAAAA000D00000002 /* CountdownView.swift */; };
+		AA00000DAAAA000D00000001 /* CountdownScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000DAAAA000D00000002 /* CountdownScreen.swift */; };
 		AA00000EAAAA000E00000001 /* AllowedAppChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000EAAAA000E00000002 /* AllowedAppChip.swift */; };
+		AA000012AAAA001200000001 /* NightModeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000012AAAA001200000002 /* NightModeViewModel.swift */; };
+		ED0450832F407C1C001EDDE8 /* NightModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0450822F407C1C001EDDE8 /* NightModeView.swift */; };
 		ED29B0482F3908B500ADC708 /* CompleteRestSessionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED29B0472F3908B500ADC708 /* CompleteRestSessionUseCase.swift */; };
 		ED29B04A2F39091500ADC708 /* FetchCurrentSessionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED29B0492F39091500ADC708 /* FetchCurrentSessionUseCase.swift */; };
 		ED3E1E8A2F3FB8650098B03E /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3E1E892F3FB85E0098B03E /* StatsView.swift */; };
-		ED3E1E8D2F3FBE840098B03E /* RestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3E1E8C2F3FBE7D0098B03E /* RestView.swift */; };
-		ED3E1E8F2F3FBEEC0098B03E /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3E1E8E2F3FBEEC0098B03E /* HomeViewModel.swift */; };
+		ED3E1E8D2F3FBE840098B03E /* RestInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3E1E8C2F3FBE7D0098B03E /* RestInfoView.swift */; };
 		ED3E1E912F3FD0730098B03E /* StatsGlassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3E1E902F3FD0730098B03E /* StatsGlassCard.swift */; };
 		ED49C33C2F3F891E00ED2EFF /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED49C33B2F3F891E00ED2EFF /* CustomTabBar.swift */; };
 		ED6B34422F3FF2590097D632 /* StatsView+Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6B34412F3FF2590097D632 /* StatsView+Components.swift */; };
@@ -51,7 +52,7 @@
 
 /* Begin PBXFileReference section */
 		AA000001AAAA000100000002 /* StartRestSessionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartRestSessionUseCase.swift; sourceTree = "<group>"; };
-		AA000002AAAA000200000002 /* RestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestViewModel.swift; sourceTree = "<group>"; };
+		AA000002AAAA000200000002 /* RestInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestInfoViewModel.swift; sourceTree = "<group>"; };
 		AA000003AAAA000300000002 /* SetupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupViewModel.swift; sourceTree = "<group>"; };
 		AA000005AAAA000500000002 /* BreakBlockViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakBlockViewModel.swift; sourceTree = "<group>"; };
 		AA000006AAAA000600000002 /* StatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewModel.swift; sourceTree = "<group>"; };
@@ -59,13 +60,14 @@
 		AA000008AAAA000800000002 /* SetupScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupScreen.swift; sourceTree = "<group>"; };
 		AA00000AAAAA000A00000002 /* BreakBlockScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakBlockScreen.swift; sourceTree = "<group>"; };
 		AA00000CAAAA000C00000002 /* GlassCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassCard.swift; sourceTree = "<group>"; };
-		AA00000DAAAA000D00000002 /* CountdownView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownView.swift; sourceTree = "<group>"; };
+		AA00000DAAAA000D00000002 /* CountdownScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownScreen.swift; sourceTree = "<group>"; };
 		AA00000EAAAA000E00000002 /* AllowedAppChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllowedAppChip.swift; sourceTree = "<group>"; };
+		AA000012AAAA001200000002 /* NightModeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightModeViewModel.swift; sourceTree = "<group>"; };
+		ED0450822F407C1C001EDDE8 /* NightModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightModeView.swift; sourceTree = "<group>"; };
 		ED29B0472F3908B500ADC708 /* CompleteRestSessionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteRestSessionUseCase.swift; sourceTree = "<group>"; };
 		ED29B0492F39091500ADC708 /* FetchCurrentSessionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCurrentSessionUseCase.swift; sourceTree = "<group>"; };
 		ED3E1E892F3FB85E0098B03E /* StatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsView.swift; sourceTree = "<group>"; };
-		ED3E1E8C2F3FBE7D0098B03E /* RestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestView.swift; sourceTree = "<group>"; };
-		ED3E1E8E2F3FBEEC0098B03E /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		ED3E1E8C2F3FBE7D0098B03E /* RestInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestInfoView.swift; sourceTree = "<group>"; };
 		ED3E1E902F3FD0730098B03E /* StatsGlassCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsGlassCard.swift; sourceTree = "<group>"; };
 		ED49C33B2F3F891E00ED2EFF /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		ED6B34412F3FF2590097D632 /* StatsView+Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsView+Components.swift"; sourceTree = "<group>"; };
@@ -127,20 +129,37 @@
 		AA000011AAAA001100000001 /* BreakBlock */ = {
 			isa = PBXGroup;
 			children = (
-				AA00000DAAAA000D00000002 /* CountdownView.swift */,
-				AA000005AAAA000500000002 /* BreakBlockViewModel.swift */,
 				AA00000AAAAA000A00000002 /* BreakBlockScreen.swift */,
+				AA00000DAAAA000D00000002 /* CountdownScreen.swift */,
+				AA000005AAAA000500000002 /* BreakBlockViewModel.swift */,
 			);
 			path = BreakBlock;
+			sourceTree = "<group>";
+		};
+		ED0450802F407B53001EDDE8 /* NightMode */ = {
+			isa = PBXGroup;
+			children = (
+				ED0450822F407C1C001EDDE8 /* NightModeView.swift */,
+				AA000012AAAA001200000002 /* NightModeViewModel.swift */,
+			);
+			path = NightMode;
+			sourceTree = "<group>";
+		};
+		ED0450812F407BAB001EDDE8 /* Sections */ = {
+			isa = PBXGroup;
+			children = (
+				ED0450802F407B53001EDDE8 /* NightMode */,
+				ED3E1E8B2F3FBE750098B03E /* RestInfo */,
+				AA000010AAAA001000000001 /* Stats */,
+			);
+			path = Sections;
 			sourceTree = "<group>";
 		};
 		ED29B0442F38F24400ADC708 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				ED3E1E8B2F3FBE750098B03E /* Rest */,
-				AA000010AAAA001000000001 /* Stats */,
+				ED0450812F407BAB001EDDE8 /* Sections */,
 				AA000007AAAA000700000002 /* HomeScreen.swift */,
-				ED3E1E8E2F3FBEEC0098B03E /* HomeViewModel.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -164,13 +183,13 @@
 			path = RestSession;
 			sourceTree = "<group>";
 		};
-		ED3E1E8B2F3FBE750098B03E /* Rest */ = {
+		ED3E1E8B2F3FBE750098B03E /* RestInfo */ = {
 			isa = PBXGroup;
 			children = (
-				ED3E1E8C2F3FBE7D0098B03E /* RestView.swift */,
-				AA000002AAAA000200000002 /* RestViewModel.swift */,
+				ED3E1E8C2F3FBE7D0098B03E /* RestInfoView.swift */,
+				AA000002AAAA000200000002 /* RestInfoViewModel.swift */,
 			);
-			path = Rest;
+			path = RestInfo;
 			sourceTree = "<group>";
 		};
 		ED6B34402F3FF23D0097D632 /* Sections */ = {
@@ -409,9 +428,10 @@
 			files = (
 				EDA78B082F374D9000181F03 /* TimeToRestEntity.swift in Sources */,
 				EDA78AFD2F374CA900181F03 /* AppCoordinator.swift in Sources */,
-				ED3E1E8D2F3FBE840098B03E /* RestView.swift in Sources */,
+				ED3E1E8D2F3FBE840098B03E /* RestInfoView.swift in Sources */,
 				EDA78B162F37A9FB00181F03 /* RestStatsEntity.swift in Sources */,
 				EDA78B0A2F374DA900181F03 /* FetchRestTimeUseCase.swift in Sources */,
+				ED0450832F407C1C001EDDE8 /* NightModeView.swift in Sources */,
 				EDA78B062F374D7600181F03 /* TimeToRestRepositoryContract.swift in Sources */,
 				EDA78B212F388E0200181F03 /* RestSessionRepositoryContract.swift in Sources */,
 				EDA78B0C2F3766DC00181F03 /* NotificationManager.swift in Sources */,
@@ -431,8 +451,7 @@
 				EDA78B252F38985300181F03 /* RestConfigurationMode.swift in Sources */,
 				EDA78B0E2F3779CA00181F03 /* SaveRestTimeUseCase.swift in Sources */,
 				AA000001AAAA000100000001 /* StartRestSessionUseCase.swift in Sources */,
-				AA000002AAAA000200000001 /* RestViewModel.swift in Sources */,
-				ED3E1E8F2F3FBEEC0098B03E /* HomeViewModel.swift in Sources */,
+				AA000002AAAA000200000001 /* RestInfoViewModel.swift in Sources */,
 				AA000003AAAA000300000001 /* SetupViewModel.swift in Sources */,
 				AA000005AAAA000500000001 /* BreakBlockViewModel.swift in Sources */,
 				AA000006AAAA000600000001 /* StatsViewModel.swift in Sources */,
@@ -440,12 +459,13 @@
 				AA000008AAAA000800000001 /* SetupScreen.swift in Sources */,
 				AA00000AAAAA000A00000001 /* BreakBlockScreen.swift in Sources */,
 				AA00000CAAAA000C00000001 /* GlassCard.swift in Sources */,
-				AA00000DAAAA000D00000001 /* CountdownView.swift in Sources */,
+				AA00000DAAAA000D00000001 /* CountdownScreen.swift in Sources */,
 				ED29B0482F3908B500ADC708 /* CompleteRestSessionUseCase.swift in Sources */,
 				ED29B04A2F39091500ADC708 /* FetchCurrentSessionUseCase.swift in Sources */,
 				ED6B34442F3FFDEF0097D632 /* BigGlassCard.swift in Sources */,
 				ED3E1E912F3FD0730098B03E /* StatsGlassCard.swift in Sources */,
 				AA00000EAAAA000E00000001 /* AllowedAppChip.swift in Sources */,
+				AA000012AAAA001200000001 /* NightModeViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

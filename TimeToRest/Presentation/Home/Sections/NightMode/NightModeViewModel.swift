@@ -1,18 +1,16 @@
 import Foundation
 import Combine
 
-// MARK: - HomeViewModel
-/// ViewModel for the home shell.
-/// Handles only night-window/session state used to switch to inline night mode.
+// MARK: - NightModeViewModel
+/// ViewModel for the night mode section.
+/// Handles night-window/session state used to switch UI mode.
 @MainActor
-final class HomeViewModel: ObservableObject {
+final class NightModeViewModel: ObservableObject {
 
     // MARK: - Published state
     @Published var config: TimeToRestEntity = .firstConfig
     @Published var isWithinNightWindow: Bool = false
     @Published var hasConfiguration: Bool = false
-
-    // MARK: - Night mode state
     @Published var session: RestSessionEntity?
     @Published var lateMessage: String?
     @Published var didBreakTonight: Bool = false
@@ -21,6 +19,10 @@ final class HomeViewModel: ObservableObject {
     /// False if the user already broke the rest tonight.
     var showNightMode: Bool {
         isWithinNightWindow && !didBreakTonight
+    }
+
+    var isStrictMode: Bool {
+        config.isStrictModeEnabled
     }
 
     // MARK: - Dependencies
@@ -91,12 +93,10 @@ final class HomeViewModel: ObservableObject {
         let wasInWindow = isWithinNightWindow
         isWithinNightWindow = Self.isCurrentlyInNightWindow(config: config)
 
-        // Entering the night window -> start a rest session.
         if isWithinNightWindow && !wasInWindow {
             startRestSession()
         }
 
-        // Leaving the night window -> mark session completed and reset session state.
         if !isWithinNightWindow && wasInWindow {
             completeCurrentSession()
             session = nil
@@ -104,12 +104,10 @@ final class HomeViewModel: ObservableObject {
             didBreakTonight = false
         }
 
-        // If already in window on appear and no session yet (and not broken), start one.
         if isWithinNightWindow && !didBreakTonight && session == nil {
             startRestSession()
         }
 
-        // If we're outside the window, check for any unfinished session and mark it completed.
         if !isWithinNightWindow {
             completeCurrentSession()
         }
@@ -120,7 +118,7 @@ final class HomeViewModel: ObservableObject {
         if let newSession = startRestSessionUseCase.execute() {
             session = newSession
             if newSession.delayInMinutes > 0 {
-                lateMessage = "Started a bit late today, but here you are 🌙"
+                lateMessage = "Started a bit late today, but here you are."
             } else {
                 lateMessage = nil
             }
@@ -150,10 +148,6 @@ final class HomeViewModel: ObservableObject {
         if fetchCurrentSessionUseCase.execute()?.didBreakRest == true {
             didBreakTonight = true
         }
-    }
-
-    var isStrictMode: Bool {
-        config.isStrictModeEnabled
     }
 
     // MARK: - Periodic window check (every 5 seconds)

@@ -2,27 +2,24 @@ import SwiftUI
 
 // MARK: - AppCoordinator
 /// The root view that orchestrates navigation for the application.
-///
-/// Owns the HomeViewModel so it persists across modal presentations
-/// and can be reloaded when configuration changes.
 struct AppCoordinator: View {
 
     @StateObject private var router: Router
-    @StateObject private var homeViewModel: HomeViewModel
-    @StateObject private var restViewModel: RestViewModel
+    @StateObject private var nightModeViewModel: NightModeViewModel
+    @StateObject private var restViewModel: RestInfoViewModel
     private let viewFactory: RouteViewFactory
     private let fetchRestTimeUseCase: FetchRestTimeUseCase
     private let calculateStatsUseCase: CalculateStatsUseCase
 
     init(dependencies: AppDependencies) {
         _router = StateObject(wrappedValue: Router())
-        _homeViewModel = StateObject(wrappedValue: HomeViewModel(
+        _nightModeViewModel = StateObject(wrappedValue: NightModeViewModel(
             fetchRestTimeUseCase: dependencies.fetchRestTimeUseCase,
             startRestSessionUseCase: dependencies.startRestSessionUseCase,
             completeRestSessionUseCase: dependencies.completeRestSessionUseCase,
             fetchCurrentSessionUseCase: dependencies.fetchCurrentSessionUseCase
         ))
-        _restViewModel = StateObject(wrappedValue: RestViewModel(
+        _restViewModel = StateObject(wrappedValue: RestInfoViewModel(
             fetchRestTimeUseCase: dependencies.fetchRestTimeUseCase,
             calculateStatsUseCase: dependencies.calculateStatsUseCase
         ))
@@ -34,7 +31,7 @@ struct AppCoordinator: View {
     var body: some View {
         NavigationStack(path: $router.navigationPath) {
             HomeScreen(
-                viewModel: homeViewModel,
+                nightModeViewModel: nightModeViewModel,
                 restViewModel: restViewModel,
                 calculateStatsUseCase: calculateStatsUseCase
             )
@@ -47,7 +44,7 @@ struct AppCoordinator: View {
             item: $router.restConfigurationMode,
             onDismiss: {
                 router.popToRoot()
-                homeViewModel.reloadAfterConfigChange()
+                nightModeViewModel.reloadAfterConfigChange()
                 restViewModel.reloadAfterConfigChange()
             },
             content: { mode in
