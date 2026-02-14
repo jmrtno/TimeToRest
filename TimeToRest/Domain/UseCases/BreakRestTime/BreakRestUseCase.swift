@@ -35,7 +35,6 @@ struct BreakRestUseCase {
             id: session.id,
             day: session.day,
             startedAt: session.startedAt,
-            delayInMinutes: session.delayInMinutes,
             didBreakRest: true,
             breakedAt: breakedAt,
             avoidedMinutes: avoidedMinutes

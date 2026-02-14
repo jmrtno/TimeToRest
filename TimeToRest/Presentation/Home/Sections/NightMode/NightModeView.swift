@@ -55,13 +55,13 @@ struct NightModeView: View {
                     .scaledToFit()
                     .frame(width: 75, height: 75)
             }
-            .offset(y: -60)
+            .offset(y: -110)
             
             Text("Time to rest")
                 .font(.system(size: 44))
                 .foregroundStyle(.white)
                 .padding(.bottom, 14)
-                .offset(y: -110)
+                .offset(y: -160)
         }
     }
     
@@ -70,44 +70,35 @@ struct NightModeView: View {
     private var cardsAndMessage: some View {
         VStack(spacing: 12) {
             HStack(spacing: 12) {
-                StatsGlassCard(icon: "bell.slash",
-                               title: "Silent",
-                               value: "Activated",
-                               iconColor: .gray)
-                
+                StatsGlassCard(icon: "shield",
+                               title: "Strict mode",
+                               value: viewModel.isStrictModeEnabled,
+                               iconColor: .indigo)
                 StatsGlassCard(icon: "alarm",
                                title: "Alarm",
-                               value: "7:00",
+                               value: viewModel.formattedEndTime,
                                iconColor: .gray)
-            }
-            
-            if let lateMessage = viewModel.lateMessage {
-                Text(lateMessage)
-                    .font(.subheadline)
-                    .foregroundStyle(.orange.opacity(0.8))
-                    .multilineTextAlignment(.center)
-                    .padding(.top, 8)
             }
             
             Text("Keep the app open to track your streak")
                 .font(.footnote)
                 .foregroundStyle(.white.opacity(0.3))
         }
-        .offset(y: -110)
+        .offset(y: -160)
     }
     
     // MARK: - Winning Hours
     
     private var winningHours: some View {
         VStack {
-            Text("07:30")
+            Text(viewModel.formattedSessionRestHours)
                 .font(.system(size: 50, weight: .medium))
                 .foregroundStyle(.white.opacity(0.9))
-            Text("Horas de descanso ganadas")
+            Text("Horas de descanso previstas")
                 .font(.system(size: 12, weight: .bold, design: .monospaced))
-                .foregroundStyle(.white.opacity(0.5))
+                .foregroundStyle(.gray.opacity(0.9))
         }
-        .offset(y: -55)
+        .offset(y: -75)
     }
     
     // MARK: - Break Rest Button
@@ -133,7 +124,6 @@ struct NightModeView: View {
                 .font(viewModel.isStrictMode ? .caption : .subheadline)
         }
         .foregroundStyle(.red.opacity(0.6))
-        .padding(.bottom, 15)
     }
 
     // MARK: - Animated Background

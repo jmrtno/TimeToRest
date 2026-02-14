@@ -12,7 +12,6 @@ final class NightModeViewModel: ObservableObject {
     @Published var isWithinNightWindow: Bool = false
     @Published var hasConfiguration: Bool = false
     @Published var session: RestSessionEntity?
-    @Published var lateMessage: String?
     @Published var didBreakTonight: Bool = false
 
     /// Controls whether the night mode UI is shown.
@@ -23,6 +22,22 @@ final class NightModeViewModel: ObservableObject {
 
     var isStrictMode: Bool {
         config.isStrictModeEnabled
+    }
+
+    var isStrictModeEnabled: String {
+        isStrictMode ? "On" : "Off"
+    }
+
+    var formattedEndTime: String {
+        Self.formatTime(hour: config.endTime.hour ?? 7, minute: config.endTime.minute ?? 0)
+    }
+
+    /// Total rest hours for the current session (or configured window if session is not available yet).
+    var formattedSessionRestHours: String {
+        let totalMinutes = session.map(sessionRestMinutes) ?? configuredWindowMinutes()
+        let hours = max(0, totalMinutes) / 60
+        let minutes = max(0, totalMinutes) % 60
+        return String(format: "%02d:%02d", hours, minutes)
     }
 
     // MARK: - Dependencies
@@ -69,7 +84,6 @@ final class NightModeViewModel: ObservableObject {
     func reloadAfterConfigChange() {
         didBreakTonight = false
         session = nil
-        lateMessage = nil
         guard loadConfig() else { return }
         checkNightWindow()
     }
@@ -100,7 +114,6 @@ final class NightModeViewModel: ObservableObject {
         if !isWithinNightWindow && wasInWindow {
             completeCurrentSession()
             session = nil
-            lateMessage = nil
             didBreakTonight = false
         }
 
@@ -112,16 +125,12 @@ final class NightModeViewModel: ObservableObject {
             completeCurrentSession()
         }
     }
+    
 
     /// Starts a rest session if within the night window.
     func startRestSession() {
         if let newSession = startRestSessionUseCase.execute() {
             session = newSession
-            if newSession.delayInMinutes > 0 {
-                lateMessage = "Started a bit late today, but here you are."
-            } else {
-                lateMessage = nil
-            }
         }
     }
 
@@ -137,9 +146,6 @@ final class NightModeViewModel: ObservableObject {
         if let persisted = fetchCurrentSessionUseCase.execute(),
            !persisted.didBreakRest, !persisted.isCompleted {
             session = persisted
-            if persisted.delayInMinutes > 0 {
-                lateMessage = "Started a bit late today, but here you are 🌙"
-            }
         }
     }
 
@@ -187,5 +193,39 @@ final class NightModeViewModel: ObservableObject {
         } else {
             return currentTotal >= startTotal && currentTotal < endTotal
         }
+    }
+
+    // MARK: - Helpers
+
+    private func configuredWindowMinutes() -> Int {
+        let startTotal = (config.startTime.hour ?? 23) * 60 + (config.startTime.minute ?? 30)
+        let endTotal = (config.endTime.hour ?? 7) * 60 + (config.endTime.minute ?? 0)
+        return endTotal >= startTotal ? (endTotal - startTotal) : (24 * 60 - startTotal + endTotal)
+    }
+
+    private func sessionRestMinutes(session: RestSessionEntity) -> Int {
+        let calendar = Calendar.current
+        let normalizedStart = calendar.date(
+            from: calendar.dateComponents([.year, .month, .day, .hour, .minute], from: session.startedAt)
+        ) ?? session.startedAt
+
+        var endComponents = calendar.dateComponents([.year, .month, .day], from: normalizedStart)
+        endComponents.hour = config.endTime.hour ?? 7
+        endComponents.minute = config.endTime.minute ?? 0
+        endComponents.second = 0
+
+        guard var endDate = calendar.date(from: endComponents) else {
+            return configuredWindowMinutes()
+        }
+
+        if endDate <= normalizedStart {
+            endDate = calendar.date(byAdding: .day, value: 1, to: endDate) ?? endDate
+        }
+
+        return max(0, Int(endDate.timeIntervalSince(normalizedStart) / 60))
+    }
+
+    private static func formatTime(hour: Int, minute: Int) -> String {
+        String(format: "%02d:%02d", hour, minute)
     }
 }

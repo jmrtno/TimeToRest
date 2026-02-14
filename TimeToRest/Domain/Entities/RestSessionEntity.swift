@@ -29,9 +29,6 @@ struct RestSessionEntity: Identifiable, Codable, Equatable {
     /// Momento en el que el usuario abrió la app durante el horario nocturno
     let startedAt: Date
 
-    /// Diferencia entre la hora configurada y startedAt (en minutos)
-    let delayInMinutes: Int
-
     // MARK: - Result
     let didBreakRest: Bool
     let breakedAt: Date?
@@ -43,7 +40,6 @@ struct RestSessionEntity: Identifiable, Codable, Equatable {
         id: UUID = UUID(),
         day: Date,
         startedAt: Date,
-        delayInMinutes: Int,
         didBreakRest: Bool,
         breakedAt: Date? = nil,
         isCompleted: Bool = false,
@@ -52,7 +48,6 @@ struct RestSessionEntity: Identifiable, Codable, Equatable {
         self.id = id
         self.day = day
         self.startedAt = startedAt
-        self.delayInMinutes = delayInMinutes
         self.didBreakRest = didBreakRest
         self.breakedAt = breakedAt
         self.isCompleted = isCompleted
@@ -65,7 +60,6 @@ struct RestSessionEntity: Identifiable, Codable, Equatable {
         id = try container.decode(UUID.self, forKey: .id)
         day = try container.decode(Date.self, forKey: .day)
         startedAt = try container.decode(Date.self, forKey: .startedAt)
-        delayInMinutes = try container.decode(Int.self, forKey: .delayInMinutes)
         didBreakRest = try container.decode(Bool.self, forKey: .didBreakRest)
         breakedAt = try container.decodeIfPresent(Date.self, forKey: .breakedAt)
         isCompleted = try container.decodeIfPresent(Bool.self, forKey: .isCompleted) ?? false
