@@ -18,7 +18,7 @@ import Foundation
 /// let useCase = GetDataUseCase(repository: repository)
 /// let result = useCase.execute(parameters)
 /// ```
-final class CalculateStatsUseCase {
+struct CalculateStatsUseCase {
 
     private let repository: RestSessionRepositoryContract
 

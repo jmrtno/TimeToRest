@@ -16,16 +16,15 @@ struct RestView: View {
     // MARK: - Day Content (normal mode)
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 24) {
-                headerSection
-                streak
-                scheduleCard
-                infoCardsSection
-            }
-            .padding(.horizontal, 24)
-            .padding(.top, 20)
+        VStack(spacing: 24) {
+            headerSection
+            streak
+            scheduleCard
+            infoCardsSection
+            Spacer()
         }
+        .padding(.horizontal, 24)
+        .padding(.top, 20)
         .onAppear {
             viewModel.onAppear()
         }
@@ -57,31 +56,13 @@ struct RestView: View {
     }
     
     private var streak: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack(spacing: 12) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(Color.orange.opacity(0.1))
-                        .frame(width: 48, height: 48)
-                    
-                    Image(systemName: "trophy")
-                        .font(.system(size: 24, weight: .medium))
-                        .foregroundStyle(.orange)
-                }
-                
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Current streak")
-                        .font(.system(size: 17, weight: .medium))
-                        .foregroundStyle(.white.opacity(0.9))
-                    
-                    Text("\(viewModel.stats.currentStreak) days in a row")
-                        .font(.system(size: 14, weight: .regular))
-                        .foregroundStyle(.white.opacity(0.5))
-                }
-                Spacer()
-            }
-            
-            HStack(spacing: 8) {
+        BigGlassCard(icon: "trophy",
+                       title: "Current streak",
+                       subtitle: "\(viewModel.stats.currentStreak) days in a row",
+                       value: "",
+                       color: .orange,
+                       content: {
+            return HStack(spacing: 8) {
                 let startDay = max(1, viewModel.stats.currentStreak - 6)
                 
                 ForEach(0..<7, id: \.self) { index in
@@ -103,10 +84,7 @@ struct RestView: View {
                         )
                 }
             }
-        }
-        .padding(.horizontal, 24)
-        .padding(.vertical, 24)
-        .glassEffect(in: .rect(cornerRadius: 24))
+        })
     }
 
 

@@ -18,7 +18,7 @@ import Foundation
 /// let useCase = GetDataUseCase(repository: repository)
 /// let result = useCase.execute(parameters)
 /// ```
-final class BreakRestUseCase {
+struct BreakRestUseCase {
     private let repository: RestSessionRepositoryContract
 
     init(repository: RestSessionRepositoryContract) {
