@@ -11,7 +11,6 @@ final class BreakBlockViewModel: ObservableObject {
     @Published var countdownRemaining: Int
     @Published var currentMessage: String = ""
     @Published var canBreak: Bool = false
-    @Published var didBreak: Bool = false
     @Published var stats: RestStatsEntity = .empty
 
     // MARK: - Dependencies
@@ -84,7 +83,6 @@ final class BreakBlockViewModel: ObservableObject {
         guard let session = fetchCurrentSessionUseCase.execute() else { return }
 
         let _ = breakRestUseCase.execute(session: session)
-        didBreak = true
         stats = calculateStatsUseCase.execute()
         stopTimer()
     }

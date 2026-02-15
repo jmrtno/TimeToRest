@@ -1,11 +1,11 @@
 import Foundation
 import Combine
 
-// MARK: - RestViewModel
+// MARK: - RestInfoViewModel
 /// ViewModel for the Rest (day) view.
 /// Handles configuration/stats displayed on RestView.
 @MainActor
-final class RestViewModel: ObservableObject {
+final class RestInfoViewModel: ObservableObject {
 
     // MARK: - Published state
     @Published var config: TimeToRestEntity = .firstConfig

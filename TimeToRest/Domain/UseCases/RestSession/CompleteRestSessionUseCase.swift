@@ -49,7 +49,6 @@ struct CompleteRestSessionUseCase {
         let complete = RestSessionEntity(id: current.id,
                                          day: current.day,
                                          startedAt: current.startedAt,
-                                         delayInMinutes: current.delayInMinutes,
                                          didBreakRest: false,
                                          breakedAt: nil,
                                          isCompleted: true,

@@ -1,26 +1,43 @@
 import Foundation
 import Combine
 
-// MARK: - HomeViewModel
-/// ViewModel for the home shell.
-/// Handles only night-window/session state used to switch to inline night mode.
+// MARK: - NightModeViewModel
+/// ViewModel for the night mode section.
+/// Handles night-window/session state used to switch UI mode.
 @MainActor
-final class HomeViewModel: ObservableObject {
+final class NightModeViewModel: ObservableObject {
 
     // MARK: - Published state
     @Published var config: TimeToRestEntity = .firstConfig
     @Published var isWithinNightWindow: Bool = false
     @Published var hasConfiguration: Bool = false
-
-    // MARK: - Night mode state
     @Published var session: RestSessionEntity?
-    @Published var lateMessage: String?
     @Published var didBreakTonight: Bool = false
 
     /// Controls whether the night mode UI is shown.
     /// False if the user already broke the rest tonight.
     var showNightMode: Bool {
         isWithinNightWindow && !didBreakTonight
+    }
+
+    var isStrictMode: Bool {
+        config.isStrictModeEnabled
+    }
+
+    var isStrictModeEnabled: String {
+        isStrictMode ? "On" : "Off"
+    }
+
+    var formattedEndTime: String {
+        Self.formatTime(hour: config.endTime.hour ?? 7, minute: config.endTime.minute ?? 0)
+    }
+
+    /// Total rest hours for the current session (or configured window if session is not available yet).
+    var formattedSessionRestHours: String {
+        let totalMinutes = session.map(sessionRestMinutes) ?? configuredWindowMinutes()
+        let hours = max(0, totalMinutes) / 60
+        let minutes = max(0, totalMinutes) % 60
+        return String(format: "%02d:%02d", hours, minutes)
     }
 
     // MARK: - Dependencies
@@ -67,7 +84,6 @@ final class HomeViewModel: ObservableObject {
     func reloadAfterConfigChange() {
         didBreakTonight = false
         session = nil
-        lateMessage = nil
         guard loadConfig() else { return }
         checkNightWindow()
     }
@@ -91,39 +107,30 @@ final class HomeViewModel: ObservableObject {
         let wasInWindow = isWithinNightWindow
         isWithinNightWindow = Self.isCurrentlyInNightWindow(config: config)
 
-        // Entering the night window -> start a rest session.
         if isWithinNightWindow && !wasInWindow {
             startRestSession()
         }
 
-        // Leaving the night window -> mark session completed and reset session state.
         if !isWithinNightWindow && wasInWindow {
             completeCurrentSession()
             session = nil
-            lateMessage = nil
             didBreakTonight = false
         }
 
-        // If already in window on appear and no session yet (and not broken), start one.
         if isWithinNightWindow && !didBreakTonight && session == nil {
             startRestSession()
         }
 
-        // If we're outside the window, check for any unfinished session and mark it completed.
         if !isWithinNightWindow {
             completeCurrentSession()
         }
     }
+    
 
     /// Starts a rest session if within the night window.
     func startRestSession() {
         if let newSession = startRestSessionUseCase.execute() {
             session = newSession
-            if newSession.delayInMinutes > 0 {
-                lateMessage = "Started a bit late today, but here you are 🌙"
-            } else {
-                lateMessage = nil
-            }
         }
     }
 
@@ -139,9 +146,6 @@ final class HomeViewModel: ObservableObject {
         if let persisted = fetchCurrentSessionUseCase.execute(),
            !persisted.didBreakRest, !persisted.isCompleted {
             session = persisted
-            if persisted.delayInMinutes > 0 {
-                lateMessage = "Started a bit late today, but here you are 🌙"
-            }
         }
     }
 
@@ -150,10 +154,6 @@ final class HomeViewModel: ObservableObject {
         if fetchCurrentSessionUseCase.execute()?.didBreakRest == true {
             didBreakTonight = true
         }
-    }
-
-    var isStrictMode: Bool {
-        config.isStrictModeEnabled
     }
 
     // MARK: - Periodic window check (every 5 seconds)
@@ -193,5 +193,39 @@ final class HomeViewModel: ObservableObject {
         } else {
             return currentTotal >= startTotal && currentTotal < endTotal
         }
+    }
+
+    // MARK: - Helpers
+
+    private func configuredWindowMinutes() -> Int {
+        let startTotal = (config.startTime.hour ?? 23) * 60 + (config.startTime.minute ?? 30)
+        let endTotal = (config.endTime.hour ?? 7) * 60 + (config.endTime.minute ?? 0)
+        return endTotal >= startTotal ? (endTotal - startTotal) : (24 * 60 - startTotal + endTotal)
+    }
+
+    private func sessionRestMinutes(session: RestSessionEntity) -> Int {
+        let calendar = Calendar.current
+        let normalizedStart = calendar.date(
+            from: calendar.dateComponents([.year, .month, .day, .hour, .minute], from: session.startedAt)
+        ) ?? session.startedAt
+
+        var endComponents = calendar.dateComponents([.year, .month, .day], from: normalizedStart)
+        endComponents.hour = config.endTime.hour ?? 7
+        endComponents.minute = config.endTime.minute ?? 0
+        endComponents.second = 0
+
+        guard var endDate = calendar.date(from: endComponents) else {
+            return configuredWindowMinutes()
+        }
+
+        if endDate <= normalizedStart {
+            endDate = calendar.date(byAdding: .day, value: 1, to: endDate) ?? endDate
+        }
+
+        return max(0, Int(endDate.timeIntervalSince(normalizedStart) / 60))
+    }
+
+    private static func formatTime(hour: Int, minute: Int) -> String {
+        String(format: "%02d:%02d", hour, minute)
     }
 }

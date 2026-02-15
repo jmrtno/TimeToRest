@@ -53,8 +53,7 @@ final class AppDependencies {
 
     lazy var startRestSessionUseCase: StartRestSessionUseCase = {
         StartRestSessionUseCase(
-            sessionRepository: restSessionRepository,
-            configRepository: timeToRestRepository
+            sessionRepository: restSessionRepository
         )
     }()
 

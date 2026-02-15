@@ -9,23 +9,14 @@ struct BreakBlockScreen: View {
     @EnvironmentObject private var router: Router
 
     var body: some View {
-        ZStack {
-            Color.black.ignoresSafeArea()
-
-            if viewModel.didBreak {
-                brokenView
-            } else {
-                countdownView
+        countdownView
+            .preferredColorScheme(.dark)
+            .onAppear {
+                viewModel.startCountdown()
             }
-        }
-        .preferredColorScheme(.dark)
-        .navigationBarBackButtonHidden(true)
-        .onAppear {
-            viewModel.startCountdown()
-        }
-        .onDisappear {
-            viewModel.stopTimer()
-        }
+            .onDisappear {
+                viewModel.stopTimer()
+            }
     }
 
     // MARK: - Countdown View
@@ -33,13 +24,6 @@ struct BreakBlockScreen: View {
     private var countdownView: some View {
         VStack(spacing: 32) {
             Spacer()
-
-            Text("⚠️")
-                .font(.system(size: 48))
-
-            Text("Are you sure?")
-                .font(.system(size: 24, weight: .bold, design: .rounded))
-                .foregroundStyle(.white)
 
             // Psychological message
             Text(viewModel.currentMessage)
@@ -56,13 +40,11 @@ struct BreakBlockScreen: View {
             }
 
             // Countdown
-            CountdownView(
+            CountdownScreen(
                 remaining: viewModel.countdownRemaining,
                 total: viewModel.totalCountdown
             )
             .padding(.vertical, 16)
-
-            Spacer()
 
             // Actions
             VStack(spacing: 12) {
@@ -76,69 +58,27 @@ struct BreakBlockScreen: View {
                         .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 14)
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.white.opacity(0.15))
-                        )
+                        .glassEffect(.regular.tint(.indigo.opacity(0.5)).interactive(), in: .rect(cornerRadius: 12))
                 }
 
                 // Break button — only enabled after countdown
                 if viewModel.canBreak {
                     Button {
                         viewModel.breakRest()
+                        router.popToRoot()
                     } label: {
                         Text("Yes, I want to use my phone")
                             .font(.subheadline)
                             .foregroundStyle(.red.opacity(0.7))
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 12)
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color.red.opacity(0.3), lineWidth: 1)
-                            )
+                            .glassEffect(.regular.tint(.red.opacity(0.1)).interactive(), in: .rect(cornerRadius: 12))
                     }
                     .transition(.opacity.combined(with: .move(edge: .bottom)))
                 }
             }
-            .padding(.bottom, 50)
+            .padding(.bottom, 15)
             .animation(.easeInOut(duration: 0.3), value: viewModel.canBreak)
-        }
-        .padding(.horizontal, 24)
-    }
-
-    // MARK: - Broken View
-
-    private var brokenView: some View {
-        VStack(spacing: 32) {
-            Spacer()
-
-            Text("💔")
-                .font(.system(size: 64))
-
-            Text("It's okay.")
-                .font(.system(size: 28, weight: .bold, design: .rounded))
-                .foregroundStyle(.white)
-
-            Text("Tomorrow is another chance.")
-                .font(.title3)
-                .foregroundStyle(.white.opacity(0.5))
-
-            Spacer()
-
-            Button {
-                router.popToRoot()
-            } label: {
-                Text("Close")
-                    .font(.headline)
-                    .foregroundStyle(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.white.opacity(0.1))
-                    )
-            }
-            .padding(.bottom, 50)
         }
         .padding(.horizontal, 24)
     }
