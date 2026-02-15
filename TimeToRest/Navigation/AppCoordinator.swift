@@ -52,6 +52,20 @@ struct AppCoordinator: View {
                     .environmentObject(router)
             }
         )
+        .sheet(
+            isPresented: $router.isBreakBlockPresented,
+            onDismiss: {
+                nightModeViewModel.reload()
+                restViewModel.reload()
+            }
+        ) {
+            NavigationStack {
+                viewFactory.view(for: .breakBlock)
+                    .environmentObject(router)
+            }
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.visible)
+        }
         .onAppear {
             checkInitialConfiguration()
         }

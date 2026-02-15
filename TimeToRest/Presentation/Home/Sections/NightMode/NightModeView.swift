@@ -106,7 +106,7 @@ struct NightModeView: View {
     private var breakRestButton: some View {
         VStack(spacing: 16) {
             Button {
-                router.push(.breakBlock)
+                router.presentBreakBlock()
             } label: {
                 Image(systemName: "power")
                     .resizable()

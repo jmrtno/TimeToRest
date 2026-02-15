@@ -31,7 +31,7 @@ struct CountdownScreen: View {
 
             // Number
             Text("\(remaining)")
-                .font(.system(size: 44, weight: .bold, design: .rounded))
+                .font(.system(size: 44, weight: .bold, design: .monospaced))
                 .foregroundStyle(.white)
         }
     }
