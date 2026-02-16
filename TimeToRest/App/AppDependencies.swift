@@ -1,5 +1,4 @@
 import Foundation
-import Combine
 
 // MARK: - AppDependencies
 /// A container that manages the creation and lifecycle of all application dependencies.
@@ -38,8 +37,7 @@ final class AppDependencies {
     lazy var restSessionManager: RestSessionManager = {
         RestSessionManager(
             breakRestUseCase: breakRestUseCase,
-            fetchCurrentSessionUseCase: fetchCurrentSessionUseCase,
-            notificationManager: notificationManager
+            fetchCurrentSessionUseCase: fetchCurrentSessionUseCase
         )
     }()
 
@@ -50,10 +48,6 @@ final class AppDependencies {
     }()
 
     lazy var saveRestTimeUseCase: SaveRestTimeUseCase = {
-        SaveRestTimeUseCase(repository: timeToRestRepository)
-    }()
-
-    lazy var updateRestTimeUseCase: SaveRestTimeUseCase = {
         SaveRestTimeUseCase(repository: timeToRestRepository)
     }()
 

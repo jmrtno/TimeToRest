@@ -24,7 +24,6 @@ final class RestSessionManager: ObservableObject {
 
     private let breakRestUseCase: BreakRestUseCase
     private let fetchCurrentSessionUseCase: FetchCurrentSessionUseCase
-    private let notificationManager: NotificationManager
 
     private let deviceActivityCenter = DeviceActivityCenter()
     private let settingsStore = ManagedSettingsStore(
@@ -39,12 +38,10 @@ final class RestSessionManager: ObservableObject {
     init(
         breakRestUseCase: BreakRestUseCase,
         fetchCurrentSessionUseCase: FetchCurrentSessionUseCase,
-        notificationManager: NotificationManager,
         userDefaults: UserDefaults = .standard
     ) {
         self.breakRestUseCase = breakRestUseCase
         self.fetchCurrentSessionUseCase = fetchCurrentSessionUseCase
-        self.notificationManager = notificationManager
         self.userDefaults = userDefaults
         self.blockedSelection = Self.loadBlockedSelection(
             userDefaults: userDefaults,
@@ -98,7 +95,7 @@ final class RestSessionManager: ObservableObject {
     }
 
     func cancelRestManually() {
-        breakCurrentSession(reason: .manualCancellation, shouldNotifyUser: false)
+        breakCurrentSession(reason: .manualCancellation)
     }
     
     func updateBlockedSelection(_ selection: FamilyActivitySelection) {
@@ -114,23 +111,6 @@ final class RestSessionManager: ObservableObject {
         monitoredApplicationTokens.removeAll()
     }
 
-    var blockedAppsDescription: String {
-        var components: [String] = []
-        if !blockedSelection.applicationTokens.isEmpty {
-            components.append("\(blockedSelection.applicationTokens.count) apps")
-        }
-        if !blockedSelection.categoryTokens.isEmpty {
-            components.append("\(blockedSelection.categoryTokens.count) categories")
-        }
-        if !blockedSelection.webDomainTokens.isEmpty {
-            components.append("\(blockedSelection.webDomainTokens.count) web domains")
-        }
-        if components.isEmpty {
-            return "No blocked apps selected"
-        }
-        return components.joined(separator: " + ")
-    }
-    
     var currentBlockedSelection: FamilyActivitySelection {
         blockedSelection
     }
@@ -259,10 +239,10 @@ final class RestSessionManager: ObservableObject {
     }
 
     private func handleBlockedSocialAppUsage() {
-        breakCurrentSession(reason: .blockedSocialAppUsage, shouldNotifyUser: false)
+        breakCurrentSession(reason: .blockedSocialAppUsage)
     }
 
-    private func breakCurrentSession(reason: BreakReason, shouldNotifyUser: Bool) {
+    private func breakCurrentSession(reason: BreakReason) {
         guard let session = fetchCurrentSessionUseCase.execute(), !session.didBreakRest else {
             stopMonitoringAndUnlockApps()
             return
@@ -282,10 +262,6 @@ final class RestSessionManager: ObservableObject {
         )
         stopMonitoringAndUnlockApps()
         state = .broken(reason)
-
-        if shouldNotifyUser {
-            notificationManager.sendRestFinishedAfterBlockedAppUsage()
-        }
     }
     
     private func persistBlockedSelection(_ selection: FamilyActivitySelection) {
