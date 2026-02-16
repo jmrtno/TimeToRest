@@ -17,7 +17,6 @@
 		AA00000AAAAA000A00000001 /* BreakBlockScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000AAAAA000A00000002 /* BreakBlockScreen.swift */; };
 		AA00000CAAAA000C00000001 /* GlassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000CAAAA000C00000002 /* GlassCard.swift */; };
 		AA00000DAAAA000D00000001 /* CountdownScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000DAAAA000D00000002 /* CountdownScreen.swift */; };
-		AA00000EAAAA000E00000001 /* AllowedAppChip.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000EAAAA000E00000002 /* AllowedAppChip.swift */; };
 		AA000012AAAA001200000001 /* NightModeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000012AAAA001200000002 /* NightModeViewModel.swift */; };
 		ED0450832F407C1C001EDDE8 /* NightModeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0450822F407C1C001EDDE8 /* NightModeView.swift */; };
 		ED29B0482F3908B500ADC708 /* CompleteRestSessionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED29B0472F3908B500ADC708 /* CompleteRestSessionUseCase.swift */; };
@@ -61,7 +60,6 @@
 		AA00000AAAAA000A00000002 /* BreakBlockScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakBlockScreen.swift; sourceTree = "<group>"; };
 		AA00000CAAAA000C00000002 /* GlassCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassCard.swift; sourceTree = "<group>"; };
 		AA00000DAAAA000D00000002 /* CountdownScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownScreen.swift; sourceTree = "<group>"; };
-		AA00000EAAAA000E00000002 /* AllowedAppChip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllowedAppChip.swift; sourceTree = "<group>"; };
 		AA000012AAAA001200000002 /* NightModeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightModeViewModel.swift; sourceTree = "<group>"; };
 		ED0450822F407C1C001EDDE8 /* NightModeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightModeView.swift; sourceTree = "<group>"; };
 		ED29B0472F3908B500ADC708 /* CompleteRestSessionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteRestSessionUseCase.swift; sourceTree = "<group>"; };
@@ -93,6 +91,7 @@
 		EDA78B272F389D3900181F03 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EDE2F9372F3744ED006CB2F6 /* TimeToRest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeToRest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDE2F9472F374530006CB2F6 /* TimeToRestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeToRestApp.swift; sourceTree = "<group>"; };
+		EDFB504C2F433B5100FEA44F /* TimeToRest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TimeToRest.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,7 +110,6 @@
 			children = (
 				AA000008AAAA000800000002 /* SetupScreen.swift */,
 				AA000003AAAA000300000002 /* SetupViewModel.swift */,
-				AA00000EAAAA000E00000002 /* AllowedAppChip.swift */,
 			);
 			path = Setup;
 			sourceTree = "<group>";
@@ -343,6 +341,7 @@
 		EDE2F9482F374530006CB2F6 /* TimeToRest */ = {
 			isa = PBXGroup;
 			children = (
+				EDFB504C2F433B5100FEA44F /* TimeToRest.entitlements */,
 				EDA78AF32F374BE200181F03 /* Data */,
 				EDA78AF42F374BE600181F03 /* Domain */,
 				EDA78AF22F374BD900181F03 /* Presentation */,
@@ -464,7 +463,6 @@
 				ED29B04A2F39091500ADC708 /* FetchCurrentSessionUseCase.swift in Sources */,
 				ED6B34442F3FFDEF0097D632 /* BigGlassCard.swift in Sources */,
 				ED3E1E912F3FD0730098B03E /* StatsGlassCard.swift in Sources */,
-				AA00000EAAAA000E00000001 /* AllowedAppChip.swift in Sources */,
 				AA000012AAAA001200000001 /* NightModeViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -596,6 +594,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				"CODE_SIGN_ENTITLEMENTS[sdk=iphoneos*]" = TimeToRest/TimeToRest.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=iphonesimulator*]" = TimeToRest/TimeToRest.simulator.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = VZ82ZJHYB5;
@@ -631,6 +631,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				"CODE_SIGN_ENTITLEMENTS[sdk=iphoneos*]" = TimeToRest/TimeToRest.entitlements;
+				"CODE_SIGN_ENTITLEMENTS[sdk=iphonesimulator*]" = TimeToRest/TimeToRest.simulator.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = VZ82ZJHYB5;

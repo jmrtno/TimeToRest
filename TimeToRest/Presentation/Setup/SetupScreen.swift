@@ -17,8 +17,8 @@ struct SetupScreen: View {
                 VStack(alignment: .leading, spacing: 20) {
                     headerSection
                     timePickersSection
-                    // allowedAppsSection 
                     strictModeToggle
+                    notAllowedAppsSection
                     footerText
                 }
                 .padding(.horizontal, 24)
@@ -107,24 +107,10 @@ struct SetupScreen: View {
 
     // MARK: - Allowed Apps
 
-    private var allowedAppsSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Allowed apps (informational)")
-                .font(.subheadline)
-                .foregroundStyle(.white.opacity(0.5))
-
-            HStack(spacing: 8) {
-                ForEach(AllowedApp.allCases, id: \.self) { app in
-                    AllowedAppChip(
-                        app: app,
-                        isSelected: viewModel.selectedApps.contains(app),
-                        onTap: {
-                            toggleApp(app)
-                        }
-                    )
-                }
-            }
-        }
+    private var notAllowedAppsSection: some View {
+        // Aqui se mostrará el mensaje informando al usuario que esas aplicaiones no se van a poder usar durante el descanso.
+        // Si las usa, el descanso se romperá automaticamente
+        EmptyView()
     }
 
     // MARK: - Strict Mode

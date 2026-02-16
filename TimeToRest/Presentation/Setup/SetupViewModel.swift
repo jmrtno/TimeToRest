@@ -10,7 +10,6 @@ final class SetupViewModel: ObservableObject {
     // MARK: - Published state
     @Published var startTime: Date
     @Published var endTime: Date
-    @Published var selectedApps: Set<AllowedApp> = [.phone, .emergency]
     @Published var isStrictMode: Bool = false
 
     // MARK: - Mode
@@ -57,8 +56,7 @@ final class SetupViewModel: ObservableObject {
         let entity = TimeToRestEntity(
             startTime: startComponents,
             endTime: endComponents,
-            isStrictModeEnabled: isStrictMode,
-            allowedApps: Array(selectedApps)
+            isStrictModeEnabled: isStrictMode
         )
 
         saveRestTimeUseCase.execute(restTime: entity, isNew: mode == .mandatory)
@@ -96,7 +94,6 @@ final class SetupViewModel: ObservableObject {
         if let h = config.endTime.hour, let m = config.endTime.minute {
             endTime = calendar.date(bySettingHour: h, minute: m, second: 0, of: now) ?? now
         }
-        selectedApps = Set(config.allowedApps)
         isStrictMode = config.isStrictModeEnabled
     }
 }

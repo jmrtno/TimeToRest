@@ -28,7 +28,6 @@ struct TimeToRestEntity: Identifiable, Codable, Equatable {
 
     // MARK: - Behaviour
     let isStrictModeEnabled: Bool
-    let allowedApps: [AllowedApp]
 
     // MARK: - State (lightweight)
     let createdAt: Date
@@ -39,14 +38,12 @@ struct TimeToRestEntity: Identifiable, Codable, Equatable {
         startTime: DateComponents,
         endTime: DateComponents,
         isStrictModeEnabled: Bool = false,
-        allowedApps: [AllowedApp] = [.phone, .emergency],
         createdAt: Date = Date()
     ) {
         self.id = id
         self.startTime = startTime
         self.endTime = endTime
         self.isStrictModeEnabled = isStrictModeEnabled
-        self.allowedApps = allowedApps
         self.createdAt = createdAt
     }
 
@@ -61,13 +58,6 @@ struct TimeToRestEntity: Identifiable, Codable, Equatable {
         startTime: DateComponents(hour: 23, minute: 30),
         endTime: DateComponents(hour: 7, minute: 0),
         isStrictModeEnabled: false,
-        allowedApps: [.phone, .emergency],
         createdAt: Date()
     )
-}
-
-enum AllowedApp: String, Codable, CaseIterable {
-    case phone
-    case emergency
-    case spotify
 }
