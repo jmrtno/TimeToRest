@@ -46,9 +46,9 @@ extension RestStatsEntity {
 
         // Oldest -> newest (today). false = no break, true = break.
         let mockDaily: [Bool] = [
-            false, false, true, false, false,
-            true, false, false, false, true,
-            false, false, true, false, false
+            false, true,  false, false, true,
+            false, false, true,  false, true,
+            false, false, true,  false, false, false
         ]
 
         let points: [DailyBreakStatusPoint] = mockDaily.enumerated().compactMap { index, didBreak in

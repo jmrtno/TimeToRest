@@ -37,8 +37,9 @@ struct NightModeView: View {
                 winningHours
                 breakRestButton
             }
+            .padding(.horizontal, 24)
+            .padding(.vertical, 42)
         }
-        .padding(.horizontal, 24)
     }
     
     // MARK: - Header
@@ -55,13 +56,7 @@ struct NightModeView: View {
                     .scaledToFit()
                     .frame(width: 75, height: 75)
             }
-            .offset(y: -110)
-            
-            Text("Time to rest")
-                .font(.system(size: 44))
-                .foregroundStyle(.white)
-                .padding(.bottom, 14)
-                .offset(y: -160)
+            .offset(y: -70)
         }
     }
     
@@ -69,6 +64,10 @@ struct NightModeView: View {
     
     private var cardsAndMessage: some View {
         VStack(spacing: 12) {
+            Text("Time to rest")
+                .font(.system(size: 44))
+                .foregroundStyle(.white)
+                .padding(.bottom, 8)
             HStack(spacing: 12) {
                 StatsGlassCard(icon: "shield",
                                title: "Strict mode",
@@ -84,7 +83,7 @@ struct NightModeView: View {
                 .font(.footnote)
                 .foregroundStyle(.white.opacity(0.3))
         }
-        .offset(y: -160)
+        .offset(y: -120)
     }
     
     // MARK: - Winning Hours
@@ -98,7 +97,7 @@ struct NightModeView: View {
                 .font(.system(size: 12, weight: .bold, design: .monospaced))
                 .foregroundStyle(.gray.opacity(0.9))
         }
-        .offset(y: -75)
+        .offset(y: -65)
     }
     
     // MARK: - Break Rest Button
