@@ -8,4 +8,5 @@ enum RestSessionDeviceActivityIdentifiers {
     nonisolated static let managedSettingsStoreName = "RestSessionStore"
 
     nonisolated static let blockedSocialUsageDarwinNotification = "com.timetorest.rest.blocked-social-usage"
+    nonisolated static let shieldUnlockRequestedDarwinNotification = "com.timetorest.rest.shield-unlock-requested"
 }

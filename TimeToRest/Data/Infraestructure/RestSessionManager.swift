@@ -33,7 +33,7 @@ final class RestSessionManager: ObservableObject {
     private static let blockedSelectionStorageKey = "RestSessionManager.BlockedSelection"
 
     private var monitoredApplicationTokens: Set<ApplicationToken> = []
-    private var isDarwinObserverRegistered = false
+    private var isShieldObserverRegistered = false
 
     init(
         breakRestUseCase: BreakRestUseCase,
@@ -47,7 +47,7 @@ final class RestSessionManager: ObservableObject {
             userDefaults: userDefaults,
             key: Self.blockedSelectionStorageKey
         )
-        registerBlockedUsageObserverIfNeeded()
+        registerShieldUnlockObserverIfNeeded()
     }
 
     deinit {
@@ -217,9 +217,9 @@ final class RestSessionManager: ObservableObject {
         }
     }
 
-    private func registerBlockedUsageObserverIfNeeded() {
-        guard !isDarwinObserverRegistered else { return }
-        isDarwinObserverRegistered = true
+    private func registerShieldUnlockObserverIfNeeded() {
+        guard !isShieldObserverRegistered else { return }
+        isShieldObserverRegistered = true
 
         let observer = UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
         CFNotificationCenterAddObserver(
@@ -229,16 +229,16 @@ final class RestSessionManager: ObservableObject {
                 guard let observer else { return }
                 let manager = Unmanaged<RestSessionManager>.fromOpaque(observer).takeUnretainedValue()
                 Task { @MainActor in
-                    manager.handleBlockedSocialAppUsage()
+                    manager.handleShieldUnlockRequested()
                 }
             },
-            RestSessionDeviceActivityIdentifiers.blockedSocialUsageDarwinNotification as CFString,
+            RestSessionDeviceActivityIdentifiers.shieldUnlockRequestedDarwinNotification as CFString,
             nil,
             .deliverImmediately
         )
     }
 
-    private func handleBlockedSocialAppUsage() {
+    private func handleShieldUnlockRequested() {
         breakCurrentSession(reason: .blockedSocialAppUsage)
     }
 

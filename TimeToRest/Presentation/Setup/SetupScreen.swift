@@ -110,45 +110,6 @@ struct SetupScreen: View {
         }
     }
 
-    // MARK: - Allowed Apps
-
-    private var notAllowedAppsSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            Text("Automatic blocks during your rest")
-                .textCase(.uppercase)
-                .font(.system(size: 14, weight: .bold))
-                .foregroundStyle(.white.opacity(0.4))
-
-            VStack(alignment: .leading, spacing: 10) {
-                Text("Selected apps will be blocked automatically while you rest.")
-                    .font(.body.weight(.semibold))
-                    .foregroundStyle(.white.opacity(0.95))
-
-                Text("This includes: \(viewModel.blockedSocialAppsDescription).")
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.75))
-
-                Button {
-                    viewModel.isFamilyActivityPickerPresented = true
-                } label: {
-                    Text("Select blocked apps")
-                        .font(.subheadline.weight(.semibold))
-                        .foregroundStyle(.orange)
-                }
-
-                Text("Calls, emergency apps and Spotify will stay available.")
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.75))
-
-                Text("If you try to use any blocked app, your rest streak ends automatically.")
-                    .font(.caption)
-                    .foregroundStyle(.orange.opacity(0.9))
-            }
-        }
-        .padding(16)
-        .glassEffect(in: .rect(cornerRadius: 24))
-    }
-
     // MARK: - Strict Mode
 
     private var strictModeToggle: some View {
@@ -166,18 +127,61 @@ struct SetupScreen: View {
                     Text("Strict mode")
                         .font(.headline)
                         .foregroundStyle(.white)
+                    Spacer()
+
+                    Toggle("", isOn: $viewModel.isStrictMode)
+                        .tint(.orange)
+                        .labelsHidden()
                 }
 
                 Text("Longer countdown, more direct messages")
                     .font(.caption)
                     .foregroundStyle(.white.opacity(0.5))
             }
+        }
+        .padding(16)
+        .glassEffect(in: .rect(cornerRadius: 24))
+    }
+    
+    // MARK: - Blocked Apps
 
+    private var notAllowedAppsSection: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Blocks during your rest")
+                    .textCase(.uppercase)
+                    .font(.system(size: 14, weight: .bold))
+                    .foregroundStyle(.white.opacity(0.4))
+                    .padding(.bottom, 16)
+
+                Text("Selected apps will be blocked automatically while you rest.")
+                    .font(.headline)
+                    .foregroundStyle(.white)
+
+                Button {
+                    viewModel.isFamilyActivityPickerPresented = true
+                } label: {
+                    HStack {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(.orange.opacity(0.1))
+                                .frame(width: 48, height: 48)
+                            Image(systemName: "lock.app.dashed")
+                                .font(.system(size: 24, weight: .medium))
+                                .foregroundStyle(.orange)
+                        }
+                        Text("Select apps")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(.orange)
+                    }
+                }
+                
+                Text("Apps blocked: \(viewModel.blockedSocialAppsDescription).")
+                    .font(.subheadline)
+                    .foregroundStyle(.white.opacity(0.75))
+            }
+            
             Spacer()
-
-            Toggle("", isOn: $viewModel.isStrictMode)
-                .tint(.orange)
-                .labelsHidden()
         }
         .padding(16)
         .glassEffect(in: .rect(cornerRadius: 24))
