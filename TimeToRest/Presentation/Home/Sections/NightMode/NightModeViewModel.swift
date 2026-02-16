@@ -45,24 +45,29 @@ final class NightModeViewModel: ObservableObject {
     private let startRestSessionUseCase: StartRestSessionUseCase
     private let completeRestSessionUseCase: CompleteRestSessionUseCase
     private let fetchCurrentSessionUseCase: FetchCurrentSessionUseCase
+    private let restSessionManager: RestSessionManager
 
     private var windowCheckTimer: Timer?
+    private var lastTimerCheckedMinute: Int?
 
     init(
         fetchRestTimeUseCase: FetchRestTimeUseCase,
         startRestSessionUseCase: StartRestSessionUseCase,
         completeRestSessionUseCase: CompleteRestSessionUseCase,
-        fetchCurrentSessionUseCase: FetchCurrentSessionUseCase
+        fetchCurrentSessionUseCase: FetchCurrentSessionUseCase,
+        restSessionManager: RestSessionManager
     ) {
         self.fetchRestTimeUseCase = fetchRestTimeUseCase
         self.startRestSessionUseCase = startRestSessionUseCase
         self.completeRestSessionUseCase = completeRestSessionUseCase
         self.fetchCurrentSessionUseCase = fetchCurrentSessionUseCase
+        self.restSessionManager = restSessionManager
     }
 
     // MARK: - Lifecycle
 
     func onAppear() {
+        lastTimerCheckedMinute = nil
         reload()
         startWindowCheckTimer()
     }
@@ -73,6 +78,7 @@ final class NightModeViewModel: ObservableObject {
 
     /// Reloads data relevant to night mode/session handling.
     func reload() {
+        lastTimerCheckedMinute = nil
         guard loadConfig() else { return }
         checkIfBrokenTonight()
         restoreSessionIfNeeded()
@@ -82,6 +88,7 @@ final class NightModeViewModel: ObservableObject {
     /// Called after the user saves a new configuration.
     /// Resets the break flag so night mode can re-activate with the new config.
     func reloadAfterConfigChange() {
+        lastTimerCheckedMinute = nil
         didBreakTonight = false
         session = nil
         guard loadConfig() else { return }
@@ -104,26 +111,38 @@ final class NightModeViewModel: ObservableObject {
     // MARK: - Night window
 
     func checkNightWindow() {
+        checkIfBrokenTonight()
         let wasInWindow = isWithinNightWindow
         isWithinNightWindow = Self.isCurrentlyInNightWindow(config: config)
+
+        if didBreakTonight {
+            restSessionManager.stopMonitoringAndUnlockApps()
+            session = nil
+            return
+        }
 
         if isWithinNightWindow && !wasInWindow {
             startRestSession()
         }
 
-        if !isWithinNightWindow && wasInWindow {
-            completeCurrentSession()
+        if !isWithinNightWindow {
+            if wasInWindow {
+                completeCurrentSession()
+            }
+            restSessionManager.endMonitoringAfterSuccessfulRest()
             session = nil
             didBreakTonight = false
+            return
         }
 
         if isWithinNightWindow && !didBreakTonight && session == nil {
             startRestSession()
         }
 
-        if !isWithinNightWindow {
-            completeCurrentSession()
+        if isWithinNightWindow && !didBreakTonight {
+            restSessionManager.startMonitoringIfNeeded(configuration: config)
         }
+
     }
     
 
@@ -144,6 +163,7 @@ final class NightModeViewModel: ObservableObject {
     private func restoreSessionIfNeeded() {
         guard session == nil, !didBreakTonight else { return }
         if let persisted = fetchCurrentSessionUseCase.execute(),
+           isSessionInCurrentRestWindow(persisted),
            !persisted.didBreakRest, !persisted.isCompleted {
             session = persisted
         }
@@ -151,18 +171,78 @@ final class NightModeViewModel: ObservableObject {
 
     /// Checks persisted session to see if rest was already broken tonight.
     private func checkIfBrokenTonight() {
-        if fetchCurrentSessionUseCase.execute()?.didBreakRest == true {
-            didBreakTonight = true
+        guard let persistedSession = fetchCurrentSessionUseCase.execute() else {
+            didBreakTonight = false
+            return
         }
+        guard isSessionInCurrentRestWindow(persistedSession) else {
+            didBreakTonight = false
+            return
+        }
+
+        guard persistedSession.didBreakRest else {
+            didBreakTonight = false
+            return
+        }
+
+        let breakReferenceDate = persistedSession.breakedAt ?? persistedSession.startedAt
+        didBreakTonight = breakReferenceDate >= config.createdAt
     }
 
-    // MARK: - Periodic window check (every 5 seconds)
+    private func isSessionInCurrentRestWindow(_ session: RestSessionEntity, now: Date = Date()) -> Bool {
+        guard let currentWindow = currentRestWindowInterval(now: now) else { return false }
+        return session.startedAt >= currentWindow.start && session.startedAt < currentWindow.end
+    }
+
+    private func currentRestWindowInterval(now: Date) -> (start: Date, end: Date)? {
+        let calendar = Calendar.current
+
+        let startHour = config.startTime.hour ?? 23
+        let startMinute = config.startTime.minute ?? 30
+        let endHour = config.endTime.hour ?? 7
+        let endMinute = config.endTime.minute ?? 0
+
+        let currentHour = calendar.component(.hour, from: now)
+        let currentMinute = calendar.component(.minute, from: now)
+        let currentTotal = currentHour * 60 + currentMinute
+
+        let startTotal = startHour * 60 + startMinute
+        let endTotal = endHour * 60 + endMinute
+        let crossesMidnight = startTotal > endTotal
+
+        let startOfToday = calendar.startOfDay(for: now)
+        let todayStart = calendar.date(
+            byAdding: DateComponents(hour: startHour, minute: startMinute),
+            to: startOfToday
+        ) ?? now
+        let todayEnd = calendar.date(
+            byAdding: DateComponents(hour: endHour, minute: endMinute),
+            to: startOfToday
+        ) ?? now
+
+        if crossesMidnight {
+            if currentTotal >= startTotal {
+                let tomorrowEnd = calendar.date(byAdding: .day, value: 1, to: todayEnd) ?? todayEnd
+                return (start: todayStart, end: tomorrowEnd)
+            }
+            if currentTotal < endTotal {
+                let yesterdayStart = calendar.date(byAdding: .day, value: -1, to: todayStart) ?? todayStart
+                return (start: yesterdayStart, end: todayEnd)
+            }
+            return nil
+        }
+
+        guard currentTotal >= startTotal, currentTotal < endTotal else { return nil }
+        return (start: todayStart, end: todayEnd)
+    }
+
+    // MARK: - Periodic window check (every minute)
 
     private func startWindowCheckTimer() {
         stopWindowCheckTimer()
-        windowCheckTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { [weak self] _ in
+        windowCheckTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { [weak self] _ in
             Task { @MainActor [weak self] in
-                self?.checkNightWindow()
+                self?.checkNightWindowFromTimer()
             }
         }
     }
@@ -170,6 +250,13 @@ final class NightModeViewModel: ObservableObject {
     func stopWindowCheckTimer() {
         windowCheckTimer?.invalidate()
         windowCheckTimer = nil
+    }
+    
+    private func checkNightWindowFromTimer(now: Date = Date()) {
+        let minuteMark = Int(now.timeIntervalSince1970 / 60)
+        guard minuteMark != lastTimerCheckedMinute else { return }
+        lastTimerCheckedMinute = minuteMark
+        checkNightWindow()
     }
 
     // MARK: - Night Window Logic

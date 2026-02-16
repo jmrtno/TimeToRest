@@ -4,12 +4,14 @@ import SwiftUI
 /// The root view that orchestrates navigation for the application.
 struct AppCoordinator: View {
 
+    @Environment(\.scenePhase) private var scenePhase
     @StateObject private var router: Router
     @StateObject private var nightModeViewModel: NightModeViewModel
     @StateObject private var restViewModel: RestInfoViewModel
     private let viewFactory: RouteViewFactory
     private let fetchRestTimeUseCase: FetchRestTimeUseCase
     private let calculateStatsUseCase: CalculateStatsUseCase
+    private let restSessionManager: RestSessionManager
 
     init(dependencies: AppDependencies) {
         _router = StateObject(wrappedValue: Router())
@@ -17,7 +19,8 @@ struct AppCoordinator: View {
             fetchRestTimeUseCase: dependencies.fetchRestTimeUseCase,
             startRestSessionUseCase: dependencies.startRestSessionUseCase,
             completeRestSessionUseCase: dependencies.completeRestSessionUseCase,
-            fetchCurrentSessionUseCase: dependencies.fetchCurrentSessionUseCase
+            fetchCurrentSessionUseCase: dependencies.fetchCurrentSessionUseCase,
+            restSessionManager: dependencies.restSessionManager
         ))
         _restViewModel = StateObject(wrappedValue: RestInfoViewModel(
             fetchRestTimeUseCase: dependencies.fetchRestTimeUseCase,
@@ -26,6 +29,7 @@ struct AppCoordinator: View {
         self.viewFactory = RouteViewFactory(dependencies: dependencies)
         self.fetchRestTimeUseCase = dependencies.fetchRestTimeUseCase
         self.calculateStatsUseCase = dependencies.calculateStatsUseCase
+        self.restSessionManager = dependencies.restSessionManager
     }
 
     var body: some View {
@@ -67,7 +71,13 @@ struct AppCoordinator: View {
             .presentationDragIndicator(.visible)
         }
         .onAppear {
+            restSessionManager.prepareAuthorization()
             checkInitialConfiguration()
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            guard newPhase == .active else { return }
+            nightModeViewModel.reload()
+            restViewModel.reload()
         }
     }
 

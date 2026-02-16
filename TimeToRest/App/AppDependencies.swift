@@ -34,6 +34,14 @@ final class AppDependencies {
     lazy var notificationManager: NotificationManager = {
         NotificationManager()
     }()
+    
+    lazy var restSessionManager: RestSessionManager = {
+        RestSessionManager(
+            breakRestUseCase: breakRestUseCase,
+            fetchCurrentSessionUseCase: fetchCurrentSessionUseCase,
+            notificationManager: notificationManager
+        )
+    }()
 
     // MARK: - Use Cases (TimeToRest configuration)
 

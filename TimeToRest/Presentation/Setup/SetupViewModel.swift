@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import FamilyControls
 
 // MARK: - SetupViewModel
 /// ViewModel for the rest configuration modal.
@@ -11,6 +12,8 @@ final class SetupViewModel: ObservableObject {
     @Published var startTime: Date
     @Published var endTime: Date
     @Published var isStrictMode: Bool = false
+    @Published var blockedSelection: FamilyActivitySelection
+    @Published var isFamilyActivityPickerPresented: Bool = false
 
     // MARK: - Mode
     let mode: RestConfigurationMode
@@ -19,6 +22,7 @@ final class SetupViewModel: ObservableObject {
     private let saveRestTimeUseCase: SaveRestTimeUseCase
     private let fetchRestTimeUseCase: FetchRestTimeUseCase
     private let notificationManager: NotificationManager
+    private let restSessionManager: RestSessionManager
 
     // MARK: - Callbacks
     var onSave: (() -> Void)?
@@ -27,12 +31,15 @@ final class SetupViewModel: ObservableObject {
         mode: RestConfigurationMode,
         saveRestTimeUseCase: SaveRestTimeUseCase,
         fetchRestTimeUseCase: FetchRestTimeUseCase,
-        notificationManager: NotificationManager
+        notificationManager: NotificationManager,
+        restSessionManager: RestSessionManager
     ) {
         self.mode = mode
         self.saveRestTimeUseCase = saveRestTimeUseCase
         self.fetchRestTimeUseCase = fetchRestTimeUseCase
         self.notificationManager = notificationManager
+        self.restSessionManager = restSessionManager
+        self.blockedSelection = restSessionManager.currentBlockedSelection
 
         // Default times
         let calendar = Calendar.current
@@ -74,11 +81,30 @@ final class SetupViewModel: ObservableObject {
             }
         }
 
+        restSessionManager.updateBlockedSelection(blockedSelection)
+        restSessionManager.prepareAuthorization()
         onSave?()
     }
 
     var canCancel: Bool {
         mode == .editable
+    }
+    
+    var blockedSocialAppsDescription: String {
+        var components: [String] = []
+        if !blockedSelection.applicationTokens.isEmpty {
+            components.append("\(blockedSelection.applicationTokens.count) apps")
+        }
+        if !blockedSelection.categoryTokens.isEmpty {
+            components.append("\(blockedSelection.categoryTokens.count) categories")
+        }
+        if !blockedSelection.webDomainTokens.isEmpty {
+            components.append("\(blockedSelection.webDomainTokens.count) web domains")
+        }
+        if components.isEmpty {
+            return "No blocked apps selected"
+        }
+        return components.joined(separator: " + ")
     }
 
     // MARK: - Private

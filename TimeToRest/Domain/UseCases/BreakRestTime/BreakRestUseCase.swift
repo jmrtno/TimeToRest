@@ -26,7 +26,11 @@ struct BreakRestUseCase {
     }
 
     /// Rompe la sesión actual
-    func execute(session: RestSessionEntity, breakedAt: Date = Date()) -> RestSessionEntity {
+    func execute(
+        session: RestSessionEntity,
+        breakReason: RestSessionEntity.BreakReason,
+        breakedAt: Date = Date()
+    ) -> RestSessionEntity {
         // Calcula minutos evitados hasta romper
         let avoidedMinutes = max(0, Int(breakedAt.timeIntervalSince(session.startedAt) / 60))
 
@@ -36,6 +40,7 @@ struct BreakRestUseCase {
             day: session.day,
             startedAt: session.startedAt,
             didBreakRest: true,
+            breakReason: breakReason,
             breakedAt: breakedAt,
             avoidedMinutes: avoidedMinutes
         )

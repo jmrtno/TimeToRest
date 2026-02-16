@@ -18,6 +18,10 @@ import Foundation
 /// let item = RestSessionEntity(id: UUID(), name: "Example")
 /// ```
 struct RestSessionEntity: Identifiable, Codable, Equatable {
+    enum BreakReason: String, Codable, Equatable {
+        case manualCancellation
+        case blockedSocialAppUsage
+    }
 
     // MARK: - Identity
     let id: UUID
@@ -31,6 +35,7 @@ struct RestSessionEntity: Identifiable, Codable, Equatable {
 
     // MARK: - Result
     let didBreakRest: Bool
+    let breakReason: BreakReason?
     let breakedAt: Date?
     let isCompleted: Bool
     let avoidedMinutes: Int
@@ -41,6 +46,7 @@ struct RestSessionEntity: Identifiable, Codable, Equatable {
         day: Date,
         startedAt: Date,
         didBreakRest: Bool,
+        breakReason: BreakReason? = nil,
         breakedAt: Date? = nil,
         isCompleted: Bool = false,
         avoidedMinutes: Int
@@ -49,6 +55,7 @@ struct RestSessionEntity: Identifiable, Codable, Equatable {
         self.day = day
         self.startedAt = startedAt
         self.didBreakRest = didBreakRest
+        self.breakReason = breakReason
         self.breakedAt = breakedAt
         self.isCompleted = isCompleted
         self.avoidedMinutes = avoidedMinutes
@@ -61,6 +68,7 @@ struct RestSessionEntity: Identifiable, Codable, Equatable {
         day = try container.decode(Date.self, forKey: .day)
         startedAt = try container.decode(Date.self, forKey: .startedAt)
         didBreakRest = try container.decode(Bool.self, forKey: .didBreakRest)
+        breakReason = try container.decodeIfPresent(BreakReason.self, forKey: .breakReason)
         breakedAt = try container.decodeIfPresent(Date.self, forKey: .breakedAt)
         isCompleted = try container.decodeIfPresent(Bool.self, forKey: .isCompleted) ?? false
         avoidedMinutes = try container.decode(Int.self, forKey: .avoidedMinutes)

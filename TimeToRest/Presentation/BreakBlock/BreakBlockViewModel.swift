@@ -14,9 +14,8 @@ final class BreakBlockViewModel: ObservableObject {
     @Published var stats: RestStatsEntity = .empty
 
     // MARK: - Dependencies
-    private let breakRestUseCase: BreakRestUseCase
     private let calculateStatsUseCase: CalculateStatsUseCase
-    private let fetchCurrentSessionUseCase: FetchCurrentSessionUseCase
+    private let restSessionManager: RestSessionManager
     private let isStrictMode: Bool
 
     let totalCountdown: Int
@@ -50,14 +49,12 @@ final class BreakBlockViewModel: ObservableObject {
     ]
 
     init(
-        breakRestUseCase: BreakRestUseCase,
         calculateStatsUseCase: CalculateStatsUseCase,
-        fetchCurrentSessionUseCase: FetchCurrentSessionUseCase,
+        restSessionManager: RestSessionManager,
         isStrictMode: Bool
     ) {
-        self.breakRestUseCase = breakRestUseCase
         self.calculateStatsUseCase = calculateStatsUseCase
-        self.fetchCurrentSessionUseCase = fetchCurrentSessionUseCase
+        self.restSessionManager = restSessionManager
         self.isStrictMode = isStrictMode
         let total = isStrictMode ? 20 : 10
         self.totalCountdown = total
@@ -79,10 +76,7 @@ final class BreakBlockViewModel: ObservableObject {
 
     func breakRest() {
         guard canBreak else { return }
-
-        guard let session = fetchCurrentSessionUseCase.execute() else { return }
-
-        let _ = breakRestUseCase.execute(session: session)
+        restSessionManager.cancelRestManually()
         stats = calculateStatsUseCase.execute()
         stopTimer()
     }

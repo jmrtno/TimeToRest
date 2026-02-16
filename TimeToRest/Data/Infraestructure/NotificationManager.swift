@@ -135,6 +135,23 @@ final class NotificationManager: NSObject {
         }
         notificationCenter.removeAllDeliveredNotifications()
     }
+    
+    /// Sends an immediate notification when rest ends by using a blocked app.
+    func sendRestFinishedAfterBlockedAppUsage() {
+        let content = UNMutableNotificationContent()
+        content.title = "Rest finished"
+        content.body = "Your rest streak ended because a blocked social app was used."
+        content.sound = .default
+        content.categoryIdentifier = "REST_BROKEN_BLOCKED_APP"
+
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        let request = UNNotificationRequest(
+            identifier: "rest_broken_blocked_app_\(UUID().uuidString)",
+            content: content,
+            trigger: trigger
+        )
+        notificationCenter.add(request) { _ in }
+    }
 
 }
 

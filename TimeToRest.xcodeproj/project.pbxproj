@@ -47,7 +47,38 @@
 		EDA78B252F38985300181F03 /* RestConfigurationMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B242F38985300181F03 /* RestConfigurationMode.swift */; };
 		EDA78B282F389D3900181F03 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDA78B272F389D3900181F03 /* Assets.xcassets */; };
 		EDE2F94A2F374530006CB2F6 /* TimeToRestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE2F9472F374530006CB2F6 /* TimeToRestApp.swift */; };
+		EDFB504E2F43416500FEA44F /* RestSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB504D2F43416500FEA44F /* RestSessionManager.swift */; };
+		EDFB50522F43419800FEA44F /* RestSessionDeviceActivityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB504F2F43419800FEA44F /* RestSessionDeviceActivityIdentifiers.swift */; };
+		EDFB505A2F43584F00FEA44F /* DeviceActivity.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDFB50592F43584F00FEA44F /* DeviceActivity.framework */; };
+		EDFB50622F43584F00FEA44F /* TimeToRestMonitorExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = EDFB50572F43584F00FEA44F /* TimeToRestMonitorExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		EDFB50682F43586900FEA44F /* RestSessionDeviceActivityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB50502F43419800FEA44F /* RestSessionDeviceActivityMonitor.swift */; };
+		EDFB50692F43587C00FEA44F /* RestSessionDeviceActivityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB504F2F43419800FEA44F /* RestSessionDeviceActivityIdentifiers.swift */; };
+		EDFB506E2F4358B500FEA44F /* DeviceActivityMonitorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB506A2F4358B500FEA44F /* DeviceActivityMonitorExtension.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		EDFB50602F43584F00FEA44F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EDE2F92F2F3744ED006CB2F6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EDFB50562F43584F00FEA44F;
+			remoteInfo = TimeToRestMonitorExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		EDFB50632F43584F00FEA44F /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				EDFB50622F43584F00FEA44F /* TimeToRestMonitorExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		AA000001AAAA000100000002 /* StartRestSessionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartRestSessionUseCase.swift; sourceTree = "<group>"; };
@@ -92,6 +123,14 @@
 		EDE2F9372F3744ED006CB2F6 /* TimeToRest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeToRest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDE2F9472F374530006CB2F6 /* TimeToRestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeToRestApp.swift; sourceTree = "<group>"; };
 		EDFB504C2F433B5100FEA44F /* TimeToRest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TimeToRest.entitlements; sourceTree = "<group>"; };
+		EDFB504D2F43416500FEA44F /* RestSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestSessionManager.swift; sourceTree = "<group>"; };
+		EDFB504F2F43419800FEA44F /* RestSessionDeviceActivityIdentifiers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestSessionDeviceActivityIdentifiers.swift; sourceTree = "<group>"; };
+		EDFB50502F43419800FEA44F /* RestSessionDeviceActivityMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestSessionDeviceActivityMonitor.swift; sourceTree = "<group>"; };
+		EDFB50572F43584F00FEA44F /* TimeToRestMonitorExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TimeToRestMonitorExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		EDFB50592F43584F00FEA44F /* DeviceActivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DeviceActivity.framework; path = System/Library/Frameworks/DeviceActivity.framework; sourceTree = SDKROOT; };
+		EDFB506A2F4358B500FEA44F /* DeviceActivityMonitorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceActivityMonitorExtension.swift; sourceTree = "<group>"; };
+		EDFB506B2F4358B500FEA44F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EDFB506C2F4358B500FEA44F /* TimeToRestMonitorExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TimeToRestMonitorExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +138,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EDFB50542F43584F00FEA44F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDFB505A2F43584F00FEA44F /* DeviceActivity.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,7 +299,10 @@
 		EDA78AFE2F374CCE00181F03 /* Infraestructure */ = {
 			isa = PBXGroup;
 			children = (
+				EDFB504D2F43416500FEA44F /* RestSessionManager.swift */,
 				EDA78B0B2F3766DC00181F03 /* NotificationManager.swift */,
+				EDFB504F2F43419800FEA44F /* RestSessionDeviceActivityIdentifiers.swift */,
+				EDFB50502F43419800FEA44F /* RestSessionDeviceActivityMonitor.swift */,
 			);
 			path = Infraestructure;
 			sourceTree = "<group>";
@@ -326,6 +376,8 @@
 			isa = PBXGroup;
 			children = (
 				EDE2F9482F374530006CB2F6 /* TimeToRest */,
+				EDFB506D2F4358B500FEA44F /* TimeToRestMonitorExtension */,
+				EDFB50582F43584F00FEA44F /* Frameworks */,
 				EDE2F9382F3744ED006CB2F6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -334,6 +386,7 @@
 			isa = PBXGroup;
 			children = (
 				EDE2F9372F3744ED006CB2F6 /* TimeToRest.app */,
+				EDFB50572F43584F00FEA44F /* TimeToRestMonitorExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -353,6 +406,24 @@
 			path = TimeToRest;
 			sourceTree = "<group>";
 		};
+		EDFB50582F43584F00FEA44F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EDFB50592F43584F00FEA44F /* DeviceActivity.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EDFB506D2F4358B500FEA44F /* TimeToRestMonitorExtension */ = {
+			isa = PBXGroup;
+			children = (
+				EDFB506A2F4358B500FEA44F /* DeviceActivityMonitorExtension.swift */,
+				EDFB506B2F4358B500FEA44F /* Info.plist */,
+				EDFB506C2F4358B500FEA44F /* TimeToRestMonitorExtension.entitlements */,
+			);
+			path = TimeToRestMonitorExtension;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -363,10 +434,12 @@
 				EDE2F9332F3744ED006CB2F6 /* Sources */,
 				EDE2F9342F3744ED006CB2F6 /* Frameworks */,
 				EDE2F9352F3744ED006CB2F6 /* Resources */,
+				EDFB50632F43584F00FEA44F /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				EDFB50612F43584F00FEA44F /* PBXTargetDependency */,
 			);
 			name = TimeToRest;
 			packageProductDependencies = (
@@ -374,6 +447,25 @@
 			productName = TimeToRest;
 			productReference = EDE2F9372F3744ED006CB2F6 /* TimeToRest.app */;
 			productType = "com.apple.product-type.application";
+		};
+		EDFB50562F43584F00FEA44F /* TimeToRestMonitorExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EDFB50672F43584F00FEA44F /* Build configuration list for PBXNativeTarget "TimeToRestMonitorExtension" */;
+			buildPhases = (
+				EDFB50532F43584F00FEA44F /* Sources */,
+				EDFB50542F43584F00FEA44F /* Frameworks */,
+				EDFB50552F43584F00FEA44F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TimeToRestMonitorExtension;
+			packageProductDependencies = (
+			);
+			productName = TimeToRestMonitorExtension;
+			productReference = EDFB50572F43584F00FEA44F /* TimeToRestMonitorExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -386,6 +478,9 @@
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
 					EDE2F9362F3744ED006CB2F6 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					EDFB50562F43584F00FEA44F = {
 						CreatedOnToolsVersion = 26.2;
 					};
 				};
@@ -405,6 +500,7 @@
 			projectRoot = "";
 			targets = (
 				EDE2F9362F3744ED006CB2F6 /* TimeToRest */,
+				EDFB50562F43584F00FEA44F /* TimeToRestMonitorExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -418,6 +514,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EDFB50552F43584F00FEA44F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -425,6 +528,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDFB504E2F43416500FEA44F /* RestSessionManager.swift in Sources */,
 				EDA78B082F374D9000181F03 /* TimeToRestEntity.swift in Sources */,
 				EDA78AFD2F374CA900181F03 /* AppCoordinator.swift in Sources */,
 				ED3E1E8D2F3FBE840098B03E /* RestInfoView.swift in Sources */,
@@ -433,6 +537,7 @@
 				ED0450832F407C1C001EDDE8 /* NightModeView.swift in Sources */,
 				EDA78B062F374D7600181F03 /* TimeToRestRepositoryContract.swift in Sources */,
 				EDA78B212F388E0200181F03 /* RestSessionRepositoryContract.swift in Sources */,
+				EDFB50522F43419800FEA44F /* RestSessionDeviceActivityIdentifiers.swift in Sources */,
 				EDA78B0C2F3766DC00181F03 /* NotificationManager.swift in Sources */,
 				EDA78B142F37A9DE00181F03 /* RestSessionEntity.swift in Sources */,
 				ED49C33C2F3F891E00ED2EFF /* CustomTabBar.swift in Sources */,
@@ -467,7 +572,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EDFB50532F43584F00FEA44F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDFB50682F43586900FEA44F /* RestSessionDeviceActivityMonitor.swift in Sources */,
+				EDFB506E2F4358B500FEA44F /* DeviceActivityMonitorExtension.swift in Sources */,
+				EDFB50692F43587C00FEA44F /* RestSessionDeviceActivityIdentifiers.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EDFB50612F43584F00FEA44F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EDFB50562F43584F00FEA44F /* TimeToRestMonitorExtension */;
+			targetProxy = EDFB50602F43584F00FEA44F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		EDE2F9402F3744ED006CB2F6 /* Debug */ = {
@@ -663,6 +786,64 @@
 			};
 			name = Release;
 		};
+		EDFB50642F43584F00FEA44F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = TimeToRestMonitorExtension/TimeToRestMonitorExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VZ82ZJHYB5;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TimeToRestMonitorExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TimeToRestMonitorExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.javidev.TimeToRest.TimeToRestMonitorExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EDFB50652F43584F00FEA44F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = TimeToRestMonitorExtension/TimeToRestMonitorExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = VZ82ZJHYB5;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TimeToRestMonitorExtension/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TimeToRestMonitorExtension;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.javidev.TimeToRest.TimeToRestMonitorExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -680,6 +861,15 @@
 			buildConfigurations = (
 				EDE2F9432F3744ED006CB2F6 /* Debug */,
 				EDE2F9442F3744ED006CB2F6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EDFB50672F43584F00FEA44F /* Build configuration list for PBXNativeTarget "TimeToRestMonitorExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EDFB50642F43584F00FEA44F /* Debug */,
+				EDFB50652F43584F00FEA44F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

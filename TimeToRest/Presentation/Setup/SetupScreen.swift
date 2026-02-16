@@ -1,4 +1,5 @@
 import SwiftUI
+import FamilyControls
 
 // MARK: - SetupScreen
 /// Full-screen modal for configuring the rest schedule.
@@ -47,6 +48,10 @@ struct SetupScreen: View {
                 router.dismissRestConfiguration()
             }
         }
+        .familyActivityPicker(
+            isPresented: $viewModel.isFamilyActivityPickerPresented,
+            selection: $viewModel.blockedSelection
+        )
     }
 
     // MARK: - Header
@@ -108,9 +113,40 @@ struct SetupScreen: View {
     // MARK: - Allowed Apps
 
     private var notAllowedAppsSection: some View {
-        // Aqui se mostrará el mensaje informando al usuario que esas aplicaiones no se van a poder usar durante el descanso.
-        // Si las usa, el descanso se romperá automaticamente
-        EmptyView()
+        VStack(alignment: .leading, spacing: 16) {
+            Text("Automatic blocks during your rest")
+                .textCase(.uppercase)
+                .font(.system(size: 14, weight: .bold))
+                .foregroundStyle(.white.opacity(0.4))
+
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Selected apps will be blocked automatically while you rest.")
+                    .font(.body.weight(.semibold))
+                    .foregroundStyle(.white.opacity(0.95))
+
+                Text("This includes: \(viewModel.blockedSocialAppsDescription).")
+                    .font(.subheadline)
+                    .foregroundStyle(.white.opacity(0.75))
+
+                Button {
+                    viewModel.isFamilyActivityPickerPresented = true
+                } label: {
+                    Text("Select blocked apps")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.orange)
+                }
+
+                Text("Calls, emergency apps and Spotify will stay available.")
+                    .font(.subheadline)
+                    .foregroundStyle(.white.opacity(0.75))
+
+                Text("If you try to use any blocked app, your rest streak ends automatically.")
+                    .font(.caption)
+                    .foregroundStyle(.orange.opacity(0.9))
+            }
+        }
+        .padding(16)
+        .glassEffect(in: .rect(cornerRadius: 24))
     }
 
     // MARK: - Strict Mode
@@ -160,13 +196,4 @@ struct SetupScreen: View {
         .padding(.bottom, 40)
     }
 
-    // MARK: - Helpers
-
-    private func toggleApp(_ app: AllowedApp) {
-        if viewModel.selectedApps.contains(app) {
-            viewModel.selectedApps.remove(app)
-        } else {
-            viewModel.selectedApps.insert(app)
-        }
-    }
 }
