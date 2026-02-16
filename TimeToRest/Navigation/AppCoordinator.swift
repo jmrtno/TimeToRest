@@ -12,6 +12,7 @@ struct AppCoordinator: View {
     private let fetchRestTimeUseCase: FetchRestTimeUseCase
     private let calculateStatsUseCase: CalculateStatsUseCase
     private let restSessionManager: RestSessionManager
+    private let notificationManager: NotificationManager
 
     init(dependencies: AppDependencies) {
         _router = StateObject(wrappedValue: Router())
@@ -30,6 +31,7 @@ struct AppCoordinator: View {
         self.fetchRestTimeUseCase = dependencies.fetchRestTimeUseCase
         self.calculateStatsUseCase = dependencies.calculateStatsUseCase
         self.restSessionManager = dependencies.restSessionManager
+        self.notificationManager = dependencies.notificationManager
     }
 
     var body: some View {
@@ -71,6 +73,7 @@ struct AppCoordinator: View {
             .presentationDragIndicator(.visible)
         }
         .onAppear {
+            notificationManager.requestAuthorization { _ in }
             restSessionManager.prepareAuthorization()
             checkInitialConfiguration()
         }

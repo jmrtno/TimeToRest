@@ -72,13 +72,10 @@ final class SetupViewModel: ObservableObject {
         let manager = notificationManager
         let isStrict = entity.isStrictModeEnabled
         let savedEntity = entity
-        manager.requestAuthorization { granted in
-            guard granted else { return }
-            if isStrict {
-                manager.scheduleStrictReminder(for: savedEntity)
-            } else {
-                manager.scheduleRestReminder(for: savedEntity)
-            }
+        if isStrict {
+            manager.scheduleStrictReminder(for: savedEntity)
+        } else {
+            manager.scheduleRestReminder(for: savedEntity)
         }
 
         restSessionManager.updateBlockedSelection(blockedSelection)

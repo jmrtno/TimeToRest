@@ -86,15 +86,15 @@ struct RestInfoView: View {
                     let isBestStreakDay = dayNumber == viewModel.stats.bestStreak
                     
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(
-                            isBestStreakDay
-                            ? .blue
-                            : isCompleted ? Color.orange : Color.gray.opacity(0.3)
+                        .fill(isCompleted ? Color.orange : Color.gray.opacity(0.3))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(isBestStreakDay ? .blue : .clear, lineWidth: 3)
                         )
                         .frame(height: 32)
                         .overlay(
                             Text("\(dayNumber)")
-                                .font(.system(size: 12,).weight(.bold))
+                                .font(.system(size: 12).weight(.bold))
                                 .foregroundStyle(isCompleted || isBestStreakDay ? .white : Color.gray.opacity(0.6))
                         )
                 }
@@ -173,3 +173,4 @@ struct RestInfoView: View {
         }
     }
 }
+
