@@ -45,6 +45,10 @@ final class StatsViewModel: ObservableObject {
         stats.breakStatusLast15Days.map(\.didBreak)
     }
 
+    var totalTrackedDays: Int {
+        stats.breakStatusLast15Days.count
+    }
+
     var breakFreeDaysCount: Int {
         stats.breakStatusLast15Days.filter { !$0.didBreak }.count
     }

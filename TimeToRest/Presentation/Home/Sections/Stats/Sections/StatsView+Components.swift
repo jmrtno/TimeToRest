@@ -9,7 +9,7 @@ extension StatsView {
             GeometryReader { proxy in
                 let width = proxy.size.width
                 let height = proxy.size.height
-                let safeValues = values.isEmpty ? [Bool](repeating: false, count: 15) : values
+                let safeValues = values
                 let denominator = max(CGFloat(safeValues.count - 1), 1)
                 let breakY = height * 0.22
                 let noBreakY = height * 0.78

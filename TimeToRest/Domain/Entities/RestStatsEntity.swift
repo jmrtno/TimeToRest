@@ -44,15 +44,18 @@ extension RestStatsEntity {
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: now)
 
-        // Oldest -> newest (today). false = no break, true = break.
+        // 10 days of usage (oldest → newest):
+        // Days 1-2: no break (green)
+        // Days 3-4: break (red)
+        // Days 5-10: no break (green)
         let mockDaily: [Bool] = [
-            false, true,  false, false, true,
-            false, false, true,  false, true,
-            false, false, true,  false, false, false
+            false, false, true, true,
+            false, false, false, false, false, false
         ]
 
+        let totalDays = mockDaily.count
         let points: [DailyBreakStatusPoint] = mockDaily.enumerated().compactMap { index, didBreak in
-            guard let day = calendar.date(byAdding: .day, value: -(14 - index), to: today) else {
+            guard let day = calendar.date(byAdding: .day, value: -(totalDays - 1 - index), to: today) else {
                 return nil
             }
             return DailyBreakStatusPoint(day: day, didBreak: didBreak)
