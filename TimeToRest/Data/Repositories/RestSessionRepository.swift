@@ -26,7 +26,7 @@ final class RestSessionRepository: RestSessionRepositoryContract {
     private let userDefaults: UserDefaults
 
     // MARK: - Init
-    init(userDefaults: UserDefaults = .standard) {
+    init(userDefaults: UserDefaults = UserDefaults(suiteName: RestSessionDeviceActivityIdentifiers.appGroupIdentifier) ?? .standard) {
         self.userDefaults = userDefaults
     }
 

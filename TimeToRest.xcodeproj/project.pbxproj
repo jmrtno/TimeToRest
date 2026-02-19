@@ -27,6 +27,7 @@
 		ED49C33C2F3F891E00ED2EFF /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED49C33B2F3F891E00ED2EFF /* CustomTabBar.swift */; };
 		ED6B34422F3FF2590097D632 /* StatsView+Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6B34412F3FF2590097D632 /* StatsView+Components.swift */; };
 		ED6B34442F3FFDEF0097D632 /* BigGlassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6B34432F3FFDEF0097D632 /* BigGlassCard.swift */; };
+		ED8625E82F47BE45003E7D44 /* ManagedSettings.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDFB507D2F438B2800FEA44F /* ManagedSettings.framework */; };
 		EDA78AF12F374BCB00181F03 /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AF02F374BCB00181F03 /* AppDependencies.swift */; };
 		EDA78AF72F374C0400181F03 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AF62F374C0400181F03 /* Router.swift */; };
 		EDA78AF92F374C1800181F03 /* Route.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AF82F374C1800181F03 /* Route.swift */; };
@@ -179,6 +180,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EDFB505A2F43584F00FEA44F /* DeviceActivity.framework in Frameworks */,
+				ED8625E82F47BE45003E7D44 /* ManagedSettings.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

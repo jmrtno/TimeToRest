@@ -240,7 +240,7 @@ final class NightModeViewModel: ObservableObject {
 
     private func startWindowCheckTimer() {
         stopWindowCheckTimer()
-        windowCheckTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: true) { [weak self] _ in
+        windowCheckTimer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { [weak self] _ in
             Task { @MainActor [weak self] in
                 self?.checkNightWindowFromTimer()
             }

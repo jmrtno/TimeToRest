@@ -9,4 +9,6 @@ enum RestSessionDeviceActivityIdentifiers {
 
     nonisolated static let blockedSocialUsageDarwinNotification = "com.timetorest.rest.blocked-social-usage"
     nonisolated static let shieldUnlockRequestedDarwinNotification = "com.timetorest.rest.shield-unlock-requested"
+
+    nonisolated static let appGroupIdentifier = "group.com.javidev.TimeToRest"
 }
