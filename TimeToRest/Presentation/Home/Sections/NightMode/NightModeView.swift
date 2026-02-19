@@ -69,10 +69,6 @@ struct NightModeView: View {
                 .foregroundStyle(.white)
                 .padding(.bottom, 8)
             HStack(spacing: 12) {
-                StatsGlassCard(icon: "shield",
-                               title: "Strict mode",
-                               value: viewModel.isStrictModeEnabled,
-                               iconColor: .indigo)
                 StatsGlassCard(icon: "alarm",
                                title: "Alarm",
                                value: viewModel.formattedEndTime,
@@ -111,7 +107,7 @@ struct NightModeView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 30, height: 30)
-                    .padding(viewModel.isStrictMode ? 20 : 30)
+                    .padding(30)
                     .background(
                         Circle()
                             .stroke(Color.red.opacity(0.2), lineWidth: 1)
@@ -120,7 +116,7 @@ struct NightModeView: View {
             }
             
             Text("Break rest")
-                .font(viewModel.isStrictMode ? .caption : .subheadline)
+                .font(.subheadline)
         }
         .foregroundStyle(.red.opacity(0.6))
     }

@@ -64,10 +64,6 @@ final class RestInfoViewModel: ObservableObject {
 
     // MARK: - UI helpers
 
-    var isStrictMode: Bool {
-        config.isStrictModeEnabled
-    }
-
     var formattedStartTime: String {
         let h = config.startTime.hour ?? 23
         let m = config.startTime.minute ?? 30

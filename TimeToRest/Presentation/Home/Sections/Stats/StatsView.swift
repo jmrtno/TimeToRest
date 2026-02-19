@@ -65,10 +65,10 @@ struct StatsView: View {
             )
             
             StatsGlassCard(
-                icon: "star",
+                icon: "shield",
                 title: "Best Streak",
                 value: "\(statsViewModel.stats.bestStreak)",
-                iconColor: .blue
+                iconColor: .indigo
             )
         }
     }

@@ -11,7 +11,6 @@ final class SetupViewModel: ObservableObject {
     // MARK: - Published state
     @Published var startTime: Date
     @Published var endTime: Date
-    @Published var isStrictMode: Bool = false
     @Published var blockedSelection: FamilyActivitySelection
     @Published var isFamilyActivityPickerPresented: Bool = false
 
@@ -62,21 +61,16 @@ final class SetupViewModel: ObservableObject {
 
         let entity = TimeToRestEntity(
             startTime: startComponents,
-            endTime: endComponents,
-            isStrictModeEnabled: isStrictMode
+            endTime: endComponents
         )
 
         saveRestTimeUseCase.execute(restTime: entity, isNew: mode == .mandatory)
 
         // Schedule notifications
         let manager = notificationManager
-        let isStrict = entity.isStrictModeEnabled
         let savedEntity = entity
-        if isStrict {
-            manager.scheduleStrictReminder(for: savedEntity)
-        } else {
-            manager.scheduleRestReminder(for: savedEntity)
-        }
+        
+        manager.scheduleRestReminder(for: savedEntity)
 
         restSessionManager.updateBlockedSelection(blockedSelection)
         restSessionManager.prepareAuthorization()
@@ -117,6 +111,5 @@ final class SetupViewModel: ObservableObject {
         if let h = config.endTime.hour, let m = config.endTime.minute {
             endTime = calendar.date(bySettingHour: h, minute: m, second: 0, of: now) ?? now
         }
-        isStrictMode = config.isStrictModeEnabled
     }
 }

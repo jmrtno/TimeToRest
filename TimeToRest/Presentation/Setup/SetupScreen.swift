@@ -18,7 +18,6 @@ struct SetupScreen: View {
                 VStack(alignment: .leading, spacing: 20) {
                     headerSection
                     timePickersSection
-                    strictModeToggle
                     notAllowedAppsSection
                     footerText
                 }
@@ -108,39 +107,6 @@ struct SetupScreen: View {
             .tint(.orange)
             .colorScheme(.dark)
         }
-    }
-
-    // MARK: - Strict Mode
-
-    private var strictModeToggle: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Advanced")
-                    .textCase(.uppercase)
-                    .font(.system(size: 14, weight: .bold))
-                    .foregroundStyle(.white.opacity(0.4))
-                    .padding(.bottom, 16)
-                HStack(spacing: 6) {
-                    Image(systemName: "shield")
-                        .font(.system(size: 18, weight: .medium))
-                        .foregroundStyle(.indigo)
-                    Text("Strict mode")
-                        .font(.headline)
-                        .foregroundStyle(.white)
-                    Spacer()
-
-                    Toggle("", isOn: $viewModel.isStrictMode)
-                        .tint(.orange)
-                        .labelsHidden()
-                }
-
-                Text("Longer countdown, more direct messages")
-                    .font(.caption)
-                    .foregroundStyle(.white.opacity(0.5))
-            }
-        }
-        .padding(16)
-        .glassEffect(in: .rect(cornerRadius: 24))
     }
     
     // MARK: - Blocked Apps
