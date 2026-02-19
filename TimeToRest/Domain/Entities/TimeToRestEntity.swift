@@ -26,9 +26,6 @@ struct TimeToRestEntity: Identifiable, Codable, Equatable {
     let startTime: DateComponents
     let endTime: DateComponents
 
-    // MARK: - Behaviour
-    let isStrictModeEnabled: Bool
-
     // MARK: - State (lightweight)
     let createdAt: Date
 
@@ -37,13 +34,11 @@ struct TimeToRestEntity: Identifiable, Codable, Equatable {
         id: UUID = UUID(),
         startTime: DateComponents,
         endTime: DateComponents,
-        isStrictModeEnabled: Bool = false,
         createdAt: Date = Date()
     ) {
         self.id = id
         self.startTime = startTime
         self.endTime = endTime
-        self.isStrictModeEnabled = isStrictModeEnabled
         self.createdAt = createdAt
     }
 
@@ -57,7 +52,6 @@ struct TimeToRestEntity: Identifiable, Codable, Equatable {
         id: UUID(),
         startTime: DateComponents(hour: 23, minute: 30),
         endTime: DateComponents(hour: 7, minute: 0),
-        isStrictModeEnabled: false,
         createdAt: Date()
     )
 }

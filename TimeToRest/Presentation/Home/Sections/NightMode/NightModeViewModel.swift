@@ -20,14 +20,6 @@ final class NightModeViewModel: ObservableObject {
         isWithinNightWindow && !didBreakTonight
     }
 
-    var isStrictMode: Bool {
-        config.isStrictModeEnabled
-    }
-
-    var isStrictModeEnabled: String {
-        isStrictMode ? "On" : "Off"
-    }
-
     var formattedEndTime: String {
         Self.formatTime(hour: config.endTime.hour ?? 7, minute: config.endTime.minute ?? 0)
     }

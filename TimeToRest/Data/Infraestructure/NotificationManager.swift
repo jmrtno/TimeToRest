@@ -99,32 +99,6 @@ final class NotificationManager: NSObject {
         notificationCenter.add(preRequest) { _ in }
     }
 
-    /// Schedules strict mode notifications with more direct messaging.
-    func scheduleStrictReminder(for restTime: TimeToRestEntity) {
-        cancelAllRestNotifications()
-
-        guard let hour = restTime.startTime.hour,
-              let minute = restTime.startTime.minute else { return }
-
-        let content = UNMutableNotificationContent()
-        content.title = "🌙 Time to Rest"
-        content.body = "This is exactly what you wanted to avoid. Keep the app open"
-        content.sound = .default
-        content.categoryIdentifier = "REST_TIME"
-
-        var dateComponents = DateComponents()
-        dateComponents.hour = hour
-        dateComponents.minute = minute
-
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        let request = UNNotificationRequest(
-            identifier: "rest_start_\(restTime.restIdentifier)",
-            content: content,
-            trigger: trigger
-        )
-        notificationCenter.add(request) { _ in }
-    }
-
     /// Cancels all rest-related notifications.
     func cancelAllRestNotifications() {
         notificationCenter.getPendingNotificationRequests { [weak self] requests in

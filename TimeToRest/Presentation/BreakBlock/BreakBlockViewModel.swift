@@ -16,7 +16,6 @@ final class BreakBlockViewModel: ObservableObject {
     // MARK: - Dependencies
     private let calculateStatsUseCase: CalculateStatsUseCase
     private let restSessionManager: RestSessionManager
-    private let isStrictMode: Bool
 
     let totalCountdown: Int
     private var timer: Timer?
@@ -35,28 +34,13 @@ final class BreakBlockViewModel: ObservableObject {
         "You're stronger than this urge."
     ]
 
-    private let strictMessages = [
-        "This is exactly what you wanted to avoid.",
-        "You made a promise to yourself.",
-        "Every time you give in, it gets harder.",
-        "Is this really worth breaking your streak?",
-        "You know you'll regret this.",
-        "The screen can wait. You can't get this sleep back.",
-        "Stop. Think. Is this who you want to be?",
-        "Your discipline defines you.",
-        "One moment of weakness. Don't let it win.",
-        "Put the phone down. Now."
-    ]
-
     init(
         calculateStatsUseCase: CalculateStatsUseCase,
-        restSessionManager: RestSessionManager,
-        isStrictMode: Bool
+        restSessionManager: RestSessionManager
     ) {
         self.calculateStatsUseCase = calculateStatsUseCase
         self.restSessionManager = restSessionManager
-        self.isStrictMode = isStrictMode
-        let total = isStrictMode ? 20 : 10
+        let total = 10
         self.totalCountdown = total
         self.countdownRemaining = total
     }
@@ -100,7 +84,7 @@ final class BreakBlockViewModel: ObservableObject {
     }
 
     private func pickRandomMessage() {
-        let messages = isStrictMode ? strictMessages : normalMessages
+        let messages = normalMessages
         currentMessage = messages.randomElement() ?? ""
     }
 

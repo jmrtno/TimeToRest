@@ -32,8 +32,7 @@ struct RouteViewFactory {
             BreakBlockScreen(
                 viewModel: BreakBlockViewModel(
                     calculateStatsUseCase: dependencies.calculateStatsUseCase,
-                    restSessionManager: dependencies.restSessionManager,
-                    isStrictMode: dependencies.fetchRestTimeUseCase.execute()?.isStrictModeEnabled ?? false
+                    restSessionManager: dependencies.restSessionManager
                 )
             )
         }
