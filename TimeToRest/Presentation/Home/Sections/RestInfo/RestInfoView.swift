@@ -159,6 +159,10 @@ struct RestInfoView: View {
 
     private var infoCardsSection: some View {
         HStack(spacing: 16) {
+            GlassCard(icon: "shield",
+                      title: "Best Streak",
+                      value: "\(viewModel.stats.bestStreak)",
+                      iconColor: .indigo)
             // Horario Card
             GlassCard(icon: "clock",
                       title: "Schedule",

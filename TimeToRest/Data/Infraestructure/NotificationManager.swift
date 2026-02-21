@@ -52,6 +52,30 @@ final class NotificationManager: NSObject {
 
         guard let hour = restTime.startTime.hour,
               let minute = restTime.startTime.minute else { return }
+        
+        
+        guard let finishHour = restTime.endTime.hour,
+              let finishMinute = restTime.endTime.minute else { return }
+        
+        // Main notification at finish time
+        let finishContent = UNMutableNotificationContent()
+        finishContent.title = "Rest complete, welcome back!"
+        finishContent.body = "You have completed the rest successfully, congratulations!"
+        finishContent.sound = .default
+        finishContent.categoryIdentifier = "REST_FINISH"
+
+        var finishComponents = DateComponents()
+        finishComponents.hour = finishHour
+        finishComponents.minute = finishMinute
+
+        let finishTrigger = UNCalendarNotificationTrigger(dateMatching: finishComponents, repeats: true)
+        let finishRequest = UNNotificationRequest(
+            identifier: "rest_finish_\(restTime.restIdentifier)",
+            content: finishContent,
+            trigger: finishTrigger
+        )
+        notificationCenter.add(finishRequest) { _ in }
+
 
         // Main notification at start time
         let content = UNMutableNotificationContent()
