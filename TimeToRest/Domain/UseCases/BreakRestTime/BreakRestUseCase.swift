@@ -30,7 +30,7 @@ struct BreakRestUseCase {
         session: RestSessionEntity,
         breakReason: RestSessionEntity.BreakReason,
         brokenAt: Date = Date()
-    ) -> RestSessionEntity {
+    ) async -> RestSessionEntity {
         // Calcula minutos evitados hasta romper
         let avoidedMinutes = max(0, Int(brokenAt.timeIntervalSince(session.startedAt) / 60))
 
@@ -42,11 +42,14 @@ struct BreakRestUseCase {
             didBreakRest: true,
             breakReason: breakReason,
             brokenAt: brokenAt,
-            avoidedMinutes: avoidedMinutes
+            avoidedMinutes: avoidedMinutes,
+            startTime: session.startTime,
+            endTime: session.endTime,
+            createdAt: session.createdAt
         )
 
         // Guarda la sesión actualizada
-        repository.update(updatedSession)
+        await repository.update(updatedSession)
 
         return updatedSession
     }

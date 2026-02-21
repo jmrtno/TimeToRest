@@ -30,7 +30,7 @@ struct StartRestSessionUseCase {
 
     /// Starts a new rest session for today.
     /// - Returns: The created session, or nil if an active (non-broken) one already exists.
-    func execute(now: Date = Date()) -> RestSessionEntity? {
+    func execute(now: Date = Date()) async -> RestSessionEntity? {
         // If there's already an active session for today, return nil.
         // If the existing session was broken, allow creating a fresh one.
         if let existing = sessionRepository.fetch(for: now) {
@@ -43,10 +43,13 @@ struct StartRestSessionUseCase {
             day: now,
             startedAt: now,
             didBreakRest: false,
-            avoidedMinutes: 0
+            avoidedMinutes: 0,
+            startTime: DateComponents(hour: 23, minute: 30), // Default values
+            endTime: DateComponents(hour: 7, minute: 0),    // Default values
+            createdAt: now
         )
 
-        sessionRepository.save(session)
+        await sessionRepository.save(session)
         return session
     }
 }

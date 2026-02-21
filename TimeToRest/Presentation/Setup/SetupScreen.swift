@@ -37,7 +37,9 @@ struct SetupScreen: View {
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button(viewModel.mode == .mandatory ? "Start Resting" : "Save") {
-                    viewModel.save()
+                    Task {
+                        await viewModel.save()
+                    }
                 } 
                 .foregroundStyle(.white.opacity(0.6))
             }

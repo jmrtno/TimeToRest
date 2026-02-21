@@ -54,7 +54,7 @@ final class SetupViewModel: ObservableObject {
 
     // MARK: - Actions
 
-    func save() {
+    func save() async {
         let calendar = Calendar.current
         let startComponents = calendar.dateComponents([.hour, .minute], from: startTime)
         let endComponents = calendar.dateComponents([.hour, .minute], from: endTime)
@@ -64,7 +64,7 @@ final class SetupViewModel: ObservableObject {
             endTime: endComponents
         )
 
-        saveRestTimeUseCase.execute(restTime: entity, isNew: mode == .mandatory)
+        await saveRestTimeUseCase.execute(restTime: entity, isNew: mode == .mandatory)
 
         // Schedule notifications
         let manager = notificationManager

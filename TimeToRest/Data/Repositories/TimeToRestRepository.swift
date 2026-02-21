@@ -44,16 +44,12 @@ final class TimeToRestRepository: TimeToRestRepositoryContract {
         }
     }
     
-    func save(_ restTime: TimeToRestEntity) {
-        Task { @MainActor in
-            persist(restTime)
-        }
+    func save(_ restTime: TimeToRestEntity) async {
+        persist(restTime)
     }
     
-    func update(_ restTime: TimeToRestEntity) {
-        Task { @MainActor in
-            persist(restTime)
-        }
+    func update(_ restTime: TimeToRestEntity) async {
+        persist(restTime)
     }
     
     // MARK: - Private Helpers

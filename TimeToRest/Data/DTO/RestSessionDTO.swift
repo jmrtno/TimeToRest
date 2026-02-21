@@ -64,7 +64,10 @@ struct RestSessionDTO: Codable {
             breakReason: breakReason.flatMap { RestSessionEntity.BreakReason(rawValue: $0) },
             brokenAt: brokenAt,
             isCompleted: isCompleted,
-            avoidedMinutes: avoidedMinutes
+            avoidedMinutes: avoidedMinutes,
+            startTime: DateComponents(hour: 23, minute: 30), // Default values
+            endTime: DateComponents(hour: 7, minute: 0),    // Default values
+            createdAt: Date()
         )
     }
 }

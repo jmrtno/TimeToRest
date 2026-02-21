@@ -8,15 +8,15 @@ import ManagedSettings
 @MainActor
 final class RestSessionManager: ObservableObject {
 
+    enum BreakReason: Equatable {
+        case manualCancellation
+        case blockedSocialAppUsage
+    }
+
     enum State: Equatable {
         case idle
         case active
         case broken(BreakReason)
-    }
-
-    enum BreakReason: Equatable {
-        case manualCancellation
-        case blockedSocialAppUsage
     }
 
     @Published private(set) var state: State = .idle
@@ -256,12 +256,16 @@ final class RestSessionManager: ObservableObject {
             persistedBreakReason = .blockedSocialAppUsage
         }
 
-        _ = breakRestUseCase.execute(
-            session: session,
-            breakReason: persistedBreakReason
-        )
-        stopMonitoringAndUnlockApps()
-        state = .broken(reason)
+        Task {
+            _ = await breakRestUseCase.execute(
+                session: session,
+                breakReason: persistedBreakReason
+            )
+            await MainActor.run {
+                stopMonitoringAndUnlockApps()
+                state = .broken(reason)
+            }
+        }
     }
     
     private func persistBlockedSelection(_ selection: FamilyActivitySelection) {

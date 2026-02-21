@@ -11,7 +11,7 @@ import Foundation
 /// - Define the properties that represent the entity's state
 /// - Add computed properties for derived values
 /// - Implement `Equatable` for comparison operations
-/// - Keep persistence concerns in DTOs under the Data layer
+/// - Keep persistence concerns in the Data layer via DTOs
 ///
 /// ## Example
 /// ```swift
@@ -28,6 +28,13 @@ struct RestSessionEntity: Identifiable, Equatable {
 
     /// Día lógico del descanso (ej: 2026-02-07)
     let day: Date
+
+    // MARK: - Core configuration
+    let startTime: DateComponents
+    let endTime: DateComponents
+
+    // MARK: - State (lightweight)
+    let createdAt: Date
 
     // MARK: - Timing
     /// Momento en el que el usuario abrió la app durante el horario nocturno
@@ -49,7 +56,10 @@ struct RestSessionEntity: Identifiable, Equatable {
         breakReason: BreakReason? = nil,
         brokenAt: Date? = nil,
         isCompleted: Bool = false,
-        avoidedMinutes: Int
+        avoidedMinutes: Int,
+        startTime: DateComponents,
+        endTime: DateComponents,
+        createdAt: Date = Date()
     ) {
         self.id = id
         self.day = day
@@ -59,5 +69,8 @@ struct RestSessionEntity: Identifiable, Equatable {
         self.brokenAt = brokenAt
         self.isCompleted = isCompleted
         self.avoidedMinutes = avoidedMinutes
+        self.startTime = startTime
+        self.endTime = endTime
+        self.createdAt = createdAt
     }
 }

@@ -54,15 +54,13 @@ final class RestSessionRepository: RestSessionRepositoryContract {
 
     // MARK: - Save / Update
 
-    func save(_ session: RestSessionEntity) {
+    func save(_ session: RestSessionEntity) async {
         var sessions = fetchAll()
         sessions.append(session)
-        Task { @MainActor in
-            persistAll(sessions)
-        }
+        persistAll(sessions)
     }
 
-    func update(_ session: RestSessionEntity) {
+    func update(_ session: RestSessionEntity) async {
         var sessions = fetchAll()
 
         guard let index = sessions.firstIndex(where: { $0.id == session.id }) else {
@@ -70,9 +68,7 @@ final class RestSessionRepository: RestSessionRepositoryContract {
         }
 
         sessions[index] = session
-        Task { @MainActor in
-            persistAll(sessions)
-        }
+        persistAll(sessions)
     }
 
     // MARK: - Private helpers

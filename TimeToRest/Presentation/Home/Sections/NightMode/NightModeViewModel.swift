@@ -74,7 +74,9 @@ final class NightModeViewModel: ObservableObject {
         guard loadConfig() else { return }
         checkIfBrokenTonight()
         restoreSessionIfNeeded()
-        checkNightWindow()
+        Task {
+            await checkNightWindow()
+        }
     }
 
     /// Called after the user saves a new configuration.
@@ -84,7 +86,9 @@ final class NightModeViewModel: ObservableObject {
         didBreakTonight = false
         session = nil
         guard loadConfig() else { return }
-        checkNightWindow()
+        Task {
+            await checkNightWindow()
+        }
     }
 
     // MARK: - Data loading
@@ -102,7 +106,7 @@ final class NightModeViewModel: ObservableObject {
 
     // MARK: - Night window
 
-    func checkNightWindow() {
+    func checkNightWindow() async {
         checkIfBrokenTonight()
         let wasInWindow = isWithinNightWindow
         isWithinNightWindow = Self.isCurrentlyInNightWindow(config: config)
@@ -114,12 +118,12 @@ final class NightModeViewModel: ObservableObject {
         }
 
         if isWithinNightWindow && !wasInWindow {
-            startRestSession()
+            await startRestSession()
         }
 
         if !isWithinNightWindow {
             if wasInWindow {
-                completeCurrentSession()
+                await completeCurrentSession()
             }
             restSessionManager.endMonitoringAfterSuccessfulRest()
             session = nil
@@ -128,7 +132,7 @@ final class NightModeViewModel: ObservableObject {
         }
 
         if isWithinNightWindow && !didBreakTonight && session == nil {
-            startRestSession()
+            await startRestSession()
         }
 
         if isWithinNightWindow && !didBreakTonight {
@@ -139,15 +143,15 @@ final class NightModeViewModel: ObservableObject {
     
 
     /// Starts a rest session if within the night window.
-    func startRestSession() {
-        if let newSession = startRestSessionUseCase.execute() {
+    func startRestSession() async {
+        if let newSession = await startRestSessionUseCase.execute() {
             session = newSession
         }
     }
 
     /// Marks the current session as completed (user didn't break rest).
-    private func completeCurrentSession() {
-        completeRestSessionUseCase.execute()
+    private func completeCurrentSession() async {
+        await completeRestSessionUseCase.execute()
     }
 
     /// Restores the in-memory session from persistence if we're in the night window
@@ -248,7 +252,9 @@ final class NightModeViewModel: ObservableObject {
         let minuteMark = Int(now.timeIntervalSince1970 / 60)
         guard minuteMark != lastTimerCheckedMinute else { return }
         lastTimerCheckedMinute = minuteMark
-        checkNightWindow()
+        Task {
+            await checkNightWindow()
+        }
     }
 
     // MARK: - Night Window Logic
