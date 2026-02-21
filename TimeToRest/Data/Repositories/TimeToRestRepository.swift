@@ -23,7 +23,7 @@ final class TimeToRestRepository: TimeToRestRepositoryContract {
     private let storageKey = "TimeToRest"
     private let userDefaults: UserDefaults
     
-    init(userDefaults: UserDefaults = .standard) {
+    init(userDefaults: UserDefaults = UserDefaults(suiteName: RestSessionDeviceActivityIdentifiers.appGroupIdentifier) ?? .standard) {
         self.userDefaults = userDefaults
     }
     

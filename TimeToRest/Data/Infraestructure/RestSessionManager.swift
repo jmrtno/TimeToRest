@@ -38,7 +38,7 @@ final class RestSessionManager: ObservableObject {
     init(
         breakRestUseCase: BreakRestUseCase,
         fetchCurrentSessionUseCase: FetchCurrentSessionUseCase,
-        userDefaults: UserDefaults = .standard
+        userDefaults: UserDefaults = UserDefaults(suiteName: RestSessionDeviceActivityIdentifiers.appGroupIdentifier) ?? .standard
     ) {
         self.breakRestUseCase = breakRestUseCase
         self.fetchCurrentSessionUseCase = fetchCurrentSessionUseCase
