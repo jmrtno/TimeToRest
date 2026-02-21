@@ -50,7 +50,7 @@ struct CompleteRestSessionUseCase {
                                          day: current.day,
                                          startedAt: current.startedAt,
                                          didBreakRest: false,
-                                         breakedAt: nil,
+                                         brokenAt: nil,
                                          isCompleted: true,
                                          avoidedMinutes: current.avoidedMinutes)
         repository.update(complete)

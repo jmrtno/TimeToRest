@@ -177,7 +177,7 @@ final class NightModeViewModel: ObservableObject {
             return
         }
 
-        let breakReferenceDate = persistedSession.breakedAt ?? persistedSession.startedAt
+        let breakReferenceDate = persistedSession.brokenAt ?? persistedSession.startedAt
         didBreakTonight = breakReferenceDate >= config.createdAt
     }
 

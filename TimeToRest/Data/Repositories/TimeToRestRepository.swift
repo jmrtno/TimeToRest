@@ -37,26 +37,32 @@ final class TimeToRestRepository: TimeToRestRepositoryContract {
         }
         
         do {
-            let restTime = try JSONDecoder().decode(TimeToRestEntity.self, from: data)
-            return restTime
+            let dto = try JSONDecoder().decode(TimeToRestDTO.self, from: data)
+            return dto.toEntity()
         } catch {
             return .firstConfig
         }
     }
     
     func save(_ restTime: TimeToRestEntity) {
-        persist(restTime)
+        Task { @MainActor in
+            persist(restTime)
+        }
     }
     
     func update(_ restTime: TimeToRestEntity) {
-        persist(restTime)
+        Task { @MainActor in
+            persist(restTime)
+        }
     }
     
     // MARK: - Private Helpers
     
-    private func persist<T: Encodable>(_ items: T) {
+    @MainActor
+    private func persist(_ restTime: TimeToRestEntity) {
         do {
-            let data = try JSONEncoder().encode(items)
+            let dto = TimeToRestDTO(entity: restTime)
+            let data = try JSONEncoder().encode(dto)
             userDefaults.set(data, forKey: storageKey)
         } catch {
             // Handle encoding error appropriately

@@ -62,6 +62,8 @@
 		EDFB50A02F438B4700FEA44F /* TimeToRestShieldConfigurationExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = EDFB50952F438B4700FEA44F /* TimeToRestShieldConfigurationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		EDFB50AB2F438CB400FEA44F /* ShieldActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB50712F438ADE00FEA44F /* ShieldActionExtension.swift */; };
 		EDFB50AC2F438CBD00FEA44F /* ShieldConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB50752F438AF300FEA44F /* ShieldConfigurationExtension.swift */; };
+		EDFCA0012F5003B800B55A1D /* TimeToRestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFCA0002F5003B800B55A1D /* TimeToRestDTO.swift */; };
+		EDFCA0032F5003CC00B55A1D /* RestSessionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFCA0022F5003CC00B55A1D /* RestSessionDTO.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -165,6 +167,8 @@
 		EDFB507D2F438B2800FEA44F /* ManagedSettings.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ManagedSettings.framework; path = System/Library/Frameworks/ManagedSettings.framework; sourceTree = SDKROOT; };
 		EDFB50952F438B4700FEA44F /* TimeToRestShieldConfigurationExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TimeToRestShieldConfigurationExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDFB50972F438B4700FEA44F /* ManagedSettingsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ManagedSettingsUI.framework; path = System/Library/Frameworks/ManagedSettingsUI.framework; sourceTree = SDKROOT; };
+		EDFCA0002F5003B800B55A1D /* TimeToRestDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeToRestDTO.swift; sourceTree = "<group>"; };
+		EDFCA0022F5003CC00B55A1D /* RestSessionDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestSessionDTO.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -320,10 +324,20 @@
 		EDA78AF32F374BE200181F03 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				EDFCA0042F50043200B55A1D /* DTO */,
 				EDA78AFF2F374CD600181F03 /* Repositories */,
 				EDA78AFE2F374CCE00181F03 /* Infraestructure */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		EDFCA0042F50043200B55A1D /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				EDFCA0002F5003B800B55A1D /* TimeToRestDTO.swift */,
+				EDFCA0022F5003CC00B55A1D /* RestSessionDTO.swift */,
+			);
+			path = DTO;
 			sourceTree = "<group>";
 		};
 		EDA78AF42F374BE600181F03 /* Domain */ = {
@@ -668,6 +682,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDFCA0012F5003B800B55A1D /* TimeToRestDTO.swift in Sources */,
 				EDFB504E2F43416500FEA44F /* RestSessionManager.swift in Sources */,
 				EDA78B082F374D9000181F03 /* TimeToRestEntity.swift in Sources */,
 				EDA78AFD2F374CA900181F03 /* AppCoordinator.swift in Sources */,
@@ -687,6 +702,7 @@
 				EDA78AF12F374BCB00181F03 /* AppDependencies.swift in Sources */,
 				ED3E1E8A2F3FB8650098B03E /* StatsView.swift in Sources */,
 				EDA78B232F388EA000181F03 /* RestSessionRepository.swift in Sources */,
+				EDFCA0032F5003CC00B55A1D /* RestSessionDTO.swift in Sources */,
 				EDA78B012F374CF900181F03 /* TimeToRestRepository.swift in Sources */,
 				EDA78AFB2F374C2800181F03 /* RouteViewFactory.swift in Sources */,
 				EDA78AF92F374C1800181F03 /* Route.swift in Sources */,

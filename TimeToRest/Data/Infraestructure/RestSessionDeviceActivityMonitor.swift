@@ -75,7 +75,7 @@ private struct SessionDTO: Codable {
     let startedAt: Date
     let didBreakRest: Bool
     let breakReason: String?
-    let breakedAt: Date?
+    let brokenAt: Date?
     var isCompleted: Bool
     let avoidedMinutes: Int
 
@@ -86,7 +86,7 @@ private struct SessionDTO: Codable {
         startedAt = try container.decode(Date.self, forKey: .startedAt)
         didBreakRest = try container.decode(Bool.self, forKey: .didBreakRest)
         breakReason = try container.decodeIfPresent(String.self, forKey: .breakReason)
-        breakedAt = try container.decodeIfPresent(Date.self, forKey: .breakedAt)
+        brokenAt = try container.decodeIfPresent(Date.self, forKey: .brokenAt)
         isCompleted = try container.decodeIfPresent(Bool.self, forKey: .isCompleted) ?? false
         avoidedMinutes = try container.decode(Int.self, forKey: .avoidedMinutes)
     }

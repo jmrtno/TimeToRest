@@ -69,10 +69,10 @@ extension RestStatsEntity {
                 tempStreak = 0
             } else {
                 tempStreak += 1
-                currentStreak = tempStreak
                 bestStreak = max(bestStreak, tempStreak)
             }
         }
+        currentStreak = tempStreak
 
         let currentWeek = calendar.dateComponents([.weekOfYear, .yearForWeekOfYear], from: today)
         let breaksThisWeek = points.filter { point in

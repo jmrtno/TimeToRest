@@ -5,20 +5,20 @@ import Foundation
 ///
 /// This entity encapsulates the essential properties and behaviors of the domain model.
 /// It is designed to be independent of any framework or infrastructure concerns,
-/// following Clean Architecture principles.
+/// following Clean Architecture principles for Swift 6.
 ///
 /// ## Usage
 /// - Define the properties that represent the entity's state
 /// - Add computed properties for derived values
 /// - Implement `Equatable` for comparison operations
-/// - Implement `Codable` if persistence is required
+/// - Keep persistence concerns in DTOs under the Data layer
 ///
 /// ## Example
 /// ```swift
 /// let item = RestSessionEntity(id: UUID(), name: "Example")
 /// ```
-struct RestSessionEntity: Identifiable, Codable, Equatable {
-    enum BreakReason: String, Codable, Equatable {
+struct RestSessionEntity: Identifiable, Equatable {
+    enum BreakReason: String, Equatable {
         case manualCancellation
         case blockedSocialAppUsage
     }
@@ -36,7 +36,7 @@ struct RestSessionEntity: Identifiable, Codable, Equatable {
     // MARK: - Result
     let didBreakRest: Bool
     let breakReason: BreakReason?
-    let breakedAt: Date?
+    let brokenAt: Date?
     let isCompleted: Bool
     let avoidedMinutes: Int
 
@@ -47,7 +47,7 @@ struct RestSessionEntity: Identifiable, Codable, Equatable {
         startedAt: Date,
         didBreakRest: Bool,
         breakReason: BreakReason? = nil,
-        breakedAt: Date? = nil,
+        brokenAt: Date? = nil,
         isCompleted: Bool = false,
         avoidedMinutes: Int
     ) {
@@ -56,21 +56,8 @@ struct RestSessionEntity: Identifiable, Codable, Equatable {
         self.startedAt = startedAt
         self.didBreakRest = didBreakRest
         self.breakReason = breakReason
-        self.breakedAt = breakedAt
+        self.brokenAt = brokenAt
         self.isCompleted = isCompleted
         self.avoidedMinutes = avoidedMinutes
-    }
-
-    // MARK: - Codable (backward compatibility for isCompleted)
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(UUID.self, forKey: .id)
-        day = try container.decode(Date.self, forKey: .day)
-        startedAt = try container.decode(Date.self, forKey: .startedAt)
-        didBreakRest = try container.decode(Bool.self, forKey: .didBreakRest)
-        breakReason = try container.decodeIfPresent(BreakReason.self, forKey: .breakReason)
-        breakedAt = try container.decodeIfPresent(Date.self, forKey: .breakedAt)
-        isCompleted = try container.decodeIfPresent(Bool.self, forKey: .isCompleted) ?? false
-        avoidedMinutes = try container.decode(Int.self, forKey: .avoidedMinutes)
     }
 }

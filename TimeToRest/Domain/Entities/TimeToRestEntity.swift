@@ -5,19 +5,19 @@ import Foundation
 ///
 /// This entity encapsulates the essential properties and behaviors of the domain model.
 /// It is designed to be independent of any framework or infrastructure concerns,
-/// following Clean Architecture principles.
+/// following Clean Architecture principles for Swift 6.
 ///
 /// ## Usage
 /// - Define the properties that represent the entity's state
 /// - Add computed properties for derived values
 /// - Implement `Equatable` for comparison operations
-/// - Implement `Codable` if persistence is required
+/// - Keep persistence concerns in the Data layer via DTOs
 ///
 /// ## Example
 /// ```swift
 /// let item = TimeToRestEntity(id: UUID(), name: "Example")
 /// ```
-struct TimeToRestEntity: Identifiable, Codable, Equatable {
+struct TimeToRestEntity: Identifiable, Equatable {
 
     // MARK: - Identity
     let id: UUID

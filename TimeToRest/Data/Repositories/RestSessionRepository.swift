@@ -38,7 +38,8 @@ final class RestSessionRepository: RestSessionRepositoryContract {
         }
 
         do {
-            return try JSONDecoder().decode([RestSessionEntity].self, from: data)
+            let dtoList = try JSONDecoder().decode([RestSessionDTO].self, from: data)
+            return dtoList.map { $0.toEntity() }
         } catch {
             return []
         }
@@ -56,7 +57,9 @@ final class RestSessionRepository: RestSessionRepositoryContract {
     func save(_ session: RestSessionEntity) {
         var sessions = fetchAll()
         sessions.append(session)
-        persist(sessions)
+        Task { @MainActor in
+            persistAll(sessions)
+        }
     }
 
     func update(_ session: RestSessionEntity) {
@@ -67,14 +70,18 @@ final class RestSessionRepository: RestSessionRepositoryContract {
         }
 
         sessions[index] = session
-        persist(sessions)
+        Task { @MainActor in
+            persistAll(sessions)
+        }
     }
 
     // MARK: - Private helpers
 
-    private func persist<T: Encodable>(_ items: T) {
+    @MainActor
+    private func persistAll(_ sessions: [RestSessionEntity]) {
         do {
-            let data = try JSONEncoder().encode(items)
+            let dtoList = sessions.map(RestSessionDTO.init(entity:))
+            let data = try JSONEncoder().encode(dtoList)
             userDefaults.set(data, forKey: storageKey)
         } catch {
             // Aquí podrías loggear si quieres
