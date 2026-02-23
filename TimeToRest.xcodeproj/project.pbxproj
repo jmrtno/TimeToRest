@@ -47,6 +47,8 @@
 		EDA78B232F388EA000181F03 /* RestSessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B222F388EA000181F03 /* RestSessionRepository.swift */; };
 		EDA78B252F38985300181F03 /* RestConfigurationMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B242F38985300181F03 /* RestConfigurationMode.swift */; };
 		EDA78B282F389D3900181F03 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDA78B272F389D3900181F03 /* Assets.xcassets */; };
+		EDBF044D2F4A611C004887DB /* BackgroundTasks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDBF044C2F4A611C004887DB /* BackgroundTasks.framework */; };
+		EDBF044E2F4A638F004887DB /* BackgroundTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF044F2F4A6120004887DB /* BackgroundTaskManager.swift */; };
 		EDE2F94A2F374530006CB2F6 /* TimeToRestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE2F9472F374530006CB2F6 /* TimeToRestApp.swift */; };
 		EDFB504E2F43416500FEA44F /* RestSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB504D2F43416500FEA44F /* RestSessionManager.swift */; };
 		EDFB50522F43419800FEA44F /* RestSessionDeviceActivityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB504F2F43419800FEA44F /* RestSessionDeviceActivityIdentifiers.swift */; };
@@ -146,6 +148,9 @@
 		EDA78B222F388EA000181F03 /* RestSessionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestSessionRepository.swift; sourceTree = "<group>"; };
 		EDA78B242F38985300181F03 /* RestConfigurationMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestConfigurationMode.swift; sourceTree = "<group>"; };
 		EDA78B272F389D3900181F03 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EDBF044B2F4A5E62004887DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		EDBF044C2F4A611C004887DB /* BackgroundTasks.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BackgroundTasks.framework; path = System/Library/Frameworks/BackgroundTasks.framework; sourceTree = SDKROOT; };
+		EDBF044F2F4A6120004887DB /* BackgroundTaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTaskManager.swift; sourceTree = "<group>"; };
 		EDE2F9372F3744ED006CB2F6 /* TimeToRest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeToRest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDE2F9472F374530006CB2F6 /* TimeToRestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeToRestApp.swift; sourceTree = "<group>"; };
 		EDFB504C2F433B5100FEA44F /* TimeToRest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TimeToRest.entitlements; sourceTree = "<group>"; };
@@ -176,6 +181,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDBF044D2F4A611C004887DB /* BackgroundTasks.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,15 +337,6 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
-		EDFCA0042F50043200B55A1D /* DTO */ = {
-			isa = PBXGroup;
-			children = (
-				EDFCA0002F5003B800B55A1D /* TimeToRestDTO.swift */,
-				EDFCA0022F5003CC00B55A1D /* RestSessionDTO.swift */,
-			);
-			path = DTO;
-			sourceTree = "<group>";
-		};
 		EDA78AF42F374BE600181F03 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
@@ -367,6 +364,7 @@
 			children = (
 				EDFB504D2F43416500FEA44F /* RestSessionManager.swift */,
 				EDA78B0B2F3766DC00181F03 /* NotificationManager.swift */,
+				EDBF044F2F4A6120004887DB /* BackgroundTaskManager.swift */,
 				EDFB504F2F43419800FEA44F /* RestSessionDeviceActivityIdentifiers.swift */,
 				EDFB50502F43419800FEA44F /* RestSessionDeviceActivityMonitor.swift */,
 			);
@@ -464,6 +462,7 @@
 		EDE2F9482F374530006CB2F6 /* TimeToRest */ = {
 			isa = PBXGroup;
 			children = (
+				EDBF044B2F4A5E62004887DB /* Info.plist */,
 				EDFB504C2F433B5100FEA44F /* TimeToRest.entitlements */,
 				EDA78AF32F374BE200181F03 /* Data */,
 				EDA78AF42F374BE600181F03 /* Domain */,
@@ -479,6 +478,7 @@
 		EDFB50582F43584F00FEA44F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EDBF044C2F4A611C004887DB /* BackgroundTasks.framework */,
 				EDFB50592F43584F00FEA44F /* DeviceActivity.framework */,
 				EDFB507D2F438B2800FEA44F /* ManagedSettings.framework */,
 				EDFB50972F438B4700FEA44F /* ManagedSettingsUI.framework */,
@@ -514,6 +514,15 @@
 				EDFB50762F438AF300FEA44F /* TimeToRestShieldConfigurationExtension.entitlements */,
 			);
 			path = TimeToRestShieldConfigurationExtension;
+			sourceTree = "<group>";
+		};
+		EDFCA0042F50043200B55A1D /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				EDFCA0002F5003B800B55A1D /* TimeToRestDTO.swift */,
+				EDFCA0022F5003CC00B55A1D /* RestSessionDTO.swift */,
+			);
+			path = DTO;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -702,6 +711,7 @@
 				EDA78AF12F374BCB00181F03 /* AppDependencies.swift in Sources */,
 				ED3E1E8A2F3FB8650098B03E /* StatsView.swift in Sources */,
 				EDA78B232F388EA000181F03 /* RestSessionRepository.swift in Sources */,
+				EDBF044E2F4A638F004887DB /* BackgroundTaskManager.swift in Sources */,
 				EDFCA0032F5003CC00B55A1D /* RestSessionDTO.swift in Sources */,
 				EDA78B012F374CF900181F03 /* TimeToRestRepository.swift in Sources */,
 				EDA78AFB2F374C2800181F03 /* RouteViewFactory.swift in Sources */,
@@ -906,6 +916,7 @@
 				DEVELOPMENT_TEAM = VZ82ZJHYB5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TimeToRest/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Time To Rest";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -943,6 +954,7 @@
 				DEVELOPMENT_TEAM = VZ82ZJHYB5;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TimeToRest/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Time To Rest";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

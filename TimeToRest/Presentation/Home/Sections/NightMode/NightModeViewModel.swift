@@ -54,6 +54,20 @@ final class NightModeViewModel: ObservableObject {
         self.completeRestSessionUseCase = completeRestSessionUseCase
         self.fetchCurrentSessionUseCase = fetchCurrentSessionUseCase
         self.restSessionManager = restSessionManager
+        
+        // Listen for background task notifications
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleBackgroundNightCheck),
+            name: .nightCheckBackgroundTask,
+            object: nil
+        )
+    }
+    
+    @objc private func handleBackgroundNightCheck() {
+        Task {
+            await checkNightWindow()
+        }
     }
 
     // MARK: - Lifecycle

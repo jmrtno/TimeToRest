@@ -40,6 +40,10 @@ final class AppDependencies {
             fetchCurrentSessionUseCase: fetchCurrentSessionUseCase
         )
     }()
+    
+    lazy var backgroundTaskManager: BackgroundTaskManager = {
+        BackgroundTaskManager()
+    }()
 
     // MARK: - Use Cases (TimeToRest configuration)
 
