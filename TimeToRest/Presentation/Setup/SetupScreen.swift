@@ -1,4 +1,5 @@
 import SwiftUI
+import FamilyControls
 
 // MARK: - SetupScreen
 /// Full-screen modal for configuring the rest schedule.
@@ -17,8 +18,7 @@ struct SetupScreen: View {
                 VStack(alignment: .leading, spacing: 20) {
                     headerSection
                     timePickersSection
-                    // allowedAppsSection 
-                    strictModeToggle
+                    notAllowedAppsSection
                     footerText
                 }
                 .padding(.horizontal, 24)
@@ -37,7 +37,9 @@ struct SetupScreen: View {
             }
             ToolbarItem(placement: .confirmationAction) {
                 Button(viewModel.mode == .mandatory ? "Start Resting" : "Save") {
-                    viewModel.save()
+                    Task {
+                        await viewModel.save()
+                    }
                 } 
                 .foregroundStyle(.white.opacity(0.6))
             }
@@ -47,6 +49,10 @@ struct SetupScreen: View {
                 router.dismissRestConfiguration()
             }
         }
+        .familyActivityPicker(
+            isPresented: $viewModel.isFamilyActivityPickerPresented,
+            selection: $viewModel.blockedSelection
+        )
     }
 
     // MARK: - Header
@@ -104,58 +110,46 @@ struct SetupScreen: View {
             .colorScheme(.dark)
         }
     }
+    
+    // MARK: - Blocked Apps
 
-    // MARK: - Allowed Apps
-
-    private var allowedAppsSection: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Allowed apps (informational)")
-                .font(.subheadline)
-                .foregroundStyle(.white.opacity(0.5))
-
-            HStack(spacing: 8) {
-                ForEach(AllowedApp.allCases, id: \.self) { app in
-                    AllowedAppChip(
-                        app: app,
-                        isSelected: viewModel.selectedApps.contains(app),
-                        onTap: {
-                            toggleApp(app)
-                        }
-                    )
-                }
-            }
-        }
-    }
-
-    // MARK: - Strict Mode
-
-    private var strictModeToggle: some View {
+    private var notAllowedAppsSection: some View {
         HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Advanced")
+            VStack(alignment: .leading, spacing: 6) {
+                Text("Blocks during your rest")
                     .textCase(.uppercase)
                     .font(.system(size: 14, weight: .bold))
                     .foregroundStyle(.white.opacity(0.4))
                     .padding(.bottom, 16)
-                HStack(spacing: 6) {
-                    Image(systemName: "shield")
-                        .font(.system(size: 18, weight: .medium))
-                        .foregroundStyle(.indigo)
-                    Text("Strict mode")
-                        .font(.headline)
-                        .foregroundStyle(.white)
+
+                Text("Selected apps will be blocked automatically while you rest.")
+                    .font(.headline)
+                    .foregroundStyle(.white)
+
+                Button {
+                    viewModel.isFamilyActivityPickerPresented = true
+                } label: {
+                    HStack {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(.orange.opacity(0.1))
+                                .frame(width: 48, height: 48)
+                            Image(systemName: "lock.app.dashed")
+                                .font(.system(size: 24, weight: .medium))
+                                .foregroundStyle(.orange)
+                        }
+                        Text("Select apps")
+                            .font(.subheadline.weight(.semibold))
+                            .foregroundStyle(.orange)
+                    }
                 }
-
-                Text("Longer countdown, more direct messages")
-                    .font(.caption)
-                    .foregroundStyle(.white.opacity(0.5))
+                
+                Text("Apps blocked: \(viewModel.blockedSocialAppsDescription).")
+                    .font(.subheadline)
+                    .foregroundStyle(.white.opacity(0.75))
             }
-
+            
             Spacer()
-
-            Toggle("", isOn: $viewModel.isStrictMode)
-                .tint(.orange)
-                .labelsHidden()
         }
         .padding(16)
         .glassEffect(in: .rect(cornerRadius: 24))
@@ -174,13 +168,4 @@ struct SetupScreen: View {
         .padding(.bottom, 40)
     }
 
-    // MARK: - Helpers
-
-    private func toggleApp(_ app: AllowedApp) {
-        if viewModel.selectedApps.contains(app) {
-            viewModel.selectedApps.remove(app)
-        } else {
-            viewModel.selectedApps.insert(app)
-        }
-    }
 }

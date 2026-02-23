@@ -26,7 +26,7 @@ protocol RestSessionRepositoryContract {
     /// Devuelve la sesión de un día concreto (opcional si no existe)
     func fetch(for day: Date) -> RestSessionEntity?
     /// Guarda la sesión inicial (StartRestUseCase)
-    func save(_ session: RestSessionEntity)
+    func save(_ session: RestSessionEntity) async
     /// Actualiza una sesión existente (BreakRestUseCase)
-    func update(_ session: RestSessionEntity)
+    func update(_ session: RestSessionEntity) async
 }

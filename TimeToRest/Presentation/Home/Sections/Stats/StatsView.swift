@@ -65,10 +65,10 @@ struct StatsView: View {
             )
             
             StatsGlassCard(
-                icon: "star",
+                icon: "shield",
                 title: "Best Streak",
                 value: "\(statsViewModel.stats.bestStreak)",
-                iconColor: .blue
+                iconColor: .indigo
             )
         }
     }
@@ -100,14 +100,14 @@ struct StatsView: View {
                         .frame(height: 120)
                     
                     HStack {
-                        Text("15 days ago")
+                        Text("Oldest")
                             .font(.caption2)
                             .foregroundStyle(.white.opacity(0.45))
                         Spacer()
-                        Text("Break-free: \(statsViewModel.breakFreeDaysCount)/15")
+                        Text("Break-free: \(statsViewModel.breakFreeDaysCount)/\(statsViewModel.totalTrackedDays)")
                             .font(.caption2)
                             .foregroundStyle(.green.opacity(0.85))
-                        Text("Breaks: \(statsViewModel.breakDaysCount)/15")
+                        Text("Breaks: \(statsViewModel.breakDaysCount)/\(statsViewModel.totalTrackedDays)")
                             .font(.caption2)
                             .foregroundStyle(.red.opacity(0.85))
                         Spacer()

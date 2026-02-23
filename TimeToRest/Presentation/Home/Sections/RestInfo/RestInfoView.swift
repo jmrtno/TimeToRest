@@ -89,7 +89,7 @@ struct RestInfoView: View {
                         .fill(isCompleted ? Color.orange : Color.gray.opacity(0.3))
                         .overlay(
                             RoundedRectangle(cornerRadius: 8)
-                                .stroke(isBestStreakDay ? .blue : .clear, lineWidth: 3)
+                                .stroke(isBestStreakDay ? .indigo : .clear, lineWidth: 3)
                         )
                         .frame(height: 32)
                         .overlay(
@@ -159,12 +159,10 @@ struct RestInfoView: View {
 
     private var infoCardsSection: some View {
         HStack(spacing: 16) {
-            // Modo Estricto Card
             GlassCard(icon: "shield",
-                      title: "Strict mode",
-                      value: viewModel.isStrictMode ? "Activated" : "Deactivated",
+                      title: "Best Streak",
+                      value: "\(viewModel.stats.bestStreak)",
                       iconColor: .indigo)
-            
             // Horario Card
             GlassCard(icon: "clock",
                       title: "Schedule",

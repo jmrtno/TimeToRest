@@ -29,11 +29,11 @@ struct SaveRestTimeUseCase {
     ///
     /// - Parameter input: The input required for this operation (modify as needed)
     /// - Returns: The result of the operation (modify return type as needed)
-    func execute(restTime: TimeToRestEntity, isNew: Bool) {
+    func execute(restTime: TimeToRestEntity, isNew: Bool) async {
         if isNew {
-            repository.save(restTime)
+            await repository.save(restTime)
         } else {
-            repository.update(restTime)
+            await repository.update(restTime)
         }
     }
 }

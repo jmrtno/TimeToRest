@@ -23,7 +23,7 @@ final class TimeToRestRepository: TimeToRestRepositoryContract {
     private let storageKey = "TimeToRest"
     private let userDefaults: UserDefaults
     
-    init(userDefaults: UserDefaults = .standard) {
+    init(userDefaults: UserDefaults = UserDefaults(suiteName: RestSessionDeviceActivityIdentifiers.appGroupIdentifier) ?? .standard) {
         self.userDefaults = userDefaults
     }
     
@@ -37,26 +37,28 @@ final class TimeToRestRepository: TimeToRestRepositoryContract {
         }
         
         do {
-            let restTime = try JSONDecoder().decode(TimeToRestEntity.self, from: data)
-            return restTime
+            let dto = try JSONDecoder().decode(TimeToRestDTO.self, from: data)
+            return dto.toEntity()
         } catch {
             return .firstConfig
         }
     }
     
-    func save(_ restTime: TimeToRestEntity) {
+    func save(_ restTime: TimeToRestEntity) async {
         persist(restTime)
     }
     
-    func update(_ restTime: TimeToRestEntity) {
+    func update(_ restTime: TimeToRestEntity) async {
         persist(restTime)
     }
     
     // MARK: - Private Helpers
     
-    private func persist<T: Encodable>(_ items: T) {
+    @MainActor
+    private func persist(_ restTime: TimeToRestEntity) {
         do {
-            let data = try JSONEncoder().encode(items)
+            let dto = TimeToRestDTO(entity: restTime)
+            let data = try JSONEncoder().encode(dto)
             userDefaults.set(data, forKey: storageKey)
         } catch {
             // Handle encoding error appropriately

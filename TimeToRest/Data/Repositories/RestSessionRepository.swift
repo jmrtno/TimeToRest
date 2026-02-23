@@ -1,5 +1,4 @@
 import Foundation
-import Combine
 
 // MARK: - RestSessionRepository
 /// A concrete repository implementation for data persistence and retrieval.
@@ -27,7 +26,7 @@ final class RestSessionRepository: RestSessionRepositoryContract {
     private let userDefaults: UserDefaults
 
     // MARK: - Init
-    init(userDefaults: UserDefaults = .standard) {
+    init(userDefaults: UserDefaults = UserDefaults(suiteName: RestSessionDeviceActivityIdentifiers.appGroupIdentifier) ?? .standard) {
         self.userDefaults = userDefaults
     }
 
@@ -39,7 +38,8 @@ final class RestSessionRepository: RestSessionRepositoryContract {
         }
 
         do {
-            return try JSONDecoder().decode([RestSessionEntity].self, from: data)
+            let dtoList = try JSONDecoder().decode([RestSessionDTO].self, from: data)
+            return dtoList.map { $0.toEntity() }
         } catch {
             return []
         }
@@ -54,13 +54,13 @@ final class RestSessionRepository: RestSessionRepositoryContract {
 
     // MARK: - Save / Update
 
-    func save(_ session: RestSessionEntity) {
+    func save(_ session: RestSessionEntity) async {
         var sessions = fetchAll()
         sessions.append(session)
-        persist(sessions)
+        persistAll(sessions)
     }
 
-    func update(_ session: RestSessionEntity) {
+    func update(_ session: RestSessionEntity) async {
         var sessions = fetchAll()
 
         guard let index = sessions.firstIndex(where: { $0.id == session.id }) else {
@@ -68,14 +68,16 @@ final class RestSessionRepository: RestSessionRepositoryContract {
         }
 
         sessions[index] = session
-        persist(sessions)
+        persistAll(sessions)
     }
 
     // MARK: - Private helpers
 
-    private func persist<T: Encodable>(_ items: T) {
+    @MainActor
+    private func persistAll(_ sessions: [RestSessionEntity]) {
         do {
-            let data = try JSONEncoder().encode(items)
+            let dtoList = sessions.map(RestSessionDTO.init(entity:))
+            let data = try JSONEncoder().encode(dtoList)
             userDefaults.set(data, forKey: storageKey)
         } catch {
             // Aquí podrías loggear si quieres

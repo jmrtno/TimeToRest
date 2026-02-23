@@ -5,19 +5,19 @@ import Foundation
 ///
 /// This entity encapsulates the essential properties and behaviors of the domain model.
 /// It is designed to be independent of any framework or infrastructure concerns,
-/// following Clean Architecture principles.
+/// following Clean Architecture principles for Swift 6.
 ///
 /// ## Usage
 /// - Define the properties that represent the entity's state
 /// - Add computed properties for derived values
 /// - Implement `Equatable` for comparison operations
-/// - Implement `Codable` if persistence is required
+/// - Keep persistence concerns in the Data layer via DTOs
 ///
 /// ## Example
 /// ```swift
 /// let item = TimeToRestEntity(id: UUID(), name: "Example")
 /// ```
-struct TimeToRestEntity: Identifiable, Codable, Equatable {
+struct TimeToRestEntity: Identifiable, Equatable {
 
     // MARK: - Identity
     let id: UUID
@@ -25,10 +25,6 @@ struct TimeToRestEntity: Identifiable, Codable, Equatable {
     // MARK: - Core configuration
     let startTime: DateComponents
     let endTime: DateComponents
-
-    // MARK: - Behaviour
-    let isStrictModeEnabled: Bool
-    let allowedApps: [AllowedApp]
 
     // MARK: - State (lightweight)
     let createdAt: Date
@@ -38,15 +34,11 @@ struct TimeToRestEntity: Identifiable, Codable, Equatable {
         id: UUID = UUID(),
         startTime: DateComponents,
         endTime: DateComponents,
-        isStrictModeEnabled: Bool = false,
-        allowedApps: [AllowedApp] = [.phone, .emergency],
         createdAt: Date = Date()
     ) {
         self.id = id
         self.startTime = startTime
         self.endTime = endTime
-        self.isStrictModeEnabled = isStrictModeEnabled
-        self.allowedApps = allowedApps
         self.createdAt = createdAt
     }
 
@@ -60,14 +52,6 @@ struct TimeToRestEntity: Identifiable, Codable, Equatable {
         id: UUID(),
         startTime: DateComponents(hour: 23, minute: 30),
         endTime: DateComponents(hour: 7, minute: 0),
-        isStrictModeEnabled: false,
-        allowedApps: [.phone, .emergency],
         createdAt: Date()
     )
-}
-
-enum AllowedApp: String, Codable, CaseIterable {
-    case phone
-    case emergency
-    case spotify
 }

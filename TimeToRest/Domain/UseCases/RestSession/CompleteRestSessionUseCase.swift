@@ -36,8 +36,10 @@ struct CompleteRestSessionUseCase {
     ///
     /// - Parameter input: The input required for this operation (modify as needed)
     /// - Returns: The result of the operation (modify return type as needed)
-    func execute(now: Date = Date()) {
-        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: now) ?? now
+    func execute() async {
+        let now = Date()
+        let calendar = Calendar.current
+        let yesterday = calendar.date(byAdding: .day, value: -1, to: now) ?? now
         
         let candidate = repository.fetch(for: now)
         ?? repository.fetch(for: yesterday)
@@ -50,9 +52,12 @@ struct CompleteRestSessionUseCase {
                                          day: current.day,
                                          startedAt: current.startedAt,
                                          didBreakRest: false,
-                                         breakedAt: nil,
+                                         brokenAt: nil,
                                          isCompleted: true,
-                                         avoidedMinutes: current.avoidedMinutes)
-        repository.update(complete)
+                                         avoidedMinutes: current.avoidedMinutes,
+                                         startTime: current.startTime,
+                                         endTime: current.endTime,
+                                         createdAt: current.createdAt)
+        await repository.update(complete)
     }
 }

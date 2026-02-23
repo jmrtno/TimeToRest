@@ -5,19 +5,23 @@ import Foundation
 ///
 /// This entity encapsulates the essential properties and behaviors of the domain model.
 /// It is designed to be independent of any framework or infrastructure concerns,
-/// following Clean Architecture principles.
+/// following Clean Architecture principles for Swift 6.
 ///
 /// ## Usage
 /// - Define the properties that represent the entity's state
 /// - Add computed properties for derived values
 /// - Implement `Equatable` for comparison operations
-/// - Implement `Codable` if persistence is required
+/// - Keep persistence concerns in the Data layer via DTOs
 ///
 /// ## Example
 /// ```swift
 /// let item = RestSessionEntity(id: UUID(), name: "Example")
 /// ```
-struct RestSessionEntity: Identifiable, Codable, Equatable {
+struct RestSessionEntity: Identifiable, Equatable {
+    enum BreakReason: String, Equatable {
+        case manualCancellation
+        case blockedSocialAppUsage
+    }
 
     // MARK: - Identity
     let id: UUID
@@ -25,13 +29,21 @@ struct RestSessionEntity: Identifiable, Codable, Equatable {
     /// Día lógico del descanso (ej: 2026-02-07)
     let day: Date
 
+    // MARK: - Core configuration
+    let startTime: DateComponents
+    let endTime: DateComponents
+
+    // MARK: - State (lightweight)
+    let createdAt: Date
+
     // MARK: - Timing
     /// Momento en el que el usuario abrió la app durante el horario nocturno
     let startedAt: Date
 
     // MARK: - Result
     let didBreakRest: Bool
-    let breakedAt: Date?
+    let breakReason: BreakReason?
+    let brokenAt: Date?
     let isCompleted: Bool
     let avoidedMinutes: Int
 
@@ -41,28 +53,24 @@ struct RestSessionEntity: Identifiable, Codable, Equatable {
         day: Date,
         startedAt: Date,
         didBreakRest: Bool,
-        breakedAt: Date? = nil,
+        breakReason: BreakReason? = nil,
+        brokenAt: Date? = nil,
         isCompleted: Bool = false,
-        avoidedMinutes: Int
+        avoidedMinutes: Int,
+        startTime: DateComponents,
+        endTime: DateComponents,
+        createdAt: Date = Date()
     ) {
         self.id = id
         self.day = day
         self.startedAt = startedAt
         self.didBreakRest = didBreakRest
-        self.breakedAt = breakedAt
+        self.breakReason = breakReason
+        self.brokenAt = brokenAt
         self.isCompleted = isCompleted
         self.avoidedMinutes = avoidedMinutes
-    }
-
-    // MARK: - Codable (backward compatibility for isCompleted)
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(UUID.self, forKey: .id)
-        day = try container.decode(Date.self, forKey: .day)
-        startedAt = try container.decode(Date.self, forKey: .startedAt)
-        didBreakRest = try container.decode(Bool.self, forKey: .didBreakRest)
-        breakedAt = try container.decodeIfPresent(Date.self, forKey: .breakedAt)
-        isCompleted = try container.decodeIfPresent(Bool.self, forKey: .isCompleted) ?? false
-        avoidedMinutes = try container.decode(Int.self, forKey: .avoidedMinutes)
+        self.startTime = startTime
+        self.endTime = endTime
+        self.createdAt = createdAt
     }
 }

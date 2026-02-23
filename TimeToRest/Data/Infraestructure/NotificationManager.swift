@@ -1,20 +1,24 @@
 import Foundation
 import UserNotifications
 
-/// Wrapper de UserNotifications que abstrae la complejidad del manejo de notificaciones
-/// Responsabilidades:
-/// - Gestionar permisos de notificaciones
-/// - Programar notificaciones locales para reminders
-/// - Manejar presentación de notificaciones en primer plano
+/// Wrapper of UserNotifications that abstracts the complexity of notification handling
+/// Responsibilities:
+/// - Manage notification permissions
+/// - Schedule local notifications for reminders
+/// - Handle notification presentation in foreground
+@MainActor
 final class NotificationManager: NSObject {
-    /// Centro de notificaciones del sistema para toda la funcionalidad
+    /// System notification center for all functionality
     private nonisolated let notificationCenter: UNUserNotificationCenter
     
-    /// Estado actual de autorización de notificaciones
+    /// Current notification authorization status
     private(set) var authorizationStatus: UNAuthorizationStatus = .notDetermined
     
-    /// Configura UNUserNotificationCenter con el delegado para manejar eventos
-    /// Actualiza el estado de autorización al iniciar para tener datos consistentes
+    // MARK: - Constants
+    private static let preReminderMinutes = 10
+    
+    /// Configures UNUserNotificationCenter with delegate to handle events
+    /// Updates authorization status on startup for consistent data
     override init() {
         self.notificationCenter = UNUserNotificationCenter.current()
         super.init()
@@ -22,13 +26,13 @@ final class NotificationManager: NSObject {
         refreshAuthorizationStatus()
     }
     
-    /// Solicita permiso de notificaciones con opciones completas
-    /// - alert: muestra el banner de notificación
-    /// - sound: reproduce sonido al llegar
-    /// - badge: muestra número en ícono de app
+    /// Requests notification permission with complete options
+    /// - alert: shows notification banner
+    /// - sound: plays sound when arriving
+    /// - badge: shows number on app icon
     func requestAuthorization(completion: @escaping @Sendable (Bool) -> Void) {
         notificationCenter.requestAuthorization(options: [.alert, .sound, .badge]) { [weak self] granted, _ in
-            DispatchQueue.main.async {
+            Task { @MainActor [weak self] in
                 self?.refreshAuthorizationStatus()
                 completion(granted)
             }
@@ -37,7 +41,7 @@ final class NotificationManager: NSObject {
     
     func refreshAuthorizationStatus() {
         notificationCenter.getNotificationSettings { [weak self] settings in
-            DispatchQueue.main.async {
+            Task { @MainActor [weak self] in
                 self?.authorizationStatus = settings.authorizationStatus
             }
         }
@@ -52,11 +56,35 @@ final class NotificationManager: NSObject {
 
         guard let hour = restTime.startTime.hour,
               let minute = restTime.startTime.minute else { return }
+        
+        
+        guard let finishHour = restTime.endTime.hour,
+              let finishMinute = restTime.endTime.minute else { return }
+        
+        // Main notification at finish time
+        let finishContent = UNMutableNotificationContent()
+        finishContent.title = "Rest complete, welcome back!"
+        finishContent.body = "You have completed the rest successfully, congratulations!"
+        finishContent.sound = .default
+        finishContent.categoryIdentifier = "REST_FINISH"
+
+        var finishComponents = DateComponents()
+        finishComponents.hour = finishHour
+        finishComponents.minute = finishMinute
+
+        let finishTrigger = UNCalendarNotificationTrigger(dateMatching: finishComponents, repeats: true)
+        let finishRequest = UNNotificationRequest(
+            identifier: "rest_finish_\(restTime.restIdentifier)",
+            content: finishContent,
+            trigger: finishTrigger
+        )
+        notificationCenter.add(finishRequest) { _ in }
+
 
         // Main notification at start time
         let content = UNMutableNotificationContent()
         content.title = "🌙 Time to Rest"
-        content.body = "Keep the app open to trak your progress. See you in the morning!"
+        content.body = "Keep the app open to track your progress. See you in the morning!"
         content.sound = .default
         content.categoryIdentifier = "REST_TIME"
 
@@ -75,12 +103,12 @@ final class NotificationManager: NSObject {
         // Pre-reminder 10 minutes before
         let preContent = UNMutableNotificationContent()
         preContent.title = "⏰ Almost Time"
-        preContent.body = "Last chance to put down the phone. Remember to keep the app open to trak your progress."
+        preContent.body = "Last chance to put down the phone. Remember to keep the app open to track your progress."
         preContent.sound = .default
         preContent.categoryIdentifier = "REST_PRE_REMINDER"
 
         var preComponents = DateComponents()
-        var preMinute = minute - 10
+        var preMinute = minute - Self.preReminderMinutes
         var preHour = hour
         if preMinute < 0 {
             preMinute += 60
@@ -99,32 +127,6 @@ final class NotificationManager: NSObject {
         notificationCenter.add(preRequest) { _ in }
     }
 
-    /// Schedules strict mode notifications with more direct messaging.
-    func scheduleStrictReminder(for restTime: TimeToRestEntity) {
-        cancelAllRestNotifications()
-
-        guard let hour = restTime.startTime.hour,
-              let minute = restTime.startTime.minute else { return }
-
-        let content = UNMutableNotificationContent()
-        content.title = "🌙 Time to Rest"
-        content.body = "This is exactly what you wanted to avoid. Keep the app open"
-        content.sound = .default
-        content.categoryIdentifier = "REST_TIME"
-
-        var dateComponents = DateComponents()
-        dateComponents.hour = hour
-        dateComponents.minute = minute
-
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        let request = UNNotificationRequest(
-            identifier: "rest_start_\(restTime.restIdentifier)",
-            content: content,
-            trigger: trigger
-        )
-        notificationCenter.add(request) { _ in }
-    }
-
     /// Cancels all rest-related notifications.
     func cancelAllRestNotifications() {
         notificationCenter.getPendingNotificationRequests { [weak self] requests in
@@ -135,12 +137,12 @@ final class NotificationManager: NSObject {
         }
         notificationCenter.removeAllDeliveredNotifications()
     }
-
+    
 }
 
 extension NotificationManager: UNUserNotificationCenterDelegate {
-    /// Maneja notificaciones en primer plano (app activa)
-    /// Fuerza presentación para mejor experiencia de usuario
+    /// Handles notifications in foreground (app active)
+    /// Forces presentation for better user experience
     nonisolated func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification,
@@ -149,8 +151,8 @@ extension NotificationManager: UNUserNotificationCenterDelegate {
         completionHandler([.banner, .sound, .badge])
     }
     
-    /// Maneja interacción del usuario con notificación (tap, etc.)
-    /// Extensible para navegación o acciones específicas
+    /// Handles user interaction with notification (tap, etc.)
+    /// Extensible for navigation or specific actions
     nonisolated func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse,

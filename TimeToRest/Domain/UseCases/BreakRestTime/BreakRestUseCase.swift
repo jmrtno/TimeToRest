@@ -26,9 +26,13 @@ struct BreakRestUseCase {
     }
 
     /// Rompe la sesión actual
-    func execute(session: RestSessionEntity, breakedAt: Date = Date()) -> RestSessionEntity {
+    func execute(
+        session: RestSessionEntity,
+        breakReason: RestSessionEntity.BreakReason,
+        brokenAt: Date = Date()
+    ) async -> RestSessionEntity {
         // Calcula minutos evitados hasta romper
-        let avoidedMinutes = max(0, Int(breakedAt.timeIntervalSince(session.startedAt) / 60))
+        let avoidedMinutes = max(0, Int(brokenAt.timeIntervalSince(session.startedAt) / 60))
 
         // Crea una nueva sesión con didBreakRest = true
         let updatedSession = RestSessionEntity(
@@ -36,12 +40,16 @@ struct BreakRestUseCase {
             day: session.day,
             startedAt: session.startedAt,
             didBreakRest: true,
-            breakedAt: breakedAt,
-            avoidedMinutes: avoidedMinutes
+            breakReason: breakReason,
+            brokenAt: brokenAt,
+            avoidedMinutes: avoidedMinutes,
+            startTime: session.startTime,
+            endTime: session.endTime,
+            createdAt: session.createdAt
         )
 
         // Guarda la sesión actualizada
-        repository.update(updatedSession)
+        await repository.update(updatedSession)
 
         return updatedSession
     }

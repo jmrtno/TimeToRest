@@ -115,25 +115,26 @@ struct CalculateStatsUseCase {
         return meanMinutes
     }
 
-    /// Returns exactly 15 points (today and previous 14 days).
-    /// Days without break are represented with didBreak = false.
+    /// Returns up to 15 points for the most recent days that have a recorded session.
+    /// Only days with a completed or broken session are included — days without
+    /// any session are skipped so the chart reflects real usage history.
     private func calculateBreakStatusLast15Days(
         for sessions: [RestSessionEntity],
         now: Date
     ) -> [DailyBreakStatusPoint] {
         let calendar = Calendar.current
 
-        let brokenByDay = Dictionary(grouping: sessions.filter { $0.didBreakRest }) { session in
+        let resolvedSessions = sessions.filter { $0.isCompleted || $0.didBreakRest }
+
+        let sessionsByDay = Dictionary(grouping: resolvedSessions) { session in
             calendar.startOfDay(for: session.day)
         }
 
-        return stride(from: 14, through: 0, by: -1).compactMap { offset in
-            guard let rawDay = calendar.date(byAdding: .day, value: -offset, to: now) else {
-                return nil
-            }
+        let sortedDays = sessionsByDay.keys.sorted()
+        let recentDays = sortedDays.suffix(15)
 
-            let day = calendar.startOfDay(for: rawDay)
-            let didBreak = brokenByDay[day] != nil
+        return recentDays.map { day in
+            let didBreak = sessionsByDay[day]?.contains(where: \.didBreakRest) ?? false
             return DailyBreakStatusPoint(day: day, didBreak: didBreak)
         }
     }
