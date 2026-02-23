@@ -49,8 +49,9 @@ extension RestStatsEntity {
         // Days 3-4: break (red)
         // Days 5-10: no break (green)
         let mockDaily: [Bool] = [
-            false, false, true, true,
-            false, false, false, false, false, false
+            false, true,  false, false, true,
+            false, false, true,  false, true,
+            false, false, true,  false, false, false
         ]
 
         let totalDays = mockDaily.count
