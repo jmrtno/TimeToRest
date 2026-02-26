@@ -90,8 +90,9 @@ final class RestSessionManager: ObservableObject {
     }
 
     func endMonitoringAfterSuccessfulRest() {
-        stopMonitoringAndUnlockApps()
-        state = .idle
+        // Automatic monitoring termination removed
+        // User must explicitly terminate rest session
+        // This method is no longer used
     }
 
     func cancelRestManually() {

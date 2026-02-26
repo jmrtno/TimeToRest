@@ -16,6 +16,7 @@ final class BreakBlockViewModel: ObservableObject {
     // MARK: - Dependencies
     private let calculateStatsUseCase: CalculateStatsUseCase
     private let restSessionManager: RestSessionManager
+    private let notificationManager: NotificationManager
 
     let totalCountdown: Int
     private var timer: Timer?
@@ -36,10 +37,12 @@ final class BreakBlockViewModel: ObservableObject {
 
     init(
         calculateStatsUseCase: CalculateStatsUseCase,
-        restSessionManager: RestSessionManager
+        restSessionManager: RestSessionManager,
+        notificationManager: NotificationManager
     ) {
         self.calculateStatsUseCase = calculateStatsUseCase
         self.restSessionManager = restSessionManager
+        self.notificationManager = notificationManager
         let total = 10
         self.totalCountdown = total
         self.countdownRemaining = total
@@ -61,6 +64,8 @@ final class BreakBlockViewModel: ObservableObject {
     func breakRest() {
         guard canBreak else { return }
         restSessionManager.cancelRestManually()
+        // Cancel the completion notification immediately since session was broken
+        notificationManager.cancelSessionCompletionNotification()
         stats = calculateStatsUseCase.execute()
         stopTimer()
     }

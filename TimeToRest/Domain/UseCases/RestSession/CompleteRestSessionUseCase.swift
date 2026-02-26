@@ -36,28 +36,8 @@ struct CompleteRestSessionUseCase {
     ///
     /// - Parameter input: The input required for this operation (modify as needed)
     /// - Returns: The result of the operation (modify return type as needed)
+    /// This method is no longer used - completion is now manual only
     func execute() async {
-        let now = Date()
-        let calendar = Calendar.current
-        let yesterday = calendar.date(byAdding: .day, value: -1, to: now) ?? now
-        
-        let candidate = repository.fetch(for: now)
-        ?? repository.fetch(for: yesterday)
-        
-        guard let current = candidate,
-              !current.didBreakRest,
-              !current.isCompleted else { return }
-        
-        let complete = RestSessionEntity(id: current.id,
-                                         day: current.day,
-                                         startedAt: current.startedAt,
-                                         didBreakRest: false,
-                                         brokenAt: nil,
-                                         isCompleted: true,
-                                         avoidedMinutes: current.avoidedMinutes,
-                                         startTime: current.startTime,
-                                         endTime: current.endTime,
-                                         createdAt: current.createdAt)
-        await repository.update(complete)
+        // Automatic completion removed - user must explicitly terminate rest
     }
 }

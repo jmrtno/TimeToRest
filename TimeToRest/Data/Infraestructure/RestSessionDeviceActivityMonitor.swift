@@ -21,50 +21,10 @@ final class RestSessionDeviceActivityMonitor: DeviceActivityMonitor {
 
     nonisolated override func intervalDidEnd(for activity: DeviceActivityName) {
         guard activity == RestSessionDeviceActivityIdentifiers.monitorName else { return }
-        completeCurrentSessionFromExtension()
-        removeShields()
+        // Only post notification, no automatic completion or shield removal
     }
 
-    // MARK: - Complete session directly via UserDefaults (no dependency on RestSessionRepository)
 
-    private nonisolated func completeCurrentSessionFromExtension() {
-        guard let userDefaults = UserDefaults(suiteName: RestSessionDeviceActivityIdentifiers.appGroupIdentifier) else { return }
-
-        guard let data = userDefaults.data(forKey: Self.storageKey) else { return }
-
-        let decoder = JSONDecoder()
-        let encoder = JSONEncoder()
-
-        guard var sessions = try? decoder.decode([SessionDTO].self, from: data) else { return }
-
-        let now = Date()
-        let calendar = Calendar.current
-        let yesterday = calendar.date(byAdding: .day, value: -1, to: now) ?? now
-
-        let candidateIndex = sessions.lastIndex { session in
-            calendar.isDate(session.day, inSameDayAs: now) || calendar.isDate(session.day, inSameDayAs: yesterday)
-        }
-
-        guard let index = candidateIndex else { return }
-
-        var session = sessions[index]
-        guard !session.didBreakRest, !session.isCompleted else { return }
-
-        session.isCompleted = true
-        sessions[index] = session
-
-        guard let updatedData = try? encoder.encode(sessions) else { return }
-        userDefaults.set(updatedData, forKey: Self.storageKey)
-    }
-
-    private nonisolated func removeShields() {
-        let store = ManagedSettingsStore(
-            named: .init(RestSessionDeviceActivityIdentifiers.managedSettingsStoreName)
-        )
-        store.shield.applications = nil
-        store.shield.applicationCategories = nil
-        store.shield.webDomains = nil
-    }
 }
 
 // MARK: - Lightweight DTO for decoding/encoding sessions inside the extension

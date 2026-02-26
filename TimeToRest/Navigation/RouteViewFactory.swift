@@ -32,7 +32,8 @@ struct RouteViewFactory {
             BreakBlockScreen(
                 viewModel: BreakBlockViewModel(
                     calculateStatsUseCase: dependencies.calculateStatsUseCase,
-                    restSessionManager: dependencies.restSessionManager
+                    restSessionManager: dependencies.restSessionManager,
+                    notificationManager: dependencies.notificationManager
                 )
             )
         }

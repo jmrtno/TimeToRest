@@ -15,9 +15,9 @@ final class NightModeViewModel: ObservableObject {
     @Published var didBreakTonight: Bool = false
 
     /// Controls whether the night mode UI is shown.
-    /// False if the user already broke the rest tonight.
+    /// True if there's an active session or we're within the night window and didn't break rest.
     var showNightMode: Bool {
-        isWithinNightWindow && !didBreakTonight
+        (session != nil && !didBreakTonight) || (isWithinNightWindow && !didBreakTonight)
     }
 
     var formattedEndTime: String {
@@ -38,6 +38,7 @@ final class NightModeViewModel: ObservableObject {
     private let completeRestSessionUseCase: CompleteRestSessionUseCase
     private let fetchCurrentSessionUseCase: FetchCurrentSessionUseCase
     private let restSessionManager: RestSessionManager
+    private let notificationManager: NotificationManager
 
     private var windowCheckTimer: Timer?
     private var lastTimerCheckedMinute: Int?
@@ -47,13 +48,18 @@ final class NightModeViewModel: ObservableObject {
         startRestSessionUseCase: StartRestSessionUseCase,
         completeRestSessionUseCase: CompleteRestSessionUseCase,
         fetchCurrentSessionUseCase: FetchCurrentSessionUseCase,
-        restSessionManager: RestSessionManager
+        restSessionManager: RestSessionManager,
+        notificationManager: NotificationManager
     ) {
         self.fetchRestTimeUseCase = fetchRestTimeUseCase
         self.startRestSessionUseCase = startRestSessionUseCase
         self.completeRestSessionUseCase = completeRestSessionUseCase
         self.fetchCurrentSessionUseCase = fetchCurrentSessionUseCase
         self.restSessionManager = restSessionManager
+        self.notificationManager = notificationManager
+        
+        // Cancel any residual completion notifications on init
+        notificationManager.cancelSessionCompletionNotification()
         
         // Listen for background task notifications
         NotificationCenter.default.addObserver(
@@ -131,19 +137,23 @@ final class NightModeViewModel: ObservableObject {
             return
         }
 
+        // Check if current session was broken (user cancelled via break screen)
+        if let currentSession = session,
+           let updatedSession = fetchCurrentSessionUseCase.execute(),
+           updatedSession.didBreakRest && updatedSession.id == currentSession.id {
+            session = nil
+            didBreakTonight = true
+            // Cancel completion notification since session was broken
+            notificationManager.cancelSessionCompletionNotification()
+            return
+        }
+
         if isWithinNightWindow && !wasInWindow {
             await startRestSession()
         }
 
-        if !isWithinNightWindow {
-            if wasInWindow {
-                await completeCurrentSession()
-            }
-            restSessionManager.endMonitoringAfterSuccessfulRest()
-            session = nil
-            didBreakTonight = false
-            return
-        }
+        // Removed automatic completion logic
+        // Session will only be completed when user explicitly terminates it
 
         if isWithinNightWindow && !didBreakTonight && session == nil {
             await startRestSession()
@@ -152,20 +162,25 @@ final class NightModeViewModel: ObservableObject {
         if isWithinNightWindow && !didBreakTonight {
             restSessionManager.startMonitoringIfNeeded(configuration: config)
         }
-
     }
     
 
     /// Starts a rest session if within the night window.
     func startRestSession() async {
+        // Don't start a new session if there's already one active
+        guard session == nil else { return }
+        
         if let newSession = await startRestSessionUseCase.execute() {
             session = newSession
+            // Schedule completion notification for this session
+            notificationManager.scheduleSessionCompletionNotification(for: config)
         }
     }
 
-    /// Marks the current session as completed (user didn't break rest).
+    /// Marks the current session as completed (user didn't break rest)
+    /// This method is no longer used - completion is now manual only
     private func completeCurrentSession() async {
-        await completeRestSessionUseCase.execute()
+        // Automatic completion removed - user must explicitly terminate rest
     }
 
     /// Restores the in-memory session from persistence if we're in the night window

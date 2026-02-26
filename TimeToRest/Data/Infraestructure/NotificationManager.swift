@@ -24,6 +24,8 @@ final class NotificationManager: NSObject {
         super.init()
         notificationCenter.delegate = self
         refreshAuthorizationStatus()
+        // Clean up any legacy finish notifications that were scheduled daily
+        removeLegacyFinishNotifications()
     }
     
     /// Requests notification permission with complete options
@@ -56,30 +58,6 @@ final class NotificationManager: NSObject {
 
         guard let hour = restTime.startTime.hour,
               let minute = restTime.startTime.minute else { return }
-        
-        
-        guard let finishHour = restTime.endTime.hour,
-              let finishMinute = restTime.endTime.minute else { return }
-        
-        // Main notification at finish time
-        let finishContent = UNMutableNotificationContent()
-        finishContent.title = "Rest complete, welcome back!"
-        finishContent.body = "You have completed the rest successfully, congratulations!"
-        finishContent.sound = .default
-        finishContent.categoryIdentifier = "REST_FINISH"
-
-        var finishComponents = DateComponents()
-        finishComponents.hour = finishHour
-        finishComponents.minute = finishMinute
-
-        let finishTrigger = UNCalendarNotificationTrigger(dateMatching: finishComponents, repeats: true)
-        let finishRequest = UNNotificationRequest(
-            identifier: "rest_finish_\(restTime.restIdentifier)",
-            content: finishContent,
-            trigger: finishTrigger
-        )
-        notificationCenter.add(finishRequest) { _ in }
-
 
         // Main notification at start time
         let content = UNMutableNotificationContent()
@@ -125,6 +103,51 @@ final class NotificationManager: NSObject {
             trigger: preTrigger
         )
         notificationCenter.add(preRequest) { _ in }
+    }
+
+    /// Removes old daily finish notifications created before per-session scheduling
+    private func removeLegacyFinishNotifications() {
+        notificationCenter.getPendingNotificationRequests { [weak self] requests in
+            let finishIds = requests
+                .map { $0.identifier }
+                .filter { $0.hasPrefix("rest_finish_") }
+            guard !finishIds.isEmpty else { return }
+            self?.notificationCenter.removePendingNotificationRequests(withIdentifiers: finishIds)
+        }
+    }
+
+    /// Schedules a completion notification for the current session only
+    /// This should be called when a session starts
+    func scheduleSessionCompletionNotification(for restTime: TimeToRestEntity) {
+        // First cancel any existing completion notifications
+        cancelSessionCompletionNotification()
+        
+        guard let finishHour = restTime.endTime.hour,
+              let finishMinute = restTime.endTime.minute else { return }
+        
+        let finishContent = UNMutableNotificationContent()
+        finishContent.title = "Rest complete, welcome back!"
+        finishContent.body = "You have completed the rest successfully, congratulations!"
+        finishContent.sound = .default
+        finishContent.categoryIdentifier = "REST_FINISH"
+
+        var finishComponents = DateComponents()
+        finishComponents.hour = finishHour
+        finishComponents.minute = finishMinute
+
+        let finishTrigger = UNCalendarNotificationTrigger(dateMatching: finishComponents, repeats: false) // No repeat
+        let finishRequest = UNNotificationRequest(
+            identifier: "rest_finish_current_session",
+            content: finishContent,
+            trigger: finishTrigger
+        )
+        notificationCenter.add(finishRequest) { _ in }
+    }
+
+    /// Cancels the session completion notification
+    /// This should be called when the user breaks the rest
+    func cancelSessionCompletionNotification() {
+        notificationCenter.removePendingNotificationRequests(withIdentifiers: ["rest_finish_current_session"])
     }
 
     /// Cancels all rest-related notifications.

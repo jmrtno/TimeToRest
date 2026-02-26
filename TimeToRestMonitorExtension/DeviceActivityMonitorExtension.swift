@@ -33,62 +33,16 @@ final class DeviceActivityMonitorExtension: DeviceActivityMonitor {
         postBlockedUsageNotification()
     }
 
-    /// Called when the monitoring interval ends
-    /// This happens when the rest session period is completed
+    /// Called when the monitoring interval ends.
+    /// We no longer trigger any automation from the extension.
     override func intervalDidEnd(for activity: DeviceActivityName) {
         guard activity == Self.monitorName else { return }
-        
-        // Complete the current session and remove shields
-        completeCurrentSessionFromExtension()
-        removeShields()
-        
-        // Post completion notification
-        postSessionCompletedNotification()
+        // Intentionally left blank. The main app handles notifications.
     }
 
     // MARK: - Private Methods
 
-    /// Completes the current rest session by updating UserDefaults directly
-    /// This avoids dependency issues in the extension target
-    private func completeCurrentSessionFromExtension() {
-        guard let userDefaults = UserDefaults(suiteName: Self.appGroupIdentifier) else { return }
 
-        guard let data = userDefaults.data(forKey: Self.storageKey) else { return }
-
-        let decoder = JSONDecoder()
-        let encoder = JSONEncoder()
-
-        guard var sessions = try? decoder.decode([SessionDTO].self, from: data) else { return }
-
-        let now = Date()
-        let calendar = Calendar.current
-        let yesterday = calendar.date(byAdding: .day, value: -1, to: now) ?? now
-
-        let candidateIndex = sessions.lastIndex { session in
-            calendar.isDate(session.day, inSameDayAs: now) || calendar.isDate(session.day, inSameDayAs: yesterday)
-        }
-
-        guard let index = candidateIndex else { return }
-
-        var session = sessions[index]
-        guard !session.didBreakRest, !session.isCompleted else { return }
-
-        session.isCompleted = true
-        sessions[index] = session
-
-        guard let updatedData = try? encoder.encode(sessions) else { return }
-        userDefaults.set(updatedData, forKey: Self.storageKey)
-    }
-
-    /// Removes all shields when rest session ends
-    private func removeShields() {
-        let store = ManagedSettingsStore(
-            named: .init(Self.managedSettingsStoreName)
-        )
-        store.shield.applications = nil
-        store.shield.applicationCategories = nil
-        store.shield.webDomains = nil
-    }
     
     /// Posts a notification when user tries to access blocked apps
     private func postBlockedUsageNotification() {
@@ -100,23 +54,6 @@ final class DeviceActivityMonitorExtension: DeviceActivityMonitor {
 
         let request = UNNotificationRequest(
             identifier: "blocked_attempt_\(UUID().uuidString)",
-            content: content,
-            trigger: UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-        )
-
-        UNUserNotificationCenter.current().add(request) { _ in }
-    }
-    
-    /// Posts a notification when rest session is completed successfully
-    private func postSessionCompletedNotification() {
-        let content = UNMutableNotificationContent()
-        content.title = "Rest Session Completed"
-        content.body = "Congratulations! You've completed your rest session successfully."
-        content.sound = .default
-        content.categoryIdentifier = "REST_SESSION_COMPLETED"
-
-        let request = UNNotificationRequest(
-            identifier: "session_completed_\(UUID().uuidString)",
             content: content,
             trigger: UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
         )

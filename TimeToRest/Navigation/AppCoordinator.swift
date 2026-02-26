@@ -21,7 +21,8 @@ struct AppCoordinator: View {
             startRestSessionUseCase: dependencies.startRestSessionUseCase,
             completeRestSessionUseCase: dependencies.completeRestSessionUseCase,
             fetchCurrentSessionUseCase: dependencies.fetchCurrentSessionUseCase,
-            restSessionManager: dependencies.restSessionManager
+            restSessionManager: dependencies.restSessionManager,
+            notificationManager: dependencies.notificationManager
         ))
         _restViewModel = StateObject(wrappedValue: RestInfoViewModel(
             fetchRestTimeUseCase: dependencies.fetchRestTimeUseCase,
