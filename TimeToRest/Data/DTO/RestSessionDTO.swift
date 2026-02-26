@@ -9,6 +9,23 @@ struct RestSessionDTO: Codable {
     let brokenAt: Date?
     let isCompleted: Bool
     let avoidedMinutes: Int
+    let startTime: DateComponents
+    let endTime: DateComponents
+    let createdAt: Date
+
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case day
+        case startedAt
+        case didBreakRest
+        case breakReason
+        case brokenAt
+        case isCompleted
+        case avoidedMinutes
+        case startTime
+        case endTime
+        case createdAt
+    }
 
     init(
         id: UUID,
@@ -18,7 +35,10 @@ struct RestSessionDTO: Codable {
         breakReason: String?,
         brokenAt: Date?,
         isCompleted: Bool,
-        avoidedMinutes: Int
+        avoidedMinutes: Int,
+        startTime: DateComponents,
+        endTime: DateComponents,
+        createdAt: Date
     ) {
         self.id = id
         self.day = day
@@ -28,6 +48,9 @@ struct RestSessionDTO: Codable {
         self.brokenAt = brokenAt
         self.isCompleted = isCompleted
         self.avoidedMinutes = avoidedMinutes
+        self.startTime = startTime
+        self.endTime = endTime
+        self.createdAt = createdAt
     }
 
     init(entity: RestSessionEntity) {
@@ -39,7 +62,10 @@ struct RestSessionDTO: Codable {
             breakReason: entity.breakReason?.rawValue,
             brokenAt: entity.brokenAt,
             isCompleted: entity.isCompleted,
-            avoidedMinutes: entity.avoidedMinutes
+            avoidedMinutes: entity.avoidedMinutes,
+            startTime: entity.startTime,
+            endTime: entity.endTime,
+            createdAt: entity.createdAt
         )
     }
 
@@ -53,6 +79,11 @@ struct RestSessionDTO: Codable {
         brokenAt = try container.decodeIfPresent(Date.self, forKey: .brokenAt)
         isCompleted = try container.decodeIfPresent(Bool.self, forKey: .isCompleted) ?? false
         avoidedMinutes = try container.decode(Int.self, forKey: .avoidedMinutes)
+        startTime = try container.decodeIfPresent(DateComponents.self, forKey: .startTime)
+        ?? DateComponents(hour: 23, minute: 30)
+        endTime = try container.decodeIfPresent(DateComponents.self, forKey: .endTime)
+        ?? DateComponents(hour: 7, minute: 0)
+        createdAt = try container.decodeIfPresent(Date.self, forKey: .createdAt) ?? day
     }
 
     func toEntity() -> RestSessionEntity {
@@ -65,9 +96,9 @@ struct RestSessionDTO: Codable {
             brokenAt: brokenAt,
             isCompleted: isCompleted,
             avoidedMinutes: avoidedMinutes,
-            startTime: DateComponents(hour: 23, minute: 30), // Default values
-            endTime: DateComponents(hour: 7, minute: 0),    // Default values
-            createdAt: Date()
+            startTime: startTime,
+            endTime: endTime,
+            createdAt: createdAt
         )
     }
 }
