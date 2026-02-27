@@ -47,6 +47,7 @@ struct CalculateStatsUseCase {
             // Streaks: only count sessions with a definitive outcome
             if session.didBreakRest {
                 tempStreak = 0
+                currentStreak = 0
             } else if session.isCompleted {
                 tempStreak += 1
                 currentStreak = tempStreak

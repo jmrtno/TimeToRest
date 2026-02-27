@@ -25,12 +25,20 @@ import Combine
 /// ```
 @MainActor
 final class Router: ObservableObject {
+    
+    enum BreakBlockMode: Identifiable {
+        case celebration
+        case countdown
+        var id: Self { self }
+    }
+    
     @Published var navigationPath: [Route] = []
+    @Published var breakBlockMode: BreakBlockMode?
     
     // MARK: - Modal state
     @Published var restConfigurationMode: RestConfigurationMode?
     @Published var isBreakBlockPresented: Bool = false
-    
+
     /// Pushes a new route onto the navigation stack.
     /// - Parameter route: The route to navigate to
     func push(_ route: Route) {
@@ -62,12 +70,12 @@ final class Router: ObservableObject {
         restConfigurationMode = nil
     }
     
-    func presentBreakBlock() {
-        isBreakBlockPresented = true
+    func presentBreakBlock(mode: BreakBlockMode) {
+        breakBlockMode = mode
     }
 
     func dismissBreakBlock() {
-        isBreakBlockPresented = false
+        breakBlockMode = nil
     }
 
 }

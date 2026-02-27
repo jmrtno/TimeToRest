@@ -9,7 +9,8 @@ final class BreakBlockViewModel: ObservableObject {
 
     // MARK: - Published state
     @Published var countdownRemaining: Int
-    @Published var currentMessage: String = ""
+    @Published var motivationalMessage: String = ""
+    @Published var congratulationMessage: String = ""
     @Published var canBreak: Bool = false
     @Published var stats: RestStatsEntity = .empty
 
@@ -22,7 +23,7 @@ final class BreakBlockViewModel: ObservableObject {
     private var timer: Timer?
 
     // MARK: - Psychological messages
-    private let normalMessages = [
+    private let breakMessages = [
         "Are you sure about this?",
         "You were doing so well...",
         "Tomorrow you'll wish you hadn't.",
@@ -33,6 +34,19 @@ final class BreakBlockViewModel: ObservableObject {
         "Your future self is watching.",
         "This is the moment that matters.",
         "You're stronger than this urge."
+    ]
+    
+    private let congratulationMessages = [
+        "Rest completed. Your discipline is showing.",
+        "Another night in your favor. Keep it up.",
+        "You paused, you breathed, you gained clarity.",
+        "Calm mind, grateful body. Excellent work.",
+        "You stayed true to your plan. Pride well deserved.",
+        "Every unplugged minute adds to your energy.",
+        "Impeccable consistency, impeccable rest.",
+        "You protected your time and your calm. Bravo.",
+        "Today's serenity feeds tomorrow's focus.",
+        "You did it again: full rest and a fresh mind."
     ]
 
     init(
@@ -52,7 +66,7 @@ final class BreakBlockViewModel: ObservableObject {
 
     func startCountdown() {
         loadStats()
-        pickRandomMessage()
+        pickMotivationalRandomMessage()
 
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             Task { @MainActor [weak self] in
@@ -88,9 +102,14 @@ final class BreakBlockViewModel: ObservableObject {
         }
     }
 
-    private func pickRandomMessage() {
-        let messages = normalMessages
-        currentMessage = messages.randomElement() ?? ""
+    private func pickMotivationalRandomMessage() {
+        let breakMessages = breakMessages
+        motivationalMessage = breakMessages.randomElement() ?? ""
+    }
+    
+    func pickCongratulationRandomMessage() {
+        let congratulationMessages = congratulationMessages
+        congratulationMessage = congratulationMessages.randomElement() ?? ""
     }
 
     private func loadStats() {

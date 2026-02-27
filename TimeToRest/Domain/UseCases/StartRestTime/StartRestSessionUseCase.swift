@@ -21,11 +21,14 @@ import Foundation
 struct StartRestSessionUseCase {
 
     private let sessionRepository: RestSessionRepositoryContract
+    private let fetchRestTimeUseCase: FetchRestTimeUseCase
 
     init(
-        sessionRepository: RestSessionRepositoryContract
+        sessionRepository: RestSessionRepositoryContract,
+        fetchRestTimeUseCase: FetchRestTimeUseCase
     ) {
         self.sessionRepository = sessionRepository
+        self.fetchRestTimeUseCase = fetchRestTimeUseCase
     }
 
     /// Starts a new rest session for today.
@@ -34,9 +37,14 @@ struct StartRestSessionUseCase {
         // If there's already an active session for today, return nil.
         // If the existing session was broken, allow creating a fresh one.
         if let existing = sessionRepository.fetch(for: now) {
-            if !existing.didBreakRest {
+            let hasActiveSession = !existing.didBreakRest && !existing.isCompleted
+            if hasActiveSession {
                 return nil
             }
+        }
+
+        guard let config = fetchRestTimeUseCase.execute() else {
+            return nil
         }
 
         let session = RestSessionEntity(
@@ -44,8 +52,8 @@ struct StartRestSessionUseCase {
             startedAt: now,
             didBreakRest: false,
             avoidedMinutes: 0,
-            startTime: DateComponents(hour: 23, minute: 30), // Default values
-            endTime: DateComponents(hour: 7, minute: 0),    // Default values
+            startTime: config.startTime,
+            endTime: config.endTime,
             createdAt: now
         )
 

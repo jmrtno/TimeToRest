@@ -24,11 +24,14 @@
 /// ```
 enum Route: Hashable, Identifiable {
     case breakBlock
+    case breakBlockCelebrarion
 
     var id: String {
         switch self {
         case .breakBlock:
             return "breakBlock"
+        case .breakBlockCelebrarion:
+            return "breakBlockCelebrarion"
         }
     }
 }

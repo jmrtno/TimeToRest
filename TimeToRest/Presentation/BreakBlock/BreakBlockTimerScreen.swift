@@ -1,9 +1,9 @@
 import SwiftUI
 
-// MARK: - BreakBlockScreen
+// MARK: - BreakBlockTimerScreen
 /// The friction screen shown when the user wants to break the block.
 /// Shows a countdown, psychological messages, and the final break button.
-struct BreakBlockScreen: View {
+struct BreakBlockTimerScreen: View {
 
     @StateObject var viewModel: BreakBlockViewModel
     @EnvironmentObject private var router: Router
@@ -26,7 +26,7 @@ struct BreakBlockScreen: View {
             Spacer()
 
             // Psychological message
-            Text(viewModel.currentMessage)
+            Text(viewModel.motivationalMessage)
                 .font(.body)
                 .foregroundStyle(.white.opacity(0.7))
                 .multilineTextAlignment(.center)
@@ -48,10 +48,10 @@ struct BreakBlockScreen: View {
 
             // Actions
             VStack(spacing: 12) {
-                // Go back — the right choice
+                // Go back — the right choice 
                 Button {
                     viewModel.stopTimer()
-                    router.pop()
+                    router.dismissBreakBlock()
                 } label: {
                     Text("Go back to rest")
                         .font(.headline)

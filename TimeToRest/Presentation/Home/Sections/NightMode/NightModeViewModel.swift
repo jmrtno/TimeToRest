@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import Combine
 
 // MARK: - NightModeViewModel
@@ -6,6 +7,12 @@ import Combine
 /// Handles night-window/session state used to switch UI mode.
 @MainActor
 final class NightModeViewModel: ObservableObject {
+
+    enum BreakRequestOutcome {
+        case completed
+        case needsManualBreak
+        case noSession
+    }
 
     // MARK: - Published state
     @Published var config: TimeToRestEntity = .firstConfig
@@ -177,10 +184,20 @@ final class NightModeViewModel: ObservableObject {
         }
     }
 
-    /// Marks the current session as completed (user didn't break rest)
-    /// This method is no longer used - completion is now manual only
-    private func completeCurrentSession() async {
-        // Automatic completion removed - user must explicitly terminate rest
+    func handleBreakRequest(now: Date = Date()) async -> BreakRequestOutcome {
+        guard let currentSession = session else {
+            return .noSession
+        }
+
+        if let _ = await completeRestSessionUseCase.execute(session: currentSession, completedAt: now) {
+            session = nil
+            didBreakTonight = false
+            restSessionManager.stopMonitoringAndUnlockApps()
+            notificationManager.cancelSessionCompletionNotification()
+            return .completed
+        }
+
+        return .needsManualBreak
     }
 
     /// Restores the in-memory session from persistence if we're in the night window
