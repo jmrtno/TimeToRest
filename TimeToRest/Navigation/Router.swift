@@ -37,22 +37,11 @@ final class Router: ObservableObject {
     
     // MARK: - Modal state
     @Published var restConfigurationMode: RestConfigurationMode?
-    @Published var isBreakBlockPresented: Bool = false
 
     /// Pushes a new route onto the navigation stack.
     /// - Parameter route: The route to navigate to
     func push(_ route: Route) {
         navigationPath.append(route)
-    }
-    
-    /// Pops the top route from the navigation stack.
-    func pop() {
-        if isBreakBlockPresented {
-            dismissBreakBlock()
-            return
-        }
-        guard !navigationPath.isEmpty else { return }
-        navigationPath.removeLast()
     }
     
     /// Pops all routes and returns to the root view.
