@@ -27,14 +27,13 @@ struct RouteViewFactory {
     @ViewBuilder
     func view(for route: Route) -> some View {
         switch route {
-
         case .breakBlock:
-            BreakBlockScreen(
-                viewModel: BreakBlockViewModel(
-                    calculateStatsUseCase: dependencies.calculateStatsUseCase,
-                    restSessionManager: dependencies.restSessionManager,
-                    notificationManager: dependencies.notificationManager
-                )
+            BreakBlockTimerScreen(
+                viewModel: makeBreakBlockViewModel()
+            )
+        case .breakBlockCelebrarion:
+            BreakBlockCelebrationScreen(
+                viewModel: makeBreakBlockViewModel()
             )
         }
     }
@@ -54,5 +53,15 @@ struct RouteViewFactory {
                 )
             )
         }
+    }
+
+    // MARK: - Helpers
+
+    private func makeBreakBlockViewModel() -> BreakBlockViewModel {
+        BreakBlockViewModel(
+            calculateStatsUseCase: dependencies.calculateStatsUseCase,
+            restSessionManager: dependencies.restSessionManager,
+            notificationManager: dependencies.notificationManager
+        )
     }
 }

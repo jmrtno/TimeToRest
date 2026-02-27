@@ -59,17 +59,19 @@ struct AppCoordinator: View {
                     .environmentObject(router)
             }
         )
-        .sheet(
-            isPresented: $router.isBreakBlockPresented,
-            onDismiss: {
-                nightModeViewModel.reload()
-                restViewModel.reload()
-            }
-        ) {
+        .sheet(item: $router.breakBlockMode, onDismiss: {
+            nightModeViewModel.reload()
+            restViewModel.reload()
+        }) { mode in
             NavigationStack {
-                viewFactory.view(for: .breakBlock)
-                    .environmentObject(router)
+                switch mode {
+                case .countdown:
+                    viewFactory.view(for: .breakBlock)
+                case .celebration:
+                    viewFactory.view(for: .breakBlockCelebrarion)
+                }
             }
+            .environmentObject(router)
             .presentationDetents([.medium])
             .presentationDragIndicator(.visible)
         }

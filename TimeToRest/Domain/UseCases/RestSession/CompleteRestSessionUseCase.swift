@@ -1,10 +1,3 @@
-//
-//  RestSessionUseCase.swift
-//  TimeToRest
-//
-//  Created by Javier Martín on 8/2/26.
-//
-
 import Foundation
 
 // MARK: - CompleteRestSessionUseCase
@@ -27,6 +20,7 @@ import Foundation
 /// ```
 struct CompleteRestSessionUseCase {
     private let repository: RestSessionRepositoryContract
+    private let calendar = Calendar.current
     
     init(repository: RestSessionRepositoryContract) {
         self.repository = repository
@@ -37,7 +31,41 @@ struct CompleteRestSessionUseCase {
     /// - Parameter input: The input required for this operation (modify as needed)
     /// - Returns: The result of the operation (modify return type as needed)
     /// This method is no longer used - completion is now manual only
-    func execute() async {
-        // Automatic completion removed - user must explicitly terminate rest
+    func execute(session: RestSessionEntity, completedAt: Date = Date()) async -> RestSessionEntity? {
+        
+        var components = calendar.dateComponents([.year, .month, .day], from: session.day)
+        components.hour = session.endTime.hour ?? 0
+        components.minute = session.endTime.minute ?? 0
+        components.second = session.endTime.second ?? 0
+
+        guard var endDate = calendar.date(from: components) else {
+            return nil
+        }
+        if endDate <= session.startedAt {
+            endDate = calendar.date(byAdding: .day, value: 1, to: endDate) ?? endDate
+        }
+
+        guard completedAt >= endDate else {
+            return nil
+        }
+ 
+        let avoidedMinutes = max(0, Int(endDate.timeIntervalSince(session.startedAt) / 60))
+ 
+        let completedSession = RestSessionEntity(
+            id: session.id,
+            day: session.day,
+            startedAt: session.startedAt,
+            didBreakRest: false,
+            breakReason: nil,
+            brokenAt: nil,
+            isCompleted: true,
+            avoidedMinutes: avoidedMinutes,
+            startTime: session.startTime,
+            endTime: session.endTime,
+            createdAt: session.createdAt
+        )
+ 
+        await repository.update(completedSession)
+        return completedSession
     }
 }

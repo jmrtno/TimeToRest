@@ -14,7 +14,7 @@
 		AA000006AAAA000600000001 /* StatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000006AAAA000600000002 /* StatsViewModel.swift */; };
 		AA000007AAAA000700000001 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000007AAAA000700000002 /* HomeScreen.swift */; };
 		AA000008AAAA000800000001 /* SetupScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000008AAAA000800000002 /* SetupScreen.swift */; };
-		AA00000AAAAA000A00000001 /* BreakBlockScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000AAAAA000A00000002 /* BreakBlockScreen.swift */; };
+		AA00000AAAAA000A00000001 /* BreakBlockTimerScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000AAAAA000A00000002 /* BreakBlockTimerScreen.swift */; };
 		AA00000CAAAA000C00000001 /* GlassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000CAAAA000C00000002 /* GlassCard.swift */; };
 		AA00000DAAAA000D00000001 /* CountdownScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000DAAAA000D00000002 /* CountdownScreen.swift */; };
 		AA000012AAAA001200000001 /* NightModeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000012AAAA001200000002 /* NightModeViewModel.swift */; };
@@ -27,6 +27,7 @@
 		ED49C33C2F3F891E00ED2EFF /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED49C33B2F3F891E00ED2EFF /* CustomTabBar.swift */; };
 		ED6B34422F3FF2590097D632 /* StatsView+Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6B34412F3FF2590097D632 /* StatsView+Components.swift */; };
 		ED6B34442F3FFDEF0097D632 /* BigGlassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6B34432F3FFDEF0097D632 /* BigGlassCard.swift */; };
+		ED7B51742F5220D500E318D4 /* BreakBlockCelebrationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7B51732F5220D500E318D4 /* BreakBlockCelebrationScreen.swift */; };
 		ED8625E82F47BE45003E7D44 /* ManagedSettings.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDFB507D2F438B2800FEA44F /* ManagedSettings.framework */; };
 		EDA78AF12F374BCB00181F03 /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AF02F374BCB00181F03 /* AppDependencies.swift */; };
 		EDA78AF72F374C0400181F03 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78AF62F374C0400181F03 /* Router.swift */; };
@@ -116,7 +117,7 @@
 		AA000006AAAA000600000002 /* StatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsViewModel.swift; sourceTree = "<group>"; };
 		AA000007AAAA000700000002 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		AA000008AAAA000800000002 /* SetupScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupScreen.swift; sourceTree = "<group>"; };
-		AA00000AAAAA000A00000002 /* BreakBlockScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakBlockScreen.swift; sourceTree = "<group>"; };
+		AA00000AAAAA000A00000002 /* BreakBlockTimerScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakBlockTimerScreen.swift; sourceTree = "<group>"; };
 		AA00000CAAAA000C00000002 /* GlassCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassCard.swift; sourceTree = "<group>"; };
 		AA00000DAAAA000D00000002 /* CountdownScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownScreen.swift; sourceTree = "<group>"; };
 		AA000012AAAA001200000002 /* NightModeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightModeViewModel.swift; sourceTree = "<group>"; };
@@ -129,6 +130,7 @@
 		ED49C33B2F3F891E00ED2EFF /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		ED6B34412F3FF2590097D632 /* StatsView+Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsView+Components.swift"; sourceTree = "<group>"; };
 		ED6B34432F3FFDEF0097D632 /* BigGlassCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigGlassCard.swift; sourceTree = "<group>"; };
+		ED7B51732F5220D500E318D4 /* BreakBlockCelebrationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakBlockCelebrationScreen.swift; sourceTree = "<group>"; };
 		EDA78AF02F374BCB00181F03 /* AppDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
 		EDA78AF62F374C0400181F03 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		EDA78AF82F374C1800181F03 /* Route.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Route.swift; sourceTree = "<group>"; };
@@ -236,8 +238,9 @@
 		AA000011AAAA001100000001 /* BreakBlock */ = {
 			isa = PBXGroup;
 			children = (
-				AA00000AAAAA000A00000002 /* BreakBlockScreen.swift */,
-				AA00000DAAAA000D00000002 /* CountdownScreen.swift */,
+				ED7B51752F523B0300E318D4 /* Sections */,
+				ED7B51732F5220D500E318D4 /* BreakBlockCelebrationScreen.swift */,
+				AA00000AAAAA000A00000002 /* BreakBlockTimerScreen.swift */,
 				AA000005AAAA000500000002 /* BreakBlockViewModel.swift */,
 			);
 			path = BreakBlock;
@@ -304,6 +307,14 @@
 			children = (
 				ED6B34412F3FF2590097D632 /* StatsView+Components.swift */,
 				ED3E1E902F3FD0730098B03E /* StatsGlassCard.swift */,
+			);
+			path = Sections;
+			sourceTree = "<group>";
+		};
+		ED7B51752F523B0300E318D4 /* Sections */ = {
+			isa = PBXGroup;
+			children = (
+				AA00000DAAAA000D00000002 /* CountdownScreen.swift */,
 			);
 			path = Sections;
 			sourceTree = "<group>";
@@ -727,11 +738,12 @@
 				AA000006AAAA000600000001 /* StatsViewModel.swift in Sources */,
 				AA000007AAAA000700000001 /* HomeScreen.swift in Sources */,
 				AA000008AAAA000800000001 /* SetupScreen.swift in Sources */,
-				AA00000AAAAA000A00000001 /* BreakBlockScreen.swift in Sources */,
+				AA00000AAAAA000A00000001 /* BreakBlockTimerScreen.swift in Sources */,
 				AA00000CAAAA000C00000001 /* GlassCard.swift in Sources */,
 				AA00000DAAAA000D00000001 /* CountdownScreen.swift in Sources */,
 				ED29B0482F3908B500ADC708 /* CompleteRestSessionUseCase.swift in Sources */,
 				ED29B04A2F39091500ADC708 /* FetchCurrentSessionUseCase.swift in Sources */,
+				ED7B51742F5220D500E318D4 /* BreakBlockCelebrationScreen.swift in Sources */,
 				ED6B34442F3FFDEF0097D632 /* BigGlassCard.swift in Sources */,
 				ED3E1E912F3FD0730098B03E /* StatsGlassCard.swift in Sources */,
 				AA000012AAAA001200000001 /* NightModeViewModel.swift in Sources */,

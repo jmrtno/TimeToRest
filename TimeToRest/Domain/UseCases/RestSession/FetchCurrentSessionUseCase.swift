@@ -37,8 +37,18 @@ struct FetchCurrentSessionUseCase {
     /// - Parameter input: The input required for this operation (modify as needed)
     /// - Returns: The result of the operation (modify return type as needed)
     func execute(now: Date = Date()) -> RestSessionEntity? {
-        let yesterday = Calendar.current.date(byAdding: .day, value: -1, to: now) ?? now
-        return repository.fetch(for: now)
-        ?? repository.fetch(for: yesterday)
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: now)
+        let yesterday = calendar.date(byAdding: .day, value: -1, to: today) ?? today
+
+        if let todaySession = repository.fetch(for: today), !todaySession.isCompleted {
+            return todaySession
+        }
+
+        if let yesterdaySession = repository.fetch(for: yesterday), !yesterdaySession.isCompleted {
+            return yesterdaySession
+        }
+
+        return nil
     }
 }
