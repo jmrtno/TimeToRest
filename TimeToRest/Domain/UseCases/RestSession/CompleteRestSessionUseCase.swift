@@ -26,11 +26,19 @@ struct CompleteRestSessionUseCase {
         self.repository = repository
     }
     
-    /// Executes the use case operation.
+    /// Marks a rest session as completed if the completion time is after the scheduled end time.
     ///
-    /// - Parameter input: The input required for this operation (modify as needed)
-    /// - Returns: The result of the operation (modify return type as needed)
-    /// This method is no longer used - completion is now manual only
+    /// This method:
+    /// 1. Calculates the session's end date based on the configured end time
+    /// 2. Handles sessions that cross midnight by advancing the end date
+    /// 3. Validates that the completion time is after the end date
+    /// 4. Calculates the avoided minutes (duration of the successful rest)
+    /// 5. Updates the session with completion status
+    ///
+    /// - Parameters:
+    ///   - session: The session to mark as completed
+    ///   - completedAt: The actual completion time (defaults to current time)
+    /// - Returns: The updated session entity if completion is valid, nil otherwise
     func execute(session: RestSessionEntity, completedAt: Date = Date()) async -> RestSessionEntity? {
         
         var components = calendar.dateComponents([.year, .month, .day], from: session.day)

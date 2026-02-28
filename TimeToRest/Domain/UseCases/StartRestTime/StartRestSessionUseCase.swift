@@ -32,7 +32,16 @@ struct StartRestSessionUseCase {
     }
 
     /// Starts a new rest session for today.
-    /// - Returns: The created session, or nil if an active (non-broken) one already exists.
+    ///
+    /// This method checks if there's already an active session for the current day.
+    /// If an active session exists (not broken and not completed), it returns nil.
+    /// If the existing session was broken or completed, a new session can be created.
+    ///
+    /// The session is created with the user's configured start and end times
+    /// from the fetched rest time configuration.
+    ///
+    /// - Parameter now: The date to use for session creation (defaults to current date).
+    /// - Returns: The created session, or nil if an active session already exists or no configuration is found.
     func execute(now: Date = Date()) async -> RestSessionEntity? {
         // If there's already an active session for today, return nil.
         // If the existing session was broken, allow creating a fresh one.

@@ -20,10 +20,14 @@ import SwiftUI
 /// ```
 struct RouteViewFactory {
 
+    /// The dependencies container providing all required use cases and managers.
     let dependencies: AppDependencies
 
     // MARK: - Navigation routes
 
+    /// Creates a view for the given navigation route.
+    /// - Parameter route: The route to create a view for.
+    /// - Returns: A SwiftUI view configured for the route.
     @ViewBuilder
     func view(for route: Route) -> some View {
         switch route {
@@ -40,6 +44,9 @@ struct RouteViewFactory {
 
     // MARK: - Modals
 
+    /// Creates the rest configuration modal view.
+    /// - Parameter mode: The configuration mode (e.g., mandatory, optional).
+    /// - Returns: A NavigationStack containing the SetupScreen.
     @ViewBuilder
     func restConfigurationView(mode: RestConfigurationMode) -> some View {
         NavigationStack {
@@ -57,6 +64,8 @@ struct RouteViewFactory {
 
     // MARK: - Helpers
 
+    /// Creates a shared BreakBlockViewModel with required dependencies.
+    /// - Returns: A new BreakBlockViewModel instance.
     private func makeBreakBlockViewModel() -> BreakBlockViewModel {
         BreakBlockViewModel(
             calculateStatsUseCase: dependencies.calculateStatsUseCase,

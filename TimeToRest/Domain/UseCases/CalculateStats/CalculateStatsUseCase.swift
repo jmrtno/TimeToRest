@@ -26,6 +26,16 @@ struct CalculateStatsUseCase {
         self.repository = repository
     }
 
+    /// Calculates rest statistics from all stored sessions.
+    ///
+    /// This method computes:
+    /// - Current streak: consecutive days with completed rest sessions
+    /// - Best streak: the longest streak achieved
+    /// - Breaks this week: number of sessions broken in the current week
+    /// - Average start time: circular mean of start times from last 30 sessions
+    /// - Break status: daily break status for the last 15 days
+    ///
+    /// - Returns: A `RestStatsEntity` containing all calculated statistics.
     func execute() -> RestStatsEntity {
         let sessions = repository.fetchAll()
 

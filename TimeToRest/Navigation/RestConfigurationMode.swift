@@ -1,6 +1,6 @@
 enum RestConfigurationMode: Identifiable, Equatable {
-    case mandatory   // primer uso
-    case editable    // edición posterior
+    case mandatory
+    case editable
 
     var id: String {
         switch self {

@@ -23,9 +23,14 @@
 /// }
 /// ```
 enum Route: Hashable, Identifiable {
+    /// The countdown modal shown when the user attempts to break rest.
     case breakBlock
+    /// The celebration modal shown after successfully completing a rest session.
     case breakBlockCelebrarion
 
+    /// A unique identifier for each route case.
+    ///
+    /// Used by SwiftUI's `sheet(item:)` to differentiate between routes.
     var id: String {
         switch self {
         case .breakBlock:
