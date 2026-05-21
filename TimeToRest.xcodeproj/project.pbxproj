@@ -25,6 +25,7 @@
 		ED3E1E8D2F3FBE840098B03E /* RestInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3E1E8C2F3FBE7D0098B03E /* RestInfoView.swift */; };
 		ED3E1E912F3FD0730098B03E /* StatsGlassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3E1E902F3FD0730098B03E /* StatsGlassCard.swift */; };
 		ED49C33C2F3F891E00ED2EFF /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED49C33B2F3F891E00ED2EFF /* CustomTabBar.swift */; };
+		ED5F86792FBF81C8008EC807 /* GetSleepTipUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5F86772FBF81C8008EC807 /* GetSleepTipUseCase.swift */; };
 		ED6B34422F3FF2590097D632 /* StatsView+Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6B34412F3FF2590097D632 /* StatsView+Components.swift */; };
 		ED6B34442F3FFDEF0097D632 /* BigGlassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6B34432F3FFDEF0097D632 /* BigGlassCard.swift */; };
 		ED7B51742F5220D500E318D4 /* BreakBlockCelebrationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7B51732F5220D500E318D4 /* BreakBlockCelebrationScreen.swift */; };
@@ -128,6 +129,7 @@
 		ED3E1E8C2F3FBE7D0098B03E /* RestInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestInfoView.swift; sourceTree = "<group>"; };
 		ED3E1E902F3FD0730098B03E /* StatsGlassCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsGlassCard.swift; sourceTree = "<group>"; };
 		ED49C33B2F3F891E00ED2EFF /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
+		ED5F86772FBF81C8008EC807 /* GetSleepTipUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSleepTipUseCase.swift; sourceTree = "<group>"; };
 		ED6B34412F3FF2590097D632 /* StatsView+Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsView+Components.swift"; sourceTree = "<group>"; };
 		ED6B34432F3FFDEF0097D632 /* BigGlassCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigGlassCard.swift; sourceTree = "<group>"; };
 		ED7B51732F5220D500E318D4 /* BreakBlockCelebrationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakBlockCelebrationScreen.swift; sourceTree = "<group>"; };
@@ -302,6 +304,14 @@
 			path = RestInfo;
 			sourceTree = "<group>";
 		};
+		ED5F86782FBF81C8008EC807 /* AICoach */ = {
+			isa = PBXGroup;
+			children = (
+				ED5F86772FBF81C8008EC807 /* GetSleepTipUseCase.swift */,
+			);
+			path = AICoach;
+			sourceTree = "<group>";
+		};
 		ED6B34402F3FF23D0097D632 /* Sections */ = {
 			isa = PBXGroup;
 			children = (
@@ -417,6 +427,7 @@
 				EDA78B1B2F37AEFC00181F03 /* CalculateStats */,
 				EDA78B1A2F37AEE700181F03 /* BreakRestTime */,
 				EDA78B172F37AD3900181F03 /* StartRestTime */,
+				ED5F86782FBF81C8008EC807 /* AICoach */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -627,7 +638,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2620;
-				LastUpgradeCheck = 2620;
+				LastUpgradeCheck = 2630;
 				TargetAttributes = {
 					EDE2F9362F3744ED006CB2F6 = {
 						CreatedOnToolsVersion = 26.2;
@@ -742,6 +753,7 @@
 				AA00000CAAAA000C00000001 /* GlassCard.swift in Sources */,
 				AA00000DAAAA000D00000001 /* CountdownScreen.swift in Sources */,
 				ED29B0482F3908B500ADC708 /* CompleteRestSessionUseCase.swift in Sources */,
+				ED5F86792FBF81C8008EC807 /* GetSleepTipUseCase.swift in Sources */,
 				ED29B04A2F39091500ADC708 /* FetchCurrentSessionUseCase.swift in Sources */,
 				ED7B51742F5220D500E318D4 /* BreakBlockCelebrationScreen.swift in Sources */,
 				ED6B34442F3FFDEF0097D632 /* BigGlassCard.swift in Sources */,
@@ -832,6 +844,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = VZ82ZJHYB5;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -855,6 +868,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -895,6 +909,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = VZ82ZJHYB5;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -911,6 +926,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -923,9 +939,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				"CODE_SIGN_ENTITLEMENTS[sdk=iphoneos*]" = TimeToRest/TimeToRest.entitlements;
 				"CODE_SIGN_ENTITLEMENTS[sdk=iphonesimulator*]" = TimeToRest/TimeToRest.simulator.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VZ82ZJHYB5;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TimeToRest/Info.plist;
@@ -944,6 +960,7 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.javidev.TimeToRest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -961,9 +978,9 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				"CODE_SIGN_ENTITLEMENTS[sdk=iphoneos*]" = TimeToRest/TimeToRest.entitlements;
 				"CODE_SIGN_ENTITLEMENTS[sdk=iphonesimulator*]" = TimeToRest/TimeToRest.simulator.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VZ82ZJHYB5;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TimeToRest/Info.plist;
@@ -982,6 +999,7 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.javidev.TimeToRest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -996,9 +1014,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = TimeToRestMonitorExtension/TimeToRestMonitorExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VZ82ZJHYB5;
+				CURRENT_PROJECT_VERSION = 2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TimeToRestMonitorExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TimeToRestMonitorExtension;
@@ -1011,6 +1029,7 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.javidev.TimeToRest.TimeToRestMonitorExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -1025,9 +1044,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = TimeToRestMonitorExtension/TimeToRestMonitorExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VZ82ZJHYB5;
+				CURRENT_PROJECT_VERSION = 2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TimeToRestMonitorExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TimeToRestMonitorExtension;
@@ -1040,6 +1059,7 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.javidev.TimeToRest.TimeToRestMonitorExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -1054,9 +1074,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = TimeToRestShieldActionExtension/TimeToRestShieldActionExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VZ82ZJHYB5;
+				CURRENT_PROJECT_VERSION = 2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TimeToRestShieldActionExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TimeToRestShieldActionExtension;
@@ -1069,6 +1089,7 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.javidev.TimeToRest.TimeToRestShieldActionExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -1083,9 +1104,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = TimeToRestShieldActionExtension/TimeToRestShieldActionExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VZ82ZJHYB5;
+				CURRENT_PROJECT_VERSION = 2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TimeToRestShieldActionExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TimeToRestShieldActionExtension;
@@ -1098,6 +1119,7 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.javidev.TimeToRest.TimeToRestShieldActionExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -1112,9 +1134,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = TimeToRestShieldConfigurationExtension/TimeToRestShieldConfigurationExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VZ82ZJHYB5;
+				CURRENT_PROJECT_VERSION = 2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TimeToRestShieldConfigurationExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TimeToRestShieldConfigurationExtension;
@@ -1127,6 +1149,7 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.javidev.TimeToRest.TimeToRestShieldConfigurationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -1141,9 +1164,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = TimeToRestShieldConfigurationExtension/TimeToRestShieldConfigurationExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = VZ82ZJHYB5;
+				CURRENT_PROJECT_VERSION = 2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = TimeToRestShieldConfigurationExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TimeToRestShieldConfigurationExtension;
@@ -1156,6 +1179,7 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.javidev.TimeToRest.TimeToRestShieldConfigurationExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SKIP_INSTALL = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;

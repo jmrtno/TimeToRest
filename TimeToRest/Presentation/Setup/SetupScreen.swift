@@ -6,19 +6,20 @@ import FamilyControls
 /// In mandatory mode: cannot be dismissed without saving.
 /// In editable mode: can be cancelled.
 struct SetupScreen: View {
-
+    
     @StateObject var viewModel: SetupViewModel
     @EnvironmentObject private var router: Router
-
+    
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
-
+            
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     headerSection
                     timePickersSection
                     notAllowedAppsSection
+                    coachText
                     footerText
                 }
                 .padding(.horizontal, 24)
@@ -40,7 +41,7 @@ struct SetupScreen: View {
                     Task {
                         await viewModel.save()
                     }
-                } 
+                }
                 .foregroundStyle(.white.opacity(0.6))
             }
         }
@@ -49,11 +50,19 @@ struct SetupScreen: View {
                 router.dismissRestConfiguration()
             }
         }
+        .task {
+            await viewModel.loadSleepTip()
+        }
         .familyActivityPicker(
             isPresented: $viewModel.isFamilyActivityPickerPresented,
             selection: $viewModel.blockedSelection
         )
     }
+}
+
+// MARK: - Views
+
+private extension SetupScreen {
 
     // MARK: - Header
 
@@ -154,6 +163,54 @@ struct SetupScreen: View {
         .padding(16)
         .glassEffect(in: .rect(cornerRadius: 24))
     }
+    
+    // MARK: - Coach
+
+    private var coachText: some View {
+        Group {
+            if viewModel.mode == .editable {
+                HStack {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("AI Coach:")
+                            .textCase(.uppercase)
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundStyle(.white.opacity(0.4))
+                            .padding(.bottom, 16)
+                        
+                        if viewModel.isTipLoading {
+                            HStack(spacing: 8) {
+                                ProgressView()
+                                    .tint(.orange)
+                                Text("Loading tip...")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.white.opacity(0.5))
+                            }
+                        } else {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text(viewModel.sleepTip)
+                                    .font(.subheadline)
+                                    .foregroundStyle(.white.opacity(0.75))
+                                
+                                if viewModel.sleepTip.contains("Apple Intelligence is not enabled") {
+                                    Button("Open Settings") {
+                                        if let url = URL(string: UIApplication.openSettingsURLString) {
+                                            UIApplication.shared.open(url)
+                                        }
+                                    }
+                                    .font(.subheadline.weight(.semibold))
+                                    .foregroundStyle(.orange)
+                                }
+                            }
+                        }
+                    }
+                    
+                    Spacer()
+                }
+                .padding(16)
+                .glassEffect(in: .rect(cornerRadius: 24))
+            }
+        }
+    }
 
     // MARK: - Footer
 
@@ -167,5 +224,4 @@ struct SetupScreen: View {
         }
         .padding(.bottom, 40)
     }
-
 }

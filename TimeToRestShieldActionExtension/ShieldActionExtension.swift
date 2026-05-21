@@ -41,6 +41,12 @@ final class ShieldActionExtension: ShieldActionDelegate {
             completionHandler(.none)
         case .secondaryButtonPressed:
             completionHandler(.close)
+        case .firstSecondarySubmenuItemPressed:
+            completionHandler(.defer)
+        case .secondSecondarySubmenuItemPressed:
+            completionHandler(.defer)
+        case .thirdSecondarySubmenuItemPressed:
+            completionHandler(.defer)
         @unknown default:
             completionHandler(.defer)
         }
