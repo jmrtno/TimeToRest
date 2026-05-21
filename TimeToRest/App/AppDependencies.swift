@@ -45,6 +45,12 @@ final class AppDependencies {
         BackgroundTaskManager()
     }()
 
+    // MARK: - Use Cases (AI Coach)
+
+    lazy var getSleepTipUseCase: GetSleepTipUseCase = {
+        GetSleepTipUseCase()
+    }()
+
     // MARK: - Use Cases (TimeToRest configuration)
 
     lazy var fetchRestTimeUseCase: FetchRestTimeUseCase = {

@@ -13,6 +13,8 @@ final class SetupViewModel: ObservableObject {
     @Published var endTime: Date
     @Published var blockedSelection: FamilyActivitySelection
     @Published var isFamilyActivityPickerPresented: Bool = false
+    @Published var sleepTip: String = ""
+    @Published var isTipLoading: Bool = true
 
     // MARK: - Mode
     let mode: RestConfigurationMode
@@ -20,6 +22,7 @@ final class SetupViewModel: ObservableObject {
     // MARK: - Dependencies
     private let saveRestTimeUseCase: SaveRestTimeUseCase
     private let fetchRestTimeUseCase: FetchRestTimeUseCase
+    private let getSleepTipUseCase: GetSleepTipUseCase
     private let notificationManager: NotificationManager
     private let restSessionManager: RestSessionManager
 
@@ -30,12 +33,14 @@ final class SetupViewModel: ObservableObject {
         mode: RestConfigurationMode,
         saveRestTimeUseCase: SaveRestTimeUseCase,
         fetchRestTimeUseCase: FetchRestTimeUseCase,
+        getSleepTipUseCase: GetSleepTipUseCase,
         notificationManager: NotificationManager,
         restSessionManager: RestSessionManager
     ) {
         self.mode = mode
         self.saveRestTimeUseCase = saveRestTimeUseCase
         self.fetchRestTimeUseCase = fetchRestTimeUseCase
+        self.getSleepTipUseCase = getSleepTipUseCase
         self.notificationManager = notificationManager
         self.restSessionManager = restSessionManager
         self.blockedSelection = restSessionManager.currentBlockedSelection
@@ -53,6 +58,12 @@ final class SetupViewModel: ObservableObject {
     }
 
     // MARK: - Actions
+
+    func loadSleepTip() async {
+        isTipLoading = true
+        sleepTip = await getSleepTipUseCase.execute()
+        isTipLoading = false
+    }
 
     func save() async {
         let calendar = Calendar.current

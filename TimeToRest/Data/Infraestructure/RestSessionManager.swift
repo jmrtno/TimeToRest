@@ -125,6 +125,8 @@ final class RestSessionManager: ObservableObject {
             return AuthorizationCenter.shared.authorizationStatus == .approved
         case .denied:
             return false
+        case .approvedWithDataAccess:
+            return true
         @unknown default:
             return false
         }

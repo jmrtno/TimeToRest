@@ -55,6 +55,7 @@ struct RouteViewFactory {
                     mode: mode,
                     saveRestTimeUseCase: dependencies.saveRestTimeUseCase,
                     fetchRestTimeUseCase: dependencies.fetchRestTimeUseCase,
+                    getSleepTipUseCase: dependencies.getSleepTipUseCase,
                     notificationManager: dependencies.notificationManager,
                     restSessionManager: dependencies.restSessionManager
                 )
