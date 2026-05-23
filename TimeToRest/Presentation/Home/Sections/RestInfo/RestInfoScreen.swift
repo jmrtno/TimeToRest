@@ -1,8 +1,8 @@
 import SwiftUI
 
-// MARK: - RestInfoView
+// MARK: - RestInfoScreen
 
-struct RestInfoView: View {
+struct RestInfoScreen: View {
     
     @ObservedObject var viewModel: RestInfoViewModel
     @EnvironmentObject private var router: Router

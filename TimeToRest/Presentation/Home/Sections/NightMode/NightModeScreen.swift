@@ -1,13 +1,14 @@
 import SwiftUI
 
-// MARK: - NightModeView
+// MARK: - NightModeScreen
 
-struct NightModeView: View {
+struct NightModeScreen: View {
 
     @ObservedObject var viewModel: NightModeViewModel
     @EnvironmentObject private var router: Router
     @State private var stars: [StarSpec] = StarSpec.generate(count: 20)
     @State private var showLateMessage = false
+    @State private var isAnimating: Bool = false
 
     @Environment(\.verticalSizeClass) private var vSizeClass
 
@@ -107,40 +108,53 @@ struct NightModeView: View {
         }
         .offset(y: -65)
         .onAppear {
-            if viewModel.minutesLate != nil {
-                showLateMessage = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                    withAnimation(.easeOut(duration: 3)) {
-                        showLateMessage = false
-                    }
-                }
-            }
+            triggerLateMessageAnimation()
+        }
+        .onChange(of: viewModel.minutesLate) {
+            triggerLateMessageAnimation()
         }
     }
     
     // MARK: - Break Rest Button
     
     private var breakRestButton: some View {
-        let buttonBgColor = !successBreak ? Color.red.opacity(0.2) : Color.green.opacity(0.2)
-        let buttonColor = !successBreak ? Color.red.opacity(0.6) : Color.green.opacity(0.6)
+        let buttonBgColor = !successBreak ? Color.red : Color.green
+        let buttonColor = !successBreak ? Color.red : Color.green
         let buttonText = !successBreak ? "Break rest" : "Rest finished"
-        return VStack(spacing: 16) {
-            Button {
-                handleBreakAction()
-            } label: {
-                Image(systemName: "power")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 30, height: 30)
-                    .padding(30)
-                    .background(
+        return
+                VStack(spacing: 16) {
+                    ZStack {
                         Circle()
-                            .stroke(buttonBgColor, lineWidth: 1))
-            }
-            Text(buttonText)
-                .font(.subheadline)
-        }
-        .foregroundStyle(buttonColor)
+                            .fill(buttonBgColor)
+                            .frame(width: 65, height: 65)
+                            .opacity(isAnimating ? 0.3 : 0)
+                            .blur(radius: 30)
+                            .onAppear {
+                                withAnimation(
+                                    .easeInOut(duration: 3.0)
+                                    .repeatForever(autoreverses: true)
+                                ) {
+                                    isAnimating = true
+                                }
+                            }
+                        Button {
+                            handleBreakAction()
+                        } label: {
+                            Image(systemName: "power")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 30, height: 30)
+                                .padding(30)
+                                .background(
+                                    Circle()
+                                        .stroke(buttonBgColor.opacity(0.2), lineWidth: 1))
+                        }
+                    }
+                    Text(buttonText)
+                        .font(.subheadline)
+                }
+                .foregroundStyle(buttonColor.opacity(0.6))
+                .animation(.easeInOut(duration: 1.0), value: successBreak)
     }
 
     // MARK: - Animated Background
@@ -155,7 +169,21 @@ struct NightModeView: View {
     }
 }
 
-private extension NightModeView {
+private extension NightModeScreen {
+
+    private func triggerLateMessageAnimation() {
+        guard viewModel.minutesLate != nil else {
+            showLateMessage = false
+            return
+        }
+
+        showLateMessage = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            withAnimation(.easeOut(duration: 3)) {
+                showLateMessage = false
+            }
+        }
+    }
 
     struct StarSpec: Identifiable {
         let id = UUID()

@@ -1,6 +1,6 @@
 import SwiftUI
 
-extension StatsView {
+extension StatsScreen {
     
     struct BreakRateDailyChart: View {
         let values: [Bool]
