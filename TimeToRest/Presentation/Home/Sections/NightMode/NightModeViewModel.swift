@@ -20,6 +20,8 @@ final class NightModeViewModel: ObservableObject {
     @Published var hasConfiguration: Bool = false
     @Published var session: RestSessionEntity?
     @Published var didBreakTonight: Bool = false
+    @Published var showCompletedButtonStyle: Bool = false
+    @Published var minutesLate: Int? = nil
 
     /// Controls whether the night mode UI is shown.
     /// True if there's an active session or we're within the night window and didn't break rest.
@@ -49,6 +51,7 @@ final class NightModeViewModel: ObservableObject {
 
     private var windowCheckTimer: Timer?
     private var lastTimerCheckedMinute: Int?
+    private var buttonStyleTimer: Timer?
 
     init(
         fetchRestTimeUseCase: FetchRestTimeUseCase,
@@ -89,10 +92,12 @@ final class NightModeViewModel: ObservableObject {
         lastTimerCheckedMinute = nil
         reload()
         startWindowCheckTimer()
+        startButtonStyleTimer()
     }
 
     func onDisappear() {
         stopWindowCheckTimer()
+        stopButtonStyleTimer()
     }
 
     /// Reloads data relevant to night mode/session handling.
@@ -141,6 +146,7 @@ final class NightModeViewModel: ObservableObject {
         if didBreakTonight {
             restSessionManager.stopMonitoringAndUnlockApps()
             session = nil
+showCompletedButtonStyle = false
             return
         }
 
@@ -150,6 +156,7 @@ final class NightModeViewModel: ObservableObject {
            updatedSession.didBreakRest && updatedSession.id == currentSession.id {
             session = nil
             didBreakTonight = true
+showCompletedButtonStyle = false
             // Cancel completion notification since session was broken
             notificationManager.cancelSessionCompletionNotification()
             return
@@ -176,9 +183,29 @@ final class NightModeViewModel: ObservableObject {
     func startRestSession() async {
         // Don't start a new session if there's already one active
         guard session == nil else { return }
-        
+
         if let newSession = await startRestSessionUseCase.execute() {
             session = newSession
+            showCompletedButtonStyle = false
+
+            // Calculate if user started late
+            let calendar = Calendar.current
+            let now = Date()
+            let startTotal = (config.startTime.hour ?? 23) * 60 + (config.startTime.minute ?? 30)
+            let currentTotal = calendar.component(.hour, from: now) * 60 + calendar.component(.minute, from: now)
+
+            // Only calculate if we're in the night window (start > end or current < end)
+            let endTotal = (config.endTime.hour ?? 7) * 60 + (config.endTime.minute ?? 0)
+            if startTotal > endTotal || currentTotal < endTotal {
+                if currentTotal > startTotal {
+                    minutesLate = currentTotal - startTotal
+                } else {
+                    minutesLate = nil
+                }
+            } else {
+                minutesLate = nil
+            }
+
             // Schedule completion notification for this session
             notificationManager.scheduleSessionCompletionNotification(for: config)
         }
@@ -192,6 +219,7 @@ final class NightModeViewModel: ObservableObject {
         if let _ = await completeRestSessionUseCase.execute(session: currentSession, completedAt: now) {
             session = nil
             didBreakTonight = false
+showCompletedButtonStyle = false
             restSessionManager.stopMonitoringAndUnlockApps()
             notificationManager.cancelSessionCompletionNotification()
             return .completed
@@ -293,7 +321,21 @@ final class NightModeViewModel: ObservableObject {
         windowCheckTimer?.invalidate()
         windowCheckTimer = nil
     }
-    
+
+    private func startButtonStyleTimer() {
+        stopButtonStyleTimer()
+        buttonStyleTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            Task { @MainActor [weak self] in
+                self?.refreshButtonStyleState()
+            }
+        }
+    }
+
+    private func stopButtonStyleTimer() {
+        buttonStyleTimer?.invalidate()
+        buttonStyleTimer = nil
+    }
+
     private func checkNightWindowFromTimer(now: Date = Date()) {
         let minuteMark = Int(now.timeIntervalSince1970 / 60)
         guard minuteMark != lastTimerCheckedMinute else { return }
@@ -354,6 +396,31 @@ final class NightModeViewModel: ObservableObject {
         }
 
         return max(0, Int(endDate.timeIntervalSince(normalizedStart) / 60))
+    }
+
+    private func refreshButtonStyleState(now: Date = Date()) {
+        guard let currentSession = session else {
+            showCompletedButtonStyle = false
+            return
+        }
+        showCompletedButtonStyle = isCompletionTimeReached(for: currentSession, now: now)
+    }
+
+    private func isCompletionTimeReached(for session: RestSessionEntity, now: Date = Date()) -> Bool {
+        var components = Calendar.current.dateComponents([.year, .month, .day], from: session.day)
+        components.hour = session.endTime.hour ?? 0
+        components.minute = session.endTime.minute ?? 0
+        components.second = session.endTime.second ?? 0
+
+        guard var endDate = Calendar.current.date(from: components) else {
+            return false
+        }
+
+        if endDate <= session.startedAt {
+            endDate = Calendar.current.date(byAdding: .day, value: 1, to: endDate) ?? endDate
+        }
+
+        return now >= endDate
     }
 
     private static func formatTime(hour: Int, minute: Int) -> String {

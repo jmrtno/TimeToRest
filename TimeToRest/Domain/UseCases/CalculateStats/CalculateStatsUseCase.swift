@@ -57,10 +57,8 @@ struct CalculateStatsUseCase {
             // Streaks: only count sessions with a definitive outcome
             if session.didBreakRest {
                 tempStreak = 0
-                currentStreak = 0
             } else if session.isCompleted {
                 tempStreak += 1
-                currentStreak = tempStreak
                 bestStreak = max(bestStreak, tempStreak)
             }
             // Sessions that are neither broken nor completed are still in progress — skip
@@ -78,6 +76,8 @@ struct CalculateStatsUseCase {
             }
 
         }
+
+        currentStreak = tempStreak
 
         let averageStartTimeMinutesLast30 = calculateAverageStartTimeMinutes(for: sessions)
         let breakStatusLast15Days = calculateBreakStatusLast15Days(for: sessions, now: now)

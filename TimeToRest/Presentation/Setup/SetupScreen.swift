@@ -181,7 +181,7 @@ private extension SetupScreen {
                             HStack(spacing: 8) {
                                 ProgressView()
                                     .tint(.orange)
-                                Text("Loading tip...")
+                                Text("Generating tip...")
                                     .font(.subheadline)
                                     .foregroundStyle(.white.opacity(0.5))
                             }
