@@ -189,22 +189,7 @@ showCompletedButtonStyle = false
             showCompletedButtonStyle = false
 
             // Calculate if user started late
-            let calendar = Calendar.current
-            let now = Date()
-            let startTotal = (config.startTime.hour ?? 23) * 60 + (config.startTime.minute ?? 30)
-            let currentTotal = calendar.component(.hour, from: now) * 60 + calendar.component(.minute, from: now)
-
-            // Only calculate if we're in the night window (start > end or current < end)
-            let endTotal = (config.endTime.hour ?? 7) * 60 + (config.endTime.minute ?? 0)
-            if startTotal > endTotal || currentTotal < endTotal {
-                if currentTotal > startTotal {
-                    minutesLate = currentTotal - startTotal
-                } else {
-                    minutesLate = nil
-                }
-            } else {
-                minutesLate = nil
-            }
+            minutesLate = calculateMinutesLate(session: newSession)
 
             // Schedule completion notification for this session
             notificationManager.scheduleSessionCompletionNotification(for: config)
@@ -236,6 +221,8 @@ showCompletedButtonStyle = false
            isSessionInCurrentRestWindow(persisted),
            !persisted.didBreakRest, !persisted.isCompleted {
             session = persisted
+            // Recalculate minutes late for restored session
+            minutesLate = calculateMinutesLate(session: persisted)
         }
     }
 
@@ -425,5 +412,16 @@ showCompletedButtonStyle = false
 
     private static func formatTime(hour: Int, minute: Int) -> String {
         String(format: "%02d:%02d", hour, minute)
+    }
+
+    /// Calculates how many minutes late the user started the session compared to the configured start time.
+    /// Compares session.startedAt with the configured start time for the corresponding day.
+    private func calculateMinutesLate(session: RestSessionEntity) -> Int? {
+        guard let window = currentRestWindowInterval(now: session.startedAt) else {
+            return nil
+        }
+
+        let lateMinutes = Int(session.startedAt.timeIntervalSince(window.start) / 60)
+        return lateMinutes > 0 ? lateMinutes : nil
     }
 }

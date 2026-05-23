@@ -33,13 +33,13 @@ struct HomeScreen: View {
 
             VStack {
                 if nightModeViewModel.showNightMode {
-                    NightModeView(viewModel: nightModeViewModel)
+                    NightModeScreen(viewModel: nightModeViewModel)
                 } else {
                     VStack {
                         if currentView == .home {
-                            RestInfoView(viewModel: restViewModel)
+                            RestInfoScreen(viewModel: restViewModel)
                         } else {
-                            StatsView(calculateStatsUseCase: calculateStatsUseCase)
+                            StatsScreen(calculateStatsUseCase: calculateStatsUseCase)
                         }
                         // Barra de navegación inferior
                         CustomTabBar(currentView: $currentView)

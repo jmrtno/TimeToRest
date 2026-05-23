@@ -1,11 +1,11 @@
 import Foundation
 import SwiftUI
 
-// MARK: - HomeScreen
+// MARK: - StatsScreen
 /// The main screen of the app.
 /// Transforms inline into night mode when the rest window is active.
 /// No separate night mode screen — the home screen itself changes.
-struct StatsView: View {
+struct StatsScreen: View {
 
     @StateObject private var statsViewModel: StatsViewModel
     
