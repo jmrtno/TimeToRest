@@ -7,11 +7,16 @@ struct NightModeView: View {
     @ObservedObject var viewModel: NightModeViewModel
     @EnvironmentObject private var router: Router
     @State private var stars: [StarSpec] = StarSpec.generate(count: 20)
-    
+    @State private var showLateMessage = false
+
     @Environment(\.verticalSizeClass) private var vSizeClass
 
     var isLandscapeCompact: Bool {
         vSizeClass == .compact
+    }
+
+    private var successBreak: Bool {
+        viewModel.showCompletedButtonStyle
     }
     
     var body: some View {
@@ -83,23 +88,43 @@ struct NightModeView: View {
     }
     
     // MARK: - Winning Hours
-    
+
     private var winningHours: some View {
-        VStack {
+        VStack(spacing: 8) {
             Text(viewModel.formattedSessionRestHours)
                 .font(.system(size: 50, weight: .medium))
                 .foregroundStyle(.white.opacity(0.9))
-            Text("Horas de descanso previstas")
+            Text("Expected rest hours")
                 .font(.system(size: 12, weight: .bold, design: .monospaced))
                 .foregroundStyle(.gray.opacity(0.9))
+
+            if let minutesLate = viewModel.minutesLate {
+                Text("You started \(minutesLate) minutes late")
+                    .font(.caption)
+                    .foregroundStyle(.orange)
+                    .opacity(showLateMessage ? 1 : 0)
+            }
         }
         .offset(y: -65)
+        .onAppear {
+            if viewModel.minutesLate != nil {
+                showLateMessage = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                    withAnimation(.easeOut(duration: 3)) {
+                        showLateMessage = false
+                    }
+                }
+            }
+        }
     }
     
     // MARK: - Break Rest Button
     
     private var breakRestButton: some View {
-        VStack(spacing: 16) {
+        let buttonBgColor = !successBreak ? Color.red.opacity(0.2) : Color.green.opacity(0.2)
+        let buttonColor = !successBreak ? Color.red.opacity(0.6) : Color.green.opacity(0.6)
+        let buttonText = !successBreak ? "Break rest" : "Rest finished"
+        return VStack(spacing: 16) {
             Button {
                 handleBreakAction()
             } label: {
@@ -110,15 +135,12 @@ struct NightModeView: View {
                     .padding(30)
                     .background(
                         Circle()
-                            .stroke(Color.red.opacity(0.2), lineWidth: 1)
-                    )
-                    
+                            .stroke(buttonBgColor, lineWidth: 1))
             }
-            
-            Text("Break rest")
+            Text(buttonText)
                 .font(.subheadline)
         }
-        .foregroundStyle(.red.opacity(0.6))
+        .foregroundStyle(buttonColor)
     }
 
     // MARK: - Animated Background
@@ -186,7 +208,8 @@ private extension NightModeView {
 
     private func handleBreakAction() {
         Task {
-            switch await viewModel.handleBreakRequest() {
+            let result = await viewModel.handleBreakRequest()
+            switch result {
             case .completed:
                 router.presentBreakBlock(mode: .celebration)
             case .needsManualBreak:

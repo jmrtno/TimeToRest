@@ -54,7 +54,7 @@ struct RestInfoView: View {
                     .font(.system(size: 28, weight: .bold))
                     .foregroundStyle(.white)
 
-                Text("Next rest: \(viewModel.formattedStartTime)")
+                Text("Next rest starts at: \(viewModel.formattedStartTime)")
                     .foregroundStyle(.white.opacity(0.6))
                 
             }
