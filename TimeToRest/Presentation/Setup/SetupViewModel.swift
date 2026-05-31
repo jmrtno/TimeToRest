@@ -124,3 +124,36 @@ final class SetupViewModel: ObservableObject {
         }
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+extension SetupViewModel {
+
+    static var preview: SetupViewModel {
+        struct MockTimeRepo: TimeToRestRepositoryContract {
+            func hasConfiguration() -> Bool { false }
+            func fetch() -> TimeToRestEntity { .firstConfig }
+            func save(_ restTime: TimeToRestEntity) async {}
+            func update(_ restTime: TimeToRestEntity) async {}
+        }
+        struct MockSessionRepo: RestSessionRepositoryContract {
+            func fetchAll() -> [RestSessionEntity] { [] }
+            func fetch(for day: Date) -> RestSessionEntity? { nil }
+            func save(_ session: RestSessionEntity) async {}
+            func update(_ session: RestSessionEntity) async {}
+        }
+        return SetupViewModel(
+            mode: .editable,
+            saveRestTimeUseCase: SaveRestTimeUseCase(repository: MockTimeRepo()),
+            fetchRestTimeUseCase: FetchRestTimeUseCase(repository: MockTimeRepo()),
+            getSleepTipUseCase: GetSleepTipUseCase(),
+            notificationManager: NotificationManager(),
+            restSessionManager: RestSessionManager(
+                breakRestUseCase: BreakRestUseCase(repository: MockSessionRepo()),
+                fetchCurrentSessionUseCase: FetchCurrentSessionUseCase(repository: MockSessionRepo())
+            )
+        )
+    }
+}
+#endif

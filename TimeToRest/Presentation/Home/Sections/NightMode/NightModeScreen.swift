@@ -75,10 +75,10 @@ struct NightModeScreen: View {
                 .foregroundStyle(.white)
                 .padding(.bottom, 8)
             HStack(spacing: 12) {
-                StatsGlassCard(icon: "alarm",
-                               title: "Alarm",
-                               value: viewModel.formattedEndTime,
-                               iconColor: .gray)
+                StatsGlassCardSectionView(icon: "alarm",
+                                          title: "Alarm",
+                                          value: viewModel.formattedEndTime,
+                                          iconColor: .gray)
             }
             
             Text("Keep the app open to track your streak")
@@ -246,5 +246,12 @@ private extension NightModeScreen {
                 break
             }
         }
+    }
+}
+
+#Preview {
+    ZStack {
+        Color.black.ignoresSafeArea()
+        NightModeScreen(viewModel: .preview)
     }
 }

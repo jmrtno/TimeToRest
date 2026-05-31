@@ -40,10 +40,8 @@ struct BreakBlockTimerScreen: View {
             }
 
             // Countdown
-            CountdownScreen(
-                remaining: viewModel.countdownRemaining,
-                total: viewModel.totalCountdown
-            )
+            CountdownSectionView(remaining: viewModel.countdownRemaining,
+                                 total: viewModel.totalCountdown)
             .padding(.vertical, 16)
 
             // Actions
@@ -81,5 +79,12 @@ struct BreakBlockTimerScreen: View {
             .animation(.easeInOut(duration: 0.3), value: viewModel.canBreak)
         }
         .padding(.horizontal, 24)
+    }
+}
+
+#Preview {
+    ZStack {
+        Color.black.ignoresSafeArea()
+        BreakBlockTimerScreen(viewModel: .preview)
     }
 }

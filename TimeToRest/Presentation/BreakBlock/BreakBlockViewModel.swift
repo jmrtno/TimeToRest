@@ -159,3 +159,27 @@ final class BreakBlockViewModel: ObservableObject {
         return nil
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+extension BreakBlockViewModel {
+
+    static var preview: BreakBlockViewModel {
+        struct MockSessionRepo: RestSessionRepositoryContract {
+            func fetchAll() -> [RestSessionEntity] { [] }
+            func fetch(for day: Date) -> RestSessionEntity? { nil }
+            func save(_ session: RestSessionEntity) async {}
+            func update(_ session: RestSessionEntity) async {}
+        }
+        return BreakBlockViewModel(
+            calculateStatsUseCase: CalculateStatsUseCase(repository: MockSessionRepo()),
+            restSessionManager: RestSessionManager(
+                breakRestUseCase: BreakRestUseCase(repository: MockSessionRepo()),
+                fetchCurrentSessionUseCase: FetchCurrentSessionUseCase(repository: MockSessionRepo())
+            ),
+            notificationManager: NotificationManager()
+        )
+    }
+}
+#endif

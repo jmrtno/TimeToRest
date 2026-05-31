@@ -38,3 +38,10 @@ struct BreakBlockCelebrationScreen: View {
         }
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.ignoresSafeArea()
+        BreakBlockCelebrationScreen(viewModel: .preview)
+    }
+}
