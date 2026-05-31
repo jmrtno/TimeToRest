@@ -225,3 +225,7 @@ private extension SetupScreen {
         .padding(.bottom, 40)
     }
 }
+
+#Preview {
+    SetupScreen(viewModel: .preview)
+}

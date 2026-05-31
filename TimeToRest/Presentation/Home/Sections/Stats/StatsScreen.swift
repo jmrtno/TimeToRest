@@ -8,7 +8,7 @@ import SwiftUI
 struct StatsScreen: View {
 
     @StateObject private var statsViewModel: StatsViewModel
-    
+
     init(calculateStatsUseCase: CalculateStatsUseCase) {
         self._statsViewModel = StateObject(wrappedValue: StatsViewModel(
             calculateStatsUseCase: calculateStatsUseCase
@@ -57,19 +57,15 @@ struct StatsScreen: View {
 
     private var statsGrid: some View {
         HStack(spacing: 12) {
-            StatsGlassCard(
-                icon: "trophy",
-                title: "Current Streak",
-                value: "\(statsViewModel.stats.currentStreak)",
-                iconColor: .orange
-            )
+            StatsGlassCardSectionView(icon: "trophy",
+                                      title: "Current Streak",
+                                      value: "\(statsViewModel.stats.currentStreak)",
+                                      iconColor: .orange)
             
-            StatsGlassCard(
-                icon: "shield",
-                title: "Best Streak",
-                value: "\(statsViewModel.stats.bestStreak)",
-                iconColor: .indigo
-            )
+            StatsGlassCardSectionView(icon: "shield",
+                                      title: "Best Streak",
+                                      value: "\(statsViewModel.stats.bestStreak)",
+                                      iconColor: .indigo)
         }
     }
     
@@ -129,5 +125,18 @@ struct StatsScreen: View {
                        value: statsViewModel.formattedAverageStartTime,
                        color: .green,
                        content: nil)
+    }
+}
+
+#Preview {
+    struct MockSessionRepo: RestSessionRepositoryContract {
+        func fetchAll() -> [RestSessionEntity] { [] }
+        func fetch(for day: Date) -> RestSessionEntity? { nil }
+        func save(_ session: RestSessionEntity) async {}
+        func update(_ session: RestSessionEntity) async {}
+    }
+    return ZStack {
+        Color.black.ignoresSafeArea()
+        StatsScreen(calculateStatsUseCase: CalculateStatsUseCase(repository: MockSessionRepo()))
     }
 }

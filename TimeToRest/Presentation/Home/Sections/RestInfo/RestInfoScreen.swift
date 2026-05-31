@@ -171,3 +171,10 @@ struct RestInfoScreen: View {
         }
     }
 }
+
+#Preview {
+    ZStack {
+        Color.black.ignoresSafeArea()
+        RestInfoScreen(viewModel: .preview)
+    }
+}

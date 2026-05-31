@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - StatCard
 /// A reusable card component for displaying a single statistic.
-struct StatsGlassCard: View {
+struct StatsGlassCardSectionView: View {
     let icon: String
     let title: String
     let value: String
@@ -41,6 +41,9 @@ struct StatsGlassCard: View {
 #Preview {
     ZStack {
         Color.black.ignoresSafeArea()
-        StatsGlassCard(icon: "moon.fill", title: "Current Streak", value: "4", iconColor: .indigo)
+        StatsGlassCardSectionView(icon: "moon.fill",
+                                  title: "Current Streak",
+                                  value: "4",
+                                  iconColor: .indigo)
     }
 }

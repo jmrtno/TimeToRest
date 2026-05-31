@@ -2,7 +2,7 @@ import SwiftUI
 
 // MARK: - CountdownScreen
 /// A circular countdown timer display used in the break block flow.
-struct CountdownScreen: View {
+struct CountdownSectionView: View {
     let remaining: Int
     let total: Int
 
@@ -40,6 +40,6 @@ struct CountdownScreen: View {
 #Preview {
     ZStack {
         Color.black.ignoresSafeArea()
-        CountdownScreen(remaining: 7, total: 10)
+        CountdownSectionView(remaining: 7, total: 10)
     }
 }

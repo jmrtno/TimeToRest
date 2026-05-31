@@ -76,3 +76,29 @@ final class RestInfoViewModel: ObservableObject {
         return String(format: "%02d:%02d", h, m)
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+extension RestInfoViewModel {
+
+    static var preview: RestInfoViewModel {
+        struct MockTimeRepo: TimeToRestRepositoryContract {
+            func hasConfiguration() -> Bool { true }
+            func fetch() -> TimeToRestEntity { .firstConfig }
+            func save(_ restTime: TimeToRestEntity) async {}
+            func update(_ restTime: TimeToRestEntity) async {}
+        }
+        struct MockSessionRepo: RestSessionRepositoryContract {
+            func fetchAll() -> [RestSessionEntity] { [] }
+            func fetch(for day: Date) -> RestSessionEntity? { nil }
+            func save(_ session: RestSessionEntity) async {}
+            func update(_ session: RestSessionEntity) async {}
+        }
+        return RestInfoViewModel(
+            fetchRestTimeUseCase: FetchRestTimeUseCase(repository: MockTimeRepo()),
+            calculateStatsUseCase: CalculateStatsUseCase(repository: MockSessionRepo())
+        )
+    }
+}
+#endif

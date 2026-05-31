@@ -425,3 +425,41 @@ showCompletedButtonStyle = false
         return lateMinutes > 0 ? lateMinutes : nil
     }
 }
+
+// MARK: - Preview
+
+#if DEBUG
+extension NightModeViewModel {
+
+    static var preview: NightModeViewModel {
+        struct MockTimeRepo: TimeToRestRepositoryContract {
+            func hasConfiguration() -> Bool { true }
+            func fetch() -> TimeToRestEntity { .firstConfig }
+            func save(_ restTime: TimeToRestEntity) async {}
+            func update(_ restTime: TimeToRestEntity) async {}
+        }
+        struct MockSessionRepo: RestSessionRepositoryContract {
+            func fetchAll() -> [RestSessionEntity] { [] }
+            func fetch(for day: Date) -> RestSessionEntity? { nil }
+            func save(_ session: RestSessionEntity) async {}
+            func update(_ session: RestSessionEntity) async {}
+        }
+        let mockTimeRepo = MockTimeRepo()
+        let mockSessionRepo = MockSessionRepo()
+        return NightModeViewModel(
+            fetchRestTimeUseCase: FetchRestTimeUseCase(repository: mockTimeRepo),
+            startRestSessionUseCase: StartRestSessionUseCase(
+                sessionRepository: mockSessionRepo,
+                fetchRestTimeUseCase: FetchRestTimeUseCase(repository: mockTimeRepo)
+            ),
+            completeRestSessionUseCase: CompleteRestSessionUseCase(repository: mockSessionRepo),
+            fetchCurrentSessionUseCase: FetchCurrentSessionUseCase(repository: mockSessionRepo),
+            restSessionManager: RestSessionManager(
+                breakRestUseCase: BreakRestUseCase(repository: mockSessionRepo),
+                fetchCurrentSessionUseCase: FetchCurrentSessionUseCase(repository: mockSessionRepo)
+            ),
+            notificationManager: NotificationManager()
+        )
+    }
+}
+#endif
