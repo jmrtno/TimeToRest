@@ -79,28 +79,30 @@ struct CalculateStatsUseCase {
 
         currentStreak = tempStreak
 
-        let averageStartTimeMinutesLast30 = calculateAverageStartTimeMinutes(for: sessions)
+        let averageStartTimeMinutesLast15 = calculateAverageStartTimeMinutes(for: sessions)
         let breakStatusLast15Days = calculateBreakStatusLast15Days(for: sessions, now: now)
 
         return RestStatsEntity(
                 currentStreak: currentStreak,
                 bestStreak: bestStreak,
                 breaksThisWeek: breaksThisWeek,
-                averageStartTimeMinutesLast30: averageStartTimeMinutesLast30,
+                averageStartTimeMinutesLast15: averageStartTimeMinutesLast15,
                 breakStatusLast15Days: breakStatusLast15Days
         )
     }
 
-    /// Calculates a moving average start time using only the latest 30 sessions.
-    /// If there are fewer than 30 sessions, it averages all available ones.
+    /// Calculates a moving average start time using only sessions from the last 15 days.
+    /// If there are fewer sessions, it averages all available ones.
     private func calculateAverageStartTimeMinutes(for sessions: [RestSessionEntity]) -> Int? {
+        let calendar = Calendar.current
+        let fifteenDaysAgo = calendar.date(byAdding: .day, value: -15, to: Date()) ?? Date()
+        
         let recentSessions = sessions
             .sorted(by: { $0.startedAt < $1.startedAt })
-            .suffix(30)
+            .filter { $0.startedAt >= fifteenDaysAgo }
 
         guard !recentSessions.isEmpty else { return nil }
 
-        let calendar = Calendar.current
         let minutesInDay = 24.0 * 60.0
 
         // Circular mean avoids wrong averages around midnight (e.g. 23:50 and 00:10).

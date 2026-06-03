@@ -32,7 +32,7 @@ final class StatsViewModel: ObservableObject {
     }
 
     var formattedAverageStartTime: String {
-        guard let averageMinutes = stats.averageStartTimeMinutesLast30 else {
+        guard let averageMinutes = stats.averageStartTimeMinutesLast15 else {
             return "--:--"
         }
 

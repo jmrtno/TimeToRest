@@ -37,14 +37,20 @@ struct NightModeScreen: View {
         ZStack {
             animatedBackground
 
-            VStack {
+            VStack(spacing: 0) {
                 header
+                    .padding(.bottom, 16)
                 cardsAndMessage
+                    .padding(.top, 16)
+                Spacer()
                 winningHours
+                Spacer()
                 breakRestButton
             }
             .padding(.horizontal, 24)
-            .padding(.vertical, 42)
+            .padding(.top, 42)
+            .padding(.bottom, 32)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
     
@@ -52,28 +58,28 @@ struct NightModeScreen: View {
     
     private var header: some View {
         VStack {
-            ZStack {
-                Circle()
-                    .fill(Color.indigo.opacity(0.10))
-                    .frame(width: 250, height: 250)
-                    .blur(radius: 36)
-                Image("night-mode-icon")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 75, height: 75)
-            }
-            .offset(y: -70)
+            Image("night-mode-icon")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 75, height: 75)
+                .background(
+                    Circle()
+                        .fill(Color.indigo.opacity(0.10))
+                        .frame(width: 250, height: 250)
+                        .blur(radius: 36)
+                )
+            Text("Time to rest")
+                .font(.system(size: 44))
+                .foregroundStyle(.white)
+                .padding(.bottom, 8)
         }
+
     }
     
     // MARK: - Cards and Messages
     
     private var cardsAndMessage: some View {
         VStack(spacing: 12) {
-            Text("Time to rest")
-                .font(.system(size: 44))
-                .foregroundStyle(.white)
-                .padding(.bottom, 8)
             HStack(spacing: 12) {
                 StatsGlassCardSectionView(icon: "alarm",
                                           title: "Alarm",
@@ -85,7 +91,6 @@ struct NightModeScreen: View {
                 .font(.footnote)
                 .foregroundStyle(.white.opacity(0.3))
         }
-        .offset(y: -120)
     }
     
     // MARK: - Winning Hours
@@ -106,7 +111,6 @@ struct NightModeScreen: View {
                     .opacity(showLateMessage ? 1 : 0)
             }
         }
-        .offset(y: -65)
         .onAppear {
             triggerLateMessageAnimation()
         }
@@ -121,40 +125,39 @@ struct NightModeScreen: View {
         let buttonBgColor = !successBreak ? Color.red : Color.green
         let buttonColor = !successBreak ? Color.red : Color.green
         let buttonText = !successBreak ? "Break rest" : "Rest finished"
-        return
-                VStack(spacing: 16) {
-                    ZStack {
-                        Circle()
-                            .fill(buttonBgColor)
-                            .frame(width: 65, height: 65)
-                            .opacity(isAnimating ? 0.3 : 0)
-                            .blur(radius: 30)
-                            .onAppear {
-                                withAnimation(
-                                    .easeInOut(duration: 3.0)
-                                    .repeatForever(autoreverses: true)
-                                ) {
-                                    isAnimating = true
-                                }
+    return VStack(spacing: 16) {
+                ZStack {
+                    Circle()
+                        .fill(buttonBgColor)
+                        .frame(width: 65, height: 65)
+                        .opacity(isAnimating ? 0.3 : 0)
+                        .blur(radius: 30)
+                        .onAppear {
+                            withAnimation(
+                                .easeInOut(duration: 3.0)
+                                .repeatForever(autoreverses: true)
+                            ) {
+                                isAnimating = true
                             }
-                        Button {
-                            handleBreakAction()
-                        } label: {
-                            Image(systemName: "power")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 30, height: 30)
-                                .padding(30)
-                                .background(
-                                    Circle()
-                                        .stroke(buttonBgColor.opacity(0.2), lineWidth: 1))
                         }
+                    Button {
+                        handleBreakAction()
+                    } label: {
+                        Image(systemName: "power")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30, height: 30)
+                            .padding(30)
+                            .background(
+                                Circle()
+                                    .stroke(buttonBgColor.opacity(0.2), lineWidth: 1))
                     }
-                    Text(buttonText)
-                        .font(.subheadline)
                 }
-                .foregroundStyle(buttonColor.opacity(0.6))
-                .animation(.easeInOut(duration: 1.0), value: successBreak)
+                Text(buttonText)
+                    .font(.subheadline)
+            }
+            .foregroundStyle(buttonColor.opacity(0.6))
+            .animation(.easeInOut(duration: 1.0), value: successBreak)
     }
 
     // MARK: - Animated Background

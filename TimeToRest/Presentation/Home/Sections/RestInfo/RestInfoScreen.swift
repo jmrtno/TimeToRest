@@ -78,11 +78,11 @@ struct RestInfoScreen: View {
                        color: .orange,
                        content: {
             return HStack(spacing: 8) {
-                let startDay = max(1, viewModel.stats.currentStreak - 6)
+                let startDay = max(1, viewModel.stats.currentStreak - 4)
                 
                 ForEach(0..<7, id: \.self) { index in
                     let dayNumber = startDay + index
-                    let isCompleted = dayNumber <= viewModel.stats.currentStreak && index < 5
+                    let isCompleted = dayNumber <= viewModel.stats.currentStreak
                     let isBestStreakDay = dayNumber == viewModel.stats.bestStreak
                     
                     RoundedRectangle(cornerRadius: 8)

@@ -26,14 +26,14 @@ struct RestStatsEntity: Equatable {
     let currentStreak: Int
     let bestStreak: Int
     let breaksThisWeek: Int
-    let averageStartTimeMinutesLast30: Int?
+    let averageStartTimeMinutesLast15: Int?
     let breakStatusLast15Days: [DailyBreakStatusPoint]
 
     static let empty = RestStatsEntity(
         currentStreak: 0,
         bestStreak: 0,
         breaksThisWeek: 0,
-        averageStartTimeMinutesLast30: nil,
+        averageStartTimeMinutesLast15: nil,
         breakStatusLast15Days: []
     )
 }
@@ -87,7 +87,7 @@ extension RestStatsEntity {
             currentStreak: currentStreak,
             bestStreak: bestStreak,
             breaksThisWeek: breaksThisWeek,
-            averageStartTimeMinutesLast30: 23 * 60 + 42,
+            averageStartTimeMinutesLast15: 23 * 60 + 42,
             breakStatusLast15Days: points
         )
     }
