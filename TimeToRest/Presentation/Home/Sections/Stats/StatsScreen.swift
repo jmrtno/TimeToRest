@@ -121,7 +121,7 @@ struct StatsScreen: View {
     private var averageStartTime: some View {
         BigGlassCard(icon: "clock.badge",
                        title: "Average start time",
-                       subtitle: "Last 30 days",
+                       subtitle: "Last 15 days",
                        value: statsViewModel.formattedAverageStartTime,
                        color: .green,
                        content: nil)
