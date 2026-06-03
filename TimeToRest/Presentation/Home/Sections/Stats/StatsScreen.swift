@@ -7,12 +7,10 @@ import SwiftUI
 /// No separate night mode screen — the home screen itself changes.
 struct StatsScreen: View {
 
-    @StateObject private var statsViewModel: StatsViewModel
+    var statsViewModel: StatsViewModel
 
-    init(calculateStatsUseCase: CalculateStatsUseCase) {
-        self._statsViewModel = StateObject(wrappedValue: StatsViewModel(
-            calculateStatsUseCase: calculateStatsUseCase
-        ))
+    init(statsViewModel: StatsViewModel) {
+        self.statsViewModel = statsViewModel
     }
     
     // MARK: - Stats Content
@@ -128,6 +126,7 @@ struct StatsScreen: View {
     }
 }
 
+#if DEBUG
 #Preview {
     struct MockSessionRepo: RestSessionRepositoryContract {
         func fetchAll() -> [RestSessionEntity] { [] }
@@ -137,6 +136,7 @@ struct StatsScreen: View {
     }
     return ZStack {
         Color.black.ignoresSafeArea()
-        StatsScreen(calculateStatsUseCase: CalculateStatsUseCase(repository: MockSessionRepo()))
+        StatsScreen(statsViewModel: StatsViewModel(calculateStatsUseCase: CalculateStatsUseCase(repository: MockSessionRepo())))
     }
 }
+#endif

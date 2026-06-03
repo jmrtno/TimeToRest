@@ -22,11 +22,11 @@
 ///     case detail(id: UUID)
 /// }
 /// ```
-enum Route: Hashable, Identifiable {
+enum Route: Hashable, Identifiable, Sendable {
     /// The countdown modal shown when the user attempts to break rest.
     case breakBlock
     /// The celebration modal shown after successfully completing a rest session.
-    case breakBlockCelebrarion
+    case breakBlockCelebration
 
     /// A unique identifier for each route case.
     ///
@@ -35,8 +35,8 @@ enum Route: Hashable, Identifiable {
         switch self {
         case .breakBlock:
             return "breakBlock"
-        case .breakBlockCelebrarion:
-            return "breakBlockCelebrarion"
+        case .breakBlockCelebration:
+            return "breakBlockCelebration"
         }
     }
 }

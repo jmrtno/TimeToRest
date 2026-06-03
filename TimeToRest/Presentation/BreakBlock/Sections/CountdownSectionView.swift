@@ -37,9 +37,11 @@ struct CountdownSectionView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ZStack {
         Color.black.ignoresSafeArea()
         CountdownSectionView(remaining: 7, total: 10)
     }
 }
+#endif

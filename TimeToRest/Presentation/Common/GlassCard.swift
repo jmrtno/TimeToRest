@@ -34,9 +34,11 @@ struct GlassCard: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ZStack {
         Color.black.ignoresSafeArea()
         GlassCard(icon: "moon.fill", title: "Current Streak", value: "4", iconColor: .indigo)
     }
 }
+#endif

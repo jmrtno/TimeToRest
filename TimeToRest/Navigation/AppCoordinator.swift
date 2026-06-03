@@ -9,20 +9,18 @@ import SwiftUI
 struct AppCoordinator: View {
 
     @Environment(\.scenePhase) private var scenePhase
-    @StateObject private var router: Router
-    @StateObject private var nightModeViewModel: NightModeViewModel
-    @StateObject private var restViewModel: RestInfoViewModel
+    @State private var router = Router()
+    @State private var nightModeViewModel: NightModeViewModel
+    @State private var restViewModel: RestInfoViewModel
+    @State private var statsViewModel: StatsViewModel
     private let viewFactory: RouteViewFactory
-    private let fetchRestTimeUseCase: FetchRestTimeUseCase
-    private let calculateStatsUseCase: CalculateStatsUseCase
     private let restSessionManager: RestSessionManager
     private let notificationManager: NotificationManager
 
     /// Initializes the coordinator with all required dependencies.
     /// - Parameter dependencies: The container providing all use cases and managers.
     init(dependencies: AppDependencies) {
-        _router = StateObject(wrappedValue: Router())
-        _nightModeViewModel = StateObject(wrappedValue: NightModeViewModel(
+        _nightModeViewModel = State(initialValue: NightModeViewModel(
             fetchRestTimeUseCase: dependencies.fetchRestTimeUseCase,
             startRestSessionUseCase: dependencies.startRestSessionUseCase,
             completeRestSessionUseCase: dependencies.completeRestSessionUseCase,
@@ -30,29 +28,30 @@ struct AppCoordinator: View {
             restSessionManager: dependencies.restSessionManager,
             notificationManager: dependencies.notificationManager
         ))
-        _restViewModel = StateObject(wrappedValue: RestInfoViewModel(
+        _restViewModel = State(initialValue: RestInfoViewModel(
             fetchRestTimeUseCase: dependencies.fetchRestTimeUseCase,
             calculateStatsUseCase: dependencies.calculateStatsUseCase
         ))
+        _statsViewModel = State(initialValue: StatsViewModel(
+            calculateStatsUseCase: dependencies.calculateStatsUseCase
+        ))
         self.viewFactory = RouteViewFactory(dependencies: dependencies)
-        self.fetchRestTimeUseCase = dependencies.fetchRestTimeUseCase
-        self.calculateStatsUseCase = dependencies.calculateStatsUseCase
         self.restSessionManager = dependencies.restSessionManager
         self.notificationManager = dependencies.notificationManager
     }
 
     var body: some View {
-        NavigationStack(path: $router.navigationPath) {
+        NavigationStack(path: $router.path) {
             HomeScreen(
                 nightModeViewModel: nightModeViewModel,
                 restViewModel: restViewModel,
-                calculateStatsUseCase: calculateStatsUseCase
+                statsViewModel: statsViewModel
             )
                 .navigationDestination(for: Route.self) { route in
                     viewFactory.view(for: route)
                 }
         }
-        .environmentObject(router)
+        .environment(router)
         .sheet(
             item: $router.restConfigurationMode,
             onDismiss: {
@@ -62,7 +61,7 @@ struct AppCoordinator: View {
             },
             content: { mode in
                 viewFactory.restConfigurationView(mode: mode)
-                    .environmentObject(router)
+                    .environment(router)
             }
         )
         .sheet(item: $router.breakBlockMode, onDismiss: {
@@ -74,10 +73,10 @@ struct AppCoordinator: View {
                 case .countdown:
                     viewFactory.view(for: .breakBlock)
                 case .celebration:
-                    viewFactory.view(for: .breakBlockCelebrarion)
+                    viewFactory.view(for: .breakBlockCelebration)
                 }
             }
-            .environmentObject(router)
+            .environment(router)
             .presentationDetents([.medium])
             .presentationDragIndicator(.visible)
         }
@@ -98,7 +97,7 @@ struct AppCoordinator: View {
     /// If no configuration exists, presents the mandatory setup screen.
     /// This ensures the user cannot use the app without setting up rest times.
     private func checkInitialConfiguration() {
-        if fetchRestTimeUseCase.execute() == nil {
+        if !nightModeViewModel.hasConfiguration {
             router.presentRestConfiguration(mode: .mandatory)
         }
     }

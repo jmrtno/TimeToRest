@@ -1,9 +1,9 @@
 import SwiftUI
 
 struct BreakBlockCelebrationScreen: View {
-    @EnvironmentObject private var router: Router
+    @Environment(Router.self) private var router
     @State private var didScheduleDismiss = false
-    @StateObject var viewModel: BreakBlockViewModel
+    let viewModel: BreakBlockViewModel
 
     var body: some View {
         VStack(spacing: 24) {
@@ -39,9 +39,11 @@ struct BreakBlockCelebrationScreen: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ZStack {
         Color.black.ignoresSafeArea()
         BreakBlockCelebrationScreen(viewModel: .preview)
     }
 }
+#endif

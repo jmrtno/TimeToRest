@@ -4,8 +4,8 @@ import SwiftUI
 
 struct NightModeScreen: View {
 
-    @ObservedObject var viewModel: NightModeViewModel
-    @EnvironmentObject private var router: Router
+    var viewModel: NightModeViewModel
+    @Environment(Router.self) private var router
     @State private var stars: [StarSpec] = StarSpec.generate(count: 20)
     @State private var showLateMessage = false
     @State private var isAnimating: Bool = false
@@ -252,9 +252,11 @@ private extension NightModeScreen {
     }
 }
 
+#if DEBUG
 #Preview {
     ZStack {
         Color.black.ignoresSafeArea()
         NightModeScreen(viewModel: .preview)
     }
 }
+#endif

@@ -25,6 +25,7 @@
 		ED3E1E8D2F3FBE840098B03E /* RestInfoScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3E1E8C2F3FBE7D0098B03E /* RestInfoScreen.swift */; };
 		ED3E1E912F3FD0730098B03E /* StatsGlassCardSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED3E1E902F3FD0730098B03E /* StatsGlassCardSectionView.swift */; };
 		ED49C33C2F3F891E00ED2EFF /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED49C33B2F3F891E00ED2EFF /* CustomTabBar.swift */; };
+		ED555A402FCC40600061AE28 /* BreakBlockMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED555A3F2FCC40600061AE28 /* BreakBlockMode.swift */; };
 		ED5F86792FBF81C8008EC807 /* GetSleepTipUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5F86772FBF81C8008EC807 /* GetSleepTipUseCase.swift */; };
 		ED6B34422F3FF2590097D632 /* StatsScreen+Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6B34412F3FF2590097D632 /* StatsScreen+Components.swift */; };
 		ED6B34442F3FFDEF0097D632 /* BigGlassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6B34432F3FFDEF0097D632 /* BigGlassCard.swift */; };
@@ -129,6 +130,7 @@
 		ED3E1E8C2F3FBE7D0098B03E /* RestInfoScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestInfoScreen.swift; sourceTree = "<group>"; };
 		ED3E1E902F3FD0730098B03E /* StatsGlassCardSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsGlassCardSectionView.swift; sourceTree = "<group>"; };
 		ED49C33B2F3F891E00ED2EFF /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
+		ED555A3F2FCC40600061AE28 /* BreakBlockMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakBlockMode.swift; sourceTree = "<group>"; };
 		ED5F86772FBF81C8008EC807 /* GetSleepTipUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetSleepTipUseCase.swift; sourceTree = "<group>"; };
 		ED6B34412F3FF2590097D632 /* StatsScreen+Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatsScreen+Components.swift"; sourceTree = "<group>"; };
 		ED6B34432F3FFDEF0097D632 /* BigGlassCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigGlassCard.swift; sourceTree = "<group>"; };
@@ -376,6 +378,7 @@
 				EDA78AF82F374C1800181F03 /* Route.swift */,
 				EDA78AFA2F374C2800181F03 /* RouteViewFactory.swift */,
 				EDA78AFC2F374CA900181F03 /* AppCoordinator.swift */,
+				ED555A3F2FCC40600061AE28 /* BreakBlockMode.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -743,6 +746,7 @@
 				EDA78B252F38985300181F03 /* RestConfigurationMode.swift in Sources */,
 				EDA78B0E2F3779CA00181F03 /* SaveRestTimeUseCase.swift in Sources */,
 				AA000001AAAA000100000001 /* StartRestSessionUseCase.swift in Sources */,
+				ED555A402FCC40600061AE28 /* BreakBlockMode.swift in Sources */,
 				AA000002AAAA000200000001 /* RestInfoViewModel.swift in Sources */,
 				AA000003AAAA000300000001 /* SetupViewModel.swift in Sources */,
 				AA000005AAAA000500000001 /* BreakBlockViewModel.swift in Sources */,

@@ -1,23 +1,23 @@
 import Foundation
-import Combine
 
 // MARK: - BreakBlockViewModel
 /// ViewModel for the "break the block" flow.
 /// Manages the countdown, psychological messages, and the final break action.
 @MainActor
-final class BreakBlockViewModel: ObservableObject {
+@Observable
+final class BreakBlockViewModel {
 
     // MARK: - Published state
     /// The remaining seconds in the countdown before the user can break the rest.
-    @Published var countdownRemaining: Int
+    var countdownRemaining: Int
     /// The current motivational message displayed during the countdown.
-    @Published var motivationalMessage: String = ""
+    var motivationalMessage: String = ""
     /// The congratulatory message displayed when the rest is completed.
-    @Published var congratulationMessage: String = ""
+    var congratulationMessage: String = ""
     /// Whether the user is allowed to break the rest (countdown finished).
-    @Published var canBreak: Bool = false
+    var canBreak: Bool = false
     /// The current rest statistics displayed in the UI.
-    @Published var stats: RestStatsEntity = .empty
+    var stats: RestStatsEntity = .empty
 
     // MARK: - Dependencies
     /// Use case for calculating rest statistics.

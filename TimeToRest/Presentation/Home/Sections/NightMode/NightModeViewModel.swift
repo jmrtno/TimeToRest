@@ -1,12 +1,11 @@
 import Foundation
-import SwiftUI
-import Combine
 
 // MARK: - NightModeViewModel
 /// ViewModel for the night mode section.
 /// Handles night-window/session state used to switch UI mode.
 @MainActor
-final class NightModeViewModel: ObservableObject {
+@Observable
+final class NightModeViewModel {
 
     enum BreakRequestOutcome {
         case completed
@@ -15,13 +14,13 @@ final class NightModeViewModel: ObservableObject {
     }
 
     // MARK: - Published state
-    @Published var config: TimeToRestEntity = .firstConfig
-    @Published var isWithinNightWindow: Bool = false
-    @Published var hasConfiguration: Bool = false
-    @Published var session: RestSessionEntity?
-    @Published var didBreakTonight: Bool = false
-    @Published var showCompletedButtonStyle: Bool = false
-    @Published var minutesLate: Int? = nil
+    var config: TimeToRestEntity = .firstConfig
+    var isWithinNightWindow: Bool = false
+    var hasConfiguration: Bool = false
+    var session: RestSessionEntity?
+    var didBreakTonight: Bool = false
+    var showCompletedButtonStyle: Bool = false
+    var minutesLate: Int? = nil
 
     /// Controls whether the night mode UI is shown.
     /// True if there's an active session or we're within the night window and didn't break rest.
@@ -146,7 +145,7 @@ final class NightModeViewModel: ObservableObject {
         if didBreakTonight {
             restSessionManager.stopMonitoringAndUnlockApps()
             session = nil
-showCompletedButtonStyle = false
+            showCompletedButtonStyle = false
             return
         }
 
@@ -156,7 +155,7 @@ showCompletedButtonStyle = false
            updatedSession.didBreakRest && updatedSession.id == currentSession.id {
             session = nil
             didBreakTonight = true
-showCompletedButtonStyle = false
+            showCompletedButtonStyle = false
             // Cancel completion notification since session was broken
             notificationManager.cancelSessionCompletionNotification()
             return
@@ -204,7 +203,7 @@ showCompletedButtonStyle = false
         if let _ = await completeRestSessionUseCase.execute(session: currentSession, completedAt: now) {
             session = nil
             didBreakTonight = false
-showCompletedButtonStyle = false
+            showCompletedButtonStyle = false
             restSessionManager.stopMonitoringAndUnlockApps()
             notificationManager.cancelSessionCompletionNotification()
             return .completed

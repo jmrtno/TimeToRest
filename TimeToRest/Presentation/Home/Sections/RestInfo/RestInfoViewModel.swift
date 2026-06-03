@@ -1,17 +1,17 @@
 import Foundation
-import Combine
 
 // MARK: - RestInfoViewModel
 /// ViewModel for the Rest (day) view.
 /// Handles configuration/stats displayed on RestView.
 @MainActor
-final class RestInfoViewModel: ObservableObject {
+@Observable
+final class RestInfoViewModel {
 
     // MARK: - Published state
-    @Published var config: TimeToRestEntity = .firstConfig
-    @Published var stats: RestStatsEntity = .empty
-    @Published var hasConfiguration: Bool = false
-    @Published var isPressed: Bool = false
+    var config: TimeToRestEntity = .firstConfig
+    var stats: RestStatsEntity = .empty
+    var hasConfiguration: Bool = false
+    var isPressed: Bool = false
 
     // MARK: - Dependencies
     private let fetchRestTimeUseCase: FetchRestTimeUseCase

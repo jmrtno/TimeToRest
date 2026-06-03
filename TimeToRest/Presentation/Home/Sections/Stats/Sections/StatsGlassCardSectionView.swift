@@ -38,6 +38,7 @@ struct StatsGlassCardSectionView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ZStack {
         Color.black.ignoresSafeArea()
@@ -47,3 +48,4 @@ struct StatsGlassCardSectionView: View {
                                   iconColor: .indigo)
     }
 }
+#endif

@@ -1,14 +1,14 @@
 import Foundation
-import Combine
 
 // MARK: - StatsViewModel
 /// ViewModel for the statistics screen.
 /// Loads and exposes rest statistics for display.
 @MainActor
-final class StatsViewModel: ObservableObject {
+@Observable
+final class StatsViewModel {
 
     // MARK: - Published state
-    @Published var stats: RestStatsEntity = .empty
+    var stats: RestStatsEntity = .empty
 
     // MARK: - Dependencies
     private let calculateStatsUseCase: CalculateStatsUseCase

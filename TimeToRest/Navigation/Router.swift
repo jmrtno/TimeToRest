@@ -1,5 +1,4 @@
 import SwiftUI
-import Combine
 
 // MARK: - Router
 /// A Router that manages the navigation stack for the application.
@@ -12,52 +11,45 @@ import Combine
 /// - Type-safe navigation using Route enum
 /// - Centralized navigation state management
 /// - Support for push, pop, pop-to-root, and replace operations
-/// - Observable for reactive UI updates
+/// - Observable for reactive UI updates (Swift 6 @Observable)
 ///
 /// ## Usage
-/// The Router is typically injected as an environment object:
+/// The Router is typically injected as an environment value:
 /// ```swift
-/// @EnvironmentObject private var router: Router
-/// 
+/// @Environment(Router.self) private var router
+///
 /// func navigateToDetail() {
 ///     router.push(.detail)
 /// }
 /// ```
 @MainActor
-final class Router: ObservableObject {
-    
-    /// Represents the different modes for the break block modal.
-    ///
-    /// - `celebration`: Shown when the user successfully completes a rest session.
-    /// - `countdown`: Shown when the user attempts to break the rest, displaying a countdown.
-    enum BreakBlockMode: Identifiable {
-        /// Modal displayed after a successful rest completion.
-        case celebration
-        /// Modal displayed with a countdown when the user tries to break the rest.
-        case countdown
-        /// Conforms to `Identifiable` to be used with SwiftUI's `sheet(item:)`.
-        var id: Self { self }
-    }
-    
+@Observable
+final class Router {
     /// The navigation path for the main NavigationStack.
-    @Published var navigationPath: [Route] = []
+    var path = NavigationPath()
     /// The currently presented break block modal mode, if any.
-    @Published var breakBlockMode: BreakBlockMode?
-    
+    var breakBlockMode: BreakBlockMode?
+
     // MARK: - Modal state
     /// The currently presented rest configuration modal mode, if any.
-    @Published var restConfigurationMode: RestConfigurationMode?
+    var restConfigurationMode: RestConfigurationMode?
 
     /// Pushes a new route onto the navigation stack.
     /// - Parameter route: The route to navigate to
     func push(_ route: Route) {
-        navigationPath.append(route)
+        path.append(route)
     }
-    
+
+    /// Pops the top route from the navigation stack.
+    func pop() {
+        guard !path.isEmpty else { return }
+        path.removeLast()
+    }
+
     /// Pops all routes and returns to the root view.
     func popToRoot() {
         dismissBreakBlock()
-        navigationPath.removeAll()
+        path = NavigationPath()
     }
 
     // MARK: - Modal control

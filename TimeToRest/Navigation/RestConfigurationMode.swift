@@ -1,4 +1,4 @@
-enum RestConfigurationMode: Identifiable, Equatable {
+enum RestConfigurationMode: Identifiable, Equatable, Sendable {
     case mandatory
     case editable
 
