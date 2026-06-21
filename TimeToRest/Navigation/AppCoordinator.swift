@@ -97,6 +97,7 @@ struct AppCoordinator: View {
     /// If no configuration exists, presents the mandatory setup screen.
     /// This ensures the user cannot use the app without setting up rest times.
     private func checkInitialConfiguration() {
+        nightModeViewModel.loadConfig()
         if !nightModeViewModel.hasConfiguration {
             router.presentRestConfiguration(mode: .mandatory)
         }

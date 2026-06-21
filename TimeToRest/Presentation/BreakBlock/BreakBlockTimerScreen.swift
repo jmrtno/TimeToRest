@@ -88,5 +88,6 @@ struct BreakBlockTimerScreen: View {
         Color.black.ignoresSafeArea()
         BreakBlockTimerScreen(viewModel: .preview)
     }
+    .environment(Router())
 }
 #endif

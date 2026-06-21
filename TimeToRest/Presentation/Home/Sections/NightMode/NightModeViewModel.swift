@@ -117,6 +117,8 @@ final class NightModeViewModel {
         didBreakTonight = false
         session = nil
         guard loadConfig() else { return }
+        checkIfBrokenTonight()
+        restoreSessionIfNeeded()
         Task {
             await checkNightWindow()
         }
@@ -192,6 +194,11 @@ final class NightModeViewModel {
 
             // Schedule completion notification for this session
             notificationManager.scheduleSessionCompletionNotification(for: config)
+        } else {
+            restoreSessionIfNeeded()
+            if session != nil {
+                notificationManager.scheduleSessionCompletionNotification(for: config)
+            }
         }
     }
 

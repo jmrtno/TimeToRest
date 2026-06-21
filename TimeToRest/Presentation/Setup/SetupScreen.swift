@@ -174,7 +174,7 @@ private extension SetupScreen {
                         Text("AI Coach:")
                             .textCase(.uppercase)
                             .font(.system(size: 14, weight: .bold))
-                            .foregroundStyle(.white.opacity(0.4))
+                            .foregroundStyle(.white.opacity(0.5))
                             .padding(.bottom, 16)
                         
                         if viewModel.isTipLoading {
@@ -189,7 +189,7 @@ private extension SetupScreen {
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(viewModel.sleepTip)
                                     .font(.subheadline)
-                                    .foregroundStyle(.white.opacity(0.75))
+                                    .foregroundStyle(.white.opacity(0.85))
                                 
                                 if viewModel.sleepTip.contains("Apple Intelligence is not enabled") {
                                     Button("Open Settings") {
@@ -207,7 +207,7 @@ private extension SetupScreen {
                     Spacer()
                 }
                 .padding(16)
-                .glassEffect(in: .rect(cornerRadius: 24))
+                .glassEffect(.regular.tint(.orange.opacity(0.15)), in: .rect(cornerRadius: 24))
             }
         }
     }
@@ -228,6 +228,9 @@ private extension SetupScreen {
 
 #if DEBUG
 #Preview {
-    SetupScreen(viewModel: .preview)
+    NavigationStack {
+        SetupScreen(viewModel: .preview)
+    }
+    .environment(Router())
 }
 #endif
