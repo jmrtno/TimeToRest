@@ -93,4 +93,10 @@ final class AppDependencies {
             repository: restSessionRepository
         )
     }()
+
+    lazy var deleteSessionUseCase: DeleteSessionUseCase = {
+        DeleteSessionUseCase(
+            repository: restSessionRepository
+        )
+    }()
 }

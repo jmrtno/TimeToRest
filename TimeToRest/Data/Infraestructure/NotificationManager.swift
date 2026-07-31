@@ -54,7 +54,7 @@ final class NotificationManager: NSObject {
     /// Schedules the nightly rest reminder at the configured start time.
     /// Fires daily at the configured hour.
     func scheduleRestReminder(for restTime: TimeToRestEntity) {
-        cancelAllRestNotifications()
+        cancelStartReminderNotifications()
 
         guard let hour = restTime.startTime.hour,
               let minute = restTime.startTime.minute else { return }
@@ -155,6 +155,17 @@ final class NotificationManager: NSObject {
         notificationCenter.getPendingNotificationRequests { [weak self] requests in
             let ids = requests
                 .filter { $0.identifier.hasPrefix("rest_") }
+                .map { $0.identifier }
+            self?.notificationCenter.removePendingNotificationRequests(withIdentifiers: ids)
+        }
+        notificationCenter.removeAllDeliveredNotifications()
+    }
+
+    /// Cancels only start and pre-reminder notifications, preserving any active session completion notification.
+    private func cancelStartReminderNotifications() {
+        notificationCenter.getPendingNotificationRequests { [weak self] requests in
+            let ids = requests
+                .filter { $0.identifier.hasPrefix("rest_start_") || $0.identifier.hasPrefix("rest_pre_") }
                 .map { $0.identifier }
             self?.notificationCenter.removePendingNotificationRequests(withIdentifiers: ids)
         }

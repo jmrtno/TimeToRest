@@ -1,12 +1,12 @@
 import Foundation
-import Combine
 import CoreFoundation
 import FamilyControls
 import DeviceActivity
 import ManagedSettings
 
 @MainActor
-final class RestSessionManager: ObservableObject {
+@Observable
+final class RestSessionManager {
 
     enum BreakReason: Equatable {
         case manualCancellation
@@ -19,8 +19,8 @@ final class RestSessionManager: ObservableObject {
         case broken(BreakReason)
     }
 
-    @Published private(set) var state: State = .idle
-    @Published private(set) var blockedSelection: FamilyActivitySelection
+    private(set) var state: State = .idle
+    private(set) var blockedSelection: FamilyActivitySelection
 
     private let breakRestUseCase: BreakRestUseCase
     private let fetchCurrentSessionUseCase: FetchCurrentSessionUseCase

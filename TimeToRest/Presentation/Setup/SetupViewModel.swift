@@ -1,20 +1,20 @@
 import Foundation
-import Combine
 import FamilyControls
 
 // MARK: - SetupViewModel
 /// ViewModel for the rest configuration modal.
 /// Handles both mandatory (first use) and editable (subsequent) modes.
 @MainActor
-final class SetupViewModel: ObservableObject {
+@Observable
+final class SetupViewModel {
 
     // MARK: - Published state
-    @Published var startTime: Date
-    @Published var endTime: Date
-    @Published var blockedSelection: FamilyActivitySelection
-    @Published var isFamilyActivityPickerPresented: Bool = false
-    @Published var sleepTip: String = ""
-    @Published var isTipLoading: Bool = true
+    var startTime: Date
+    var endTime: Date
+    var blockedSelection: FamilyActivitySelection
+    var isFamilyActivityPickerPresented: Bool = false
+    var sleepTip: String = ""
+    var isTipLoading: Bool = true
 
     // MARK: - Mode
     let mode: RestConfigurationMode
@@ -142,6 +142,7 @@ extension SetupViewModel {
             func fetch(for day: Date) -> RestSessionEntity? { nil }
             func save(_ session: RestSessionEntity) async {}
             func update(_ session: RestSessionEntity) async {}
+            func delete(_ session: RestSessionEntity) async {}
         }
         return SetupViewModel(
             mode: .editable,

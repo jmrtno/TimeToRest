@@ -6,11 +6,11 @@ import SwiftUI
 /// No separate night mode screen — the home screen itself changes.
 struct HomeScreen: View {
 
-    @ObservedObject var nightModeViewModel: NightModeViewModel
-    @ObservedObject var restViewModel: RestInfoViewModel
-    @EnvironmentObject private var router: Router
+    var nightModeViewModel: NightModeViewModel
+    var restViewModel: RestInfoViewModel
+    var statsViewModel: StatsViewModel
+    @Environment(Router.self) private var router
     @State private var currentView: ViewType = .home
-    private let calculateStatsUseCase: CalculateStatsUseCase
 
     enum ViewType {
         case home
@@ -20,11 +20,11 @@ struct HomeScreen: View {
     init(
         nightModeViewModel: NightModeViewModel,
         restViewModel: RestInfoViewModel,
-        calculateStatsUseCase: CalculateStatsUseCase
+        statsViewModel: StatsViewModel
     ) {
         self.nightModeViewModel = nightModeViewModel
         self.restViewModel = restViewModel
-        self.calculateStatsUseCase = calculateStatsUseCase
+        self.statsViewModel = statsViewModel
     }
 
     var body: some View {
@@ -39,7 +39,7 @@ struct HomeScreen: View {
                         if currentView == .home {
                             RestInfoScreen(viewModel: restViewModel)
                         } else {
-                            StatsScreen(calculateStatsUseCase: calculateStatsUseCase)
+                            StatsScreen(statsViewModel: statsViewModel)
                         }
                         // Barra de navegación inferior
                         CustomTabBar(currentView: $currentView)
@@ -55,7 +55,7 @@ struct HomeScreen: View {
         .onDisappear {
             nightModeViewModel.onDisappear()
         }
-        .onChange(of: router.navigationPath) { _, newPath in
+        .onChange(of: router.path) { _, newPath in
             if newPath.isEmpty {
                 nightModeViewModel.reload()
             }

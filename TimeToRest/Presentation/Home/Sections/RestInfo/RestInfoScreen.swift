@@ -3,9 +3,9 @@ import SwiftUI
 // MARK: - RestInfoScreen
 
 struct RestInfoScreen: View {
-    
-    @ObservedObject var viewModel: RestInfoViewModel
-    @EnvironmentObject private var router: Router
+
+    var viewModel: RestInfoViewModel
+    @Environment(Router.self) private var router
     
     @Environment(\.verticalSizeClass) private var vSizeClass
 
@@ -172,9 +172,11 @@ struct RestInfoScreen: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ZStack {
         Color.black.ignoresSafeArea()
         RestInfoScreen(viewModel: .preview)
     }
 }
+#endif

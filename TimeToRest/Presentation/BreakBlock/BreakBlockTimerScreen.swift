@@ -5,8 +5,8 @@ import SwiftUI
 /// Shows a countdown, psychological messages, and the final break button.
 struct BreakBlockTimerScreen: View {
 
-    @StateObject var viewModel: BreakBlockViewModel
-    @EnvironmentObject private var router: Router
+    let viewModel: BreakBlockViewModel
+    @Environment(Router.self) private var router
 
     var body: some View {
         countdownView
@@ -82,9 +82,12 @@ struct BreakBlockTimerScreen: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ZStack {
         Color.black.ignoresSafeArea()
         BreakBlockTimerScreen(viewModel: .preview)
     }
+    .environment(Router())
 }
+#endif

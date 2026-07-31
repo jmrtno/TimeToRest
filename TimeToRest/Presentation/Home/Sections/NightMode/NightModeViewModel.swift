@@ -1,12 +1,11 @@
 import Foundation
-import SwiftUI
-import Combine
 
 // MARK: - NightModeViewModel
 /// ViewModel for the night mode section.
 /// Handles night-window/session state used to switch UI mode.
 @MainActor
-final class NightModeViewModel: ObservableObject {
+@Observable
+final class NightModeViewModel {
 
     enum BreakRequestOutcome {
         case completed
@@ -15,13 +14,15 @@ final class NightModeViewModel: ObservableObject {
     }
 
     // MARK: - Published state
-    @Published var config: TimeToRestEntity = .firstConfig
-    @Published var isWithinNightWindow: Bool = false
-    @Published var hasConfiguration: Bool = false
-    @Published var session: RestSessionEntity?
-    @Published var didBreakTonight: Bool = false
-    @Published var showCompletedButtonStyle: Bool = false
-    @Published var minutesLate: Int? = nil
+    var config: TimeToRestEntity = .firstConfig
+    var isWithinNightWindow: Bool = false
+    var hasConfiguration: Bool = false
+    var session: RestSessionEntity?
+    var didBreakTonight: Bool = false
+    var showCompletedButtonStyle: Bool = false
+    var minutesLate: Int? = nil
+    private(set) var isAwaitingGracePeriodReconfiguration: Bool = false
+    var gracePeriodSecondsRemaining: Int?
 
     /// Controls whether the night mode UI is shown.
     /// True if there's an active session or we're within the night window and didn't break rest.
@@ -41,11 +42,19 @@ final class NightModeViewModel: ObservableObject {
         return String(format: "%02d:%02d", hours, minutes)
     }
 
+    /// True while the current session is still within its 10 minute grace period,
+    /// during which the user can reconfigure the schedule without the session
+    /// counting as a broken rest.
+    var isWithinGracePeriod: Bool {
+        gracePeriodSecondsRemaining != nil
+    }
+
     // MARK: - Dependencies
     private let fetchRestTimeUseCase: FetchRestTimeUseCase
     private let startRestSessionUseCase: StartRestSessionUseCase
     private let completeRestSessionUseCase: CompleteRestSessionUseCase
     private let fetchCurrentSessionUseCase: FetchCurrentSessionUseCase
+    private let deleteSessionUseCase: DeleteSessionUseCase
     private let restSessionManager: RestSessionManager
     private let notificationManager: NotificationManager
 
@@ -53,11 +62,14 @@ final class NightModeViewModel: ObservableObject {
     private var lastTimerCheckedMinute: Int?
     private var buttonStyleTimer: Timer?
 
+    private static let gracePeriodDuration: TimeInterval = 10 * 60
+
     init(
         fetchRestTimeUseCase: FetchRestTimeUseCase,
         startRestSessionUseCase: StartRestSessionUseCase,
         completeRestSessionUseCase: CompleteRestSessionUseCase,
         fetchCurrentSessionUseCase: FetchCurrentSessionUseCase,
+        deleteSessionUseCase: DeleteSessionUseCase,
         restSessionManager: RestSessionManager,
         notificationManager: NotificationManager
     ) {
@@ -65,6 +77,7 @@ final class NightModeViewModel: ObservableObject {
         self.startRestSessionUseCase = startRestSessionUseCase
         self.completeRestSessionUseCase = completeRestSessionUseCase
         self.fetchCurrentSessionUseCase = fetchCurrentSessionUseCase
+        self.deleteSessionUseCase = deleteSessionUseCase
         self.restSessionManager = restSessionManager
         self.notificationManager = notificationManager
         
@@ -114,10 +127,13 @@ final class NightModeViewModel: ObservableObject {
     /// Called after the user saves a new configuration.
     /// Resets the break flag so night mode can re-activate with the new config.
     func reloadAfterConfigChange() {
+        isAwaitingGracePeriodReconfiguration = false
         lastTimerCheckedMinute = nil
         didBreakTonight = false
         session = nil
         guard loadConfig() else { return }
+        checkIfBrokenTonight()
+        restoreSessionIfNeeded()
         Task {
             await checkNightWindow()
         }
@@ -139,6 +155,7 @@ final class NightModeViewModel: ObservableObject {
     // MARK: - Night window
 
     func checkNightWindow() async {
+        guard !isAwaitingGracePeriodReconfiguration else { return }
         checkIfBrokenTonight()
         let wasInWindow = isWithinNightWindow
         isWithinNightWindow = Self.isCurrentlyInNightWindow(config: config)
@@ -146,7 +163,7 @@ final class NightModeViewModel: ObservableObject {
         if didBreakTonight {
             restSessionManager.stopMonitoringAndUnlockApps()
             session = nil
-showCompletedButtonStyle = false
+            showCompletedButtonStyle = false
             return
         }
 
@@ -156,7 +173,7 @@ showCompletedButtonStyle = false
            updatedSession.didBreakRest && updatedSession.id == currentSession.id {
             session = nil
             didBreakTonight = true
-showCompletedButtonStyle = false
+            showCompletedButtonStyle = false
             // Cancel completion notification since session was broken
             notificationManager.cancelSessionCompletionNotification()
             return
@@ -193,6 +210,11 @@ showCompletedButtonStyle = false
 
             // Schedule completion notification for this session
             notificationManager.scheduleSessionCompletionNotification(for: config)
+        } else {
+            restoreSessionIfNeeded()
+            if session != nil {
+                notificationManager.scheduleSessionCompletionNotification(for: config)
+            }
         }
     }
 
@@ -204,13 +226,28 @@ showCompletedButtonStyle = false
         if let _ = await completeRestSessionUseCase.execute(session: currentSession, completedAt: now) {
             session = nil
             didBreakTonight = false
-showCompletedButtonStyle = false
+            showCompletedButtonStyle = false
             restSessionManager.stopMonitoringAndUnlockApps()
             notificationManager.cancelSessionCompletionNotification()
             return .completed
         }
 
         return .needsManualBreak
+    }
+
+    /// Requests reconfiguration of the rest schedule during the grace period.
+    ///
+    /// Unlike breaking the rest, this deletes the current session from persistence
+    /// entirely, so it never counts towards stats or streaks. Apps are unlocked and
+    /// auto-start of a new session is suspended until `reloadAfterConfigChange()` runs.
+    func requestGracePeriodReconfiguration() async {
+        guard let currentSession = session else { return }
+        restSessionManager.stopMonitoringAndUnlockApps()
+        await deleteSessionUseCase.execute(session: currentSession)
+        session = nil
+        gracePeriodSecondsRemaining = nil
+        notificationManager.cancelSessionCompletionNotification()
+        isAwaitingGracePeriodReconfiguration = true
     }
 
     /// Restores the in-memory session from persistence if we're in the night window
@@ -388,9 +425,21 @@ showCompletedButtonStyle = false
     private func refreshButtonStyleState(now: Date = Date()) {
         guard let currentSession = session else {
             showCompletedButtonStyle = false
+            gracePeriodSecondsRemaining = nil
             return
         }
         showCompletedButtonStyle = isCompletionTimeReached(for: currentSession, now: now)
+        gracePeriodSecondsRemaining = remainingGracePeriodSeconds(for: currentSession, now: now)
+    }
+
+    /// Seconds left in the 10 minute grace period for reconfiguring the schedule
+    /// without the session counting as a broken rest. Returns nil once expired
+    /// or once the session has already broken/completed.
+    private func remainingGracePeriodSeconds(for session: RestSessionEntity, now: Date) -> Int? {
+        guard !session.didBreakRest, !session.isCompleted else { return nil }
+        let elapsed = now.timeIntervalSince(session.startedAt)
+        let remaining = Self.gracePeriodDuration - elapsed
+        return remaining > 0 ? Int(remaining) : nil
     }
 
     private func isCompletionTimeReached(for session: RestSessionEntity, now: Date = Date()) -> Bool {
@@ -425,41 +474,3 @@ showCompletedButtonStyle = false
         return lateMinutes > 0 ? lateMinutes : nil
     }
 }
-
-// MARK: - Preview
-
-#if DEBUG
-extension NightModeViewModel {
-
-    static var preview: NightModeViewModel {
-        struct MockTimeRepo: TimeToRestRepositoryContract {
-            func hasConfiguration() -> Bool { true }
-            func fetch() -> TimeToRestEntity { .firstConfig }
-            func save(_ restTime: TimeToRestEntity) async {}
-            func update(_ restTime: TimeToRestEntity) async {}
-        }
-        struct MockSessionRepo: RestSessionRepositoryContract {
-            func fetchAll() -> [RestSessionEntity] { [] }
-            func fetch(for day: Date) -> RestSessionEntity? { nil }
-            func save(_ session: RestSessionEntity) async {}
-            func update(_ session: RestSessionEntity) async {}
-        }
-        let mockTimeRepo = MockTimeRepo()
-        let mockSessionRepo = MockSessionRepo()
-        return NightModeViewModel(
-            fetchRestTimeUseCase: FetchRestTimeUseCase(repository: mockTimeRepo),
-            startRestSessionUseCase: StartRestSessionUseCase(
-                sessionRepository: mockSessionRepo,
-                fetchRestTimeUseCase: FetchRestTimeUseCase(repository: mockTimeRepo)
-            ),
-            completeRestSessionUseCase: CompleteRestSessionUseCase(repository: mockSessionRepo),
-            fetchCurrentSessionUseCase: FetchCurrentSessionUseCase(repository: mockSessionRepo),
-            restSessionManager: RestSessionManager(
-                breakRestUseCase: BreakRestUseCase(repository: mockSessionRepo),
-                fetchCurrentSessionUseCase: FetchCurrentSessionUseCase(repository: mockSessionRepo)
-            ),
-            notificationManager: NotificationManager()
-        )
-    }
-}
-#endif

@@ -35,7 +35,7 @@ struct RouteViewFactory {
             BreakBlockTimerScreen(
                 viewModel: makeBreakBlockViewModel()
             )
-        case .breakBlockCelebrarion:
+        case .breakBlockCelebration:
             BreakBlockCelebrationScreen(
                 viewModel: makeBreakBlockViewModel()
             )

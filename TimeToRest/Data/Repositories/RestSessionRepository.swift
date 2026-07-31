@@ -71,6 +71,13 @@ final class RestSessionRepository: RestSessionRepositoryContract {
         persistAll(sessions)
     }
 
+    // MARK: - Delete
+
+    func delete(_ session: RestSessionEntity) async {
+        let sessions = fetchAll().filter { $0.id != session.id }
+        persistAll(sessions)
+    }
+
     // MARK: - Private helpers
 
     @MainActor
