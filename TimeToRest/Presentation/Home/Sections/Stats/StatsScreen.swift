@@ -133,6 +133,7 @@ struct StatsScreen: View {
         func fetch(for day: Date) -> RestSessionEntity? { nil }
         func save(_ session: RestSessionEntity) async {}
         func update(_ session: RestSessionEntity) async {}
+        func delete(_ session: RestSessionEntity) async {}
     }
     return ZStack {
         Color.black.ignoresSafeArea()

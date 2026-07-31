@@ -52,6 +52,17 @@ struct NightModeScreen: View {
             .padding(.bottom, 32)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+        .overlay(alignment: .topTrailing) {
+            reconfigureOverlay
+        }
+    }
+
+    @ViewBuilder
+    private var reconfigureOverlay: some View {
+        if viewModel.isWithinGracePeriod, let secondsLeft = viewModel.gracePeriodSecondsRemaining {
+            reconfigureButton(secondsLeft: secondsLeft)
+                .padding(.trailing, 24)
+        }
     }
     
     // MARK: - Header
@@ -160,6 +171,27 @@ struct NightModeScreen: View {
             .animation(.easeInOut(duration: 1.0), value: successBreak)
     }
 
+    // MARK: - Reconfigure Button
+
+    private func reconfigureButton(secondsLeft: Int) -> some View {
+        let minutesLeft = max(1, (secondsLeft + 59) / 60)
+        return Button {
+            handleReconfigureAction()
+        } label: {
+            VStack {
+                Image(systemName: "gearshape.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 25, height: 25)
+                    .tint(Color.orange.opacity(0.7))
+                Text("Reconfig.\n\(minutesLeft) min. left")
+                    .font(.footnote)
+                    .foregroundStyle(.orange.opacity(0.7))
+            }
+        }
+        .padding(.top, 12)
+    }
+
     // MARK: - Animated Background
     
     private var animatedBackground: some View {
@@ -250,13 +282,29 @@ private extension NightModeScreen {
             }
         }
     }
+
+    private func handleReconfigureAction() {
+        Task {
+            await viewModel.requestGracePeriodReconfiguration()
+            router.presentRestConfiguration(mode: .editable)
+        }
+    }
 }
 
 #if DEBUG
-#Preview {
+#Preview("Grace Period") {
+    ZStack {
+        Color.black.ignoresSafeArea()
+        NightModeScreen(viewModel: .previewWithGracePeriod)
+    }
+    .environment(Router())
+}
+
+#Preview("Default") {
     ZStack {
         Color.black.ignoresSafeArea()
         NightModeScreen(viewModel: .preview)
     }
+    .environment(Router())
 }
 #endif

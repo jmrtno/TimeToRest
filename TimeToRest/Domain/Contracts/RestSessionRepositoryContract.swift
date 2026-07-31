@@ -29,4 +29,6 @@ protocol RestSessionRepositoryContract {
     func save(_ session: RestSessionEntity) async
     /// Actualiza una sesión existente (BreakRestUseCase)
     func update(_ session: RestSessionEntity) async
+    /// Elimina una sesión de persistencia (grace period reconfiguration)
+    func delete(_ session: RestSessionEntity) async
 }

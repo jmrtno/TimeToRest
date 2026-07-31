@@ -25,6 +25,7 @@ struct AppCoordinator: View {
             startRestSessionUseCase: dependencies.startRestSessionUseCase,
             completeRestSessionUseCase: dependencies.completeRestSessionUseCase,
             fetchCurrentSessionUseCase: dependencies.fetchCurrentSessionUseCase,
+            deleteSessionUseCase: dependencies.deleteSessionUseCase,
             restSessionManager: dependencies.restSessionManager,
             notificationManager: dependencies.notificationManager
         ))
