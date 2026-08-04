@@ -34,6 +34,11 @@ final class Router {
     /// The currently presented rest configuration modal mode, if any.
     var restConfigurationMode: RestConfigurationMode?
 
+    /// Whether the rest configuration modal was dismissed after saving a different
+    /// night schedule. Lets the dismissal handler tell a real schedule change from a
+    /// cancellation or a save that only touched the blocked apps.
+    private var didChangeRestSchedule: Bool = false
+
     /// Pushes a new route onto the navigation stack.
     /// - Parameter route: The route to navigate to
     func push(_ route: Route) {
@@ -54,11 +59,20 @@ final class Router {
 
     // MARK: - Modal control
     func presentRestConfiguration(mode: RestConfigurationMode) {
+        didChangeRestSchedule = false
         restConfigurationMode = mode
     }
 
-    func dismissRestConfiguration() {
+    func dismissRestConfiguration(didChangeSchedule: Bool = false) {
+        didChangeRestSchedule = didChangeSchedule
         restConfigurationMode = nil
+    }
+
+    /// Reads and clears the schedule change flag of the last rest configuration presentation.
+    func consumeDidChangeRestSchedule() -> Bool {
+        let didChangeSchedule = didChangeRestSchedule
+        didChangeRestSchedule = false
+        return didChangeSchedule
     }
     
     func presentBreakBlock(mode: BreakBlockMode) {

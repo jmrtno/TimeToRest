@@ -9,6 +9,7 @@ struct NightModeScreen: View {
     @State private var stars: [StarSpec] = StarSpec.generate(count: 20)
     @State private var showLateMessage = false
     @State private var isAnimating: Bool = false
+    @State private var showReconfigureButton = false
 
     @Environment(\.verticalSizeClass) private var vSizeClass
 
@@ -55,13 +56,22 @@ struct NightModeScreen: View {
         .overlay(alignment: .topTrailing) {
             reconfigureOverlay
         }
+        .onAppear {
+            showReconfigureButton = viewModel.isWithinGracePeriod
+        }
+        .onChange(of: viewModel.isWithinGracePeriod) { _, newValue in
+            withAnimation(.easeOut(duration: 0.5)) {
+                showReconfigureButton = newValue
+            }
+        }
     }
 
     @ViewBuilder
     private var reconfigureOverlay: some View {
-        if viewModel.isWithinGracePeriod, let secondsLeft = viewModel.gracePeriodSecondsRemaining {
+        if showReconfigureButton, let secondsLeft = viewModel.gracePeriodSecondsRemaining {
             reconfigureButton(secondsLeft: secondsLeft)
                 .padding(.trailing, 24)
+                .transition(.opacity.combined(with: .move(edge: .top)))
         }
     }
     
@@ -284,10 +294,8 @@ private extension NightModeScreen {
     }
 
     private func handleReconfigureAction() {
-        Task {
-            await viewModel.requestGracePeriodReconfiguration()
-            router.presentRestConfiguration(mode: .editable)
-        }
+        viewModel.beginGracePeriodReconfiguration()
+        router.presentRestConfiguration(mode: .editable)
     }
 }
 
