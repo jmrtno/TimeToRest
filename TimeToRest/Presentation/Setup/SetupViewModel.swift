@@ -27,7 +27,10 @@ final class SetupViewModel {
     private let restSessionManager: RestSessionManager
 
     // MARK: - Callbacks
-    var onSave: (() -> Void)?
+    /// Called once the configuration has been saved.
+    /// `didChangeSchedule` reports whether the night schedule actually changed,
+    /// so the caller can decide whether the ongoing rest session must be restarted.
+    var onSave: ((_ didChangeSchedule: Bool) -> Void)?
 
     init(
         mode: RestConfigurationMode,
@@ -69,23 +72,26 @@ final class SetupViewModel {
         let calendar = Calendar.current
         let startComponents = calendar.dateComponents([.hour, .minute], from: startTime)
         let endComponents = calendar.dateComponents([.hour, .minute], from: endTime)
-
-        let entity = TimeToRestEntity(
+        let didChangeSchedule = isScheduleDifferentFromSaved(
             startTime: startComponents,
             endTime: endComponents
         )
 
-        await saveRestTimeUseCase.execute(restTime: entity, isNew: mode == .mandatory)
+        let entity = TimeToRestEntity(startTime: startComponents, endTime: endComponents)
 
-        // Schedule notifications
-        let manager = notificationManager
-        let savedEntity = entity
-        
-        manager.scheduleRestReminder(for: savedEntity)
+        // Persisting an unchanged schedule would renew its creation date and
+        // discard the ongoing session for nothing, so it is skipped entirely.
+        if didChangeSchedule {
+            await saveRestTimeUseCase.execute(restTime: entity, isNew: mode == .mandatory)
+        }
 
-        restSessionManager.updateBlockedSelection(blockedSelection)
+        notificationManager.scheduleRestReminder(for: entity)
+
+        if isBlockedSelectionDifferentFromSaved() {
+            restSessionManager.updateBlockedSelection(blockedSelection)
+        }
         restSessionManager.prepareAuthorization()
-        onSave?()
+        onSave?(didChangeSchedule)
     }
 
     var canCancel: Bool {
@@ -110,6 +116,24 @@ final class SetupViewModel {
     }
 
     // MARK: - Private
+
+    /// True when the given schedule differs from the persisted one,
+    /// or when there is no persisted configuration yet.
+    private func isScheduleDifferentFromSaved(startTime: DateComponents, endTime: DateComponents) -> Bool {
+        guard let config = fetchRestTimeUseCase.execute() else { return true }
+        return config.startTime.hour != startTime.hour
+        || config.startTime.minute != startTime.minute
+        || config.endTime.hour != endTime.hour
+        || config.endTime.minute != endTime.minute
+    }
+
+    /// True when the picked apps, categories or web domains differ from the persisted ones.
+    private func isBlockedSelectionDifferentFromSaved() -> Bool {
+        let saved = restSessionManager.currentBlockedSelection
+        return blockedSelection.applicationTokens != saved.applicationTokens
+        || blockedSelection.categoryTokens != saved.categoryTokens
+        || blockedSelection.webDomainTokens != saved.webDomainTokens
+    }
 
     private func loadExistingConfig() {
         guard let config = fetchRestTimeUseCase.execute() else { return }

@@ -57,6 +57,10 @@ struct AppCoordinator: View {
             item: $router.restConfigurationMode,
             onDismiss: {
                 router.popToRoot()
+                guard router.consumeDidChangeRestSchedule() else {
+                    nightModeViewModel.resumeAfterConfigDismissal()
+                    return
+                }
                 nightModeViewModel.reloadAfterConfigChange()
                 restViewModel.reloadAfterConfigChange()
             },

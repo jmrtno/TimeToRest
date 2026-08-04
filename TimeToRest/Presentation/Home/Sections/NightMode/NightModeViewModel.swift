@@ -21,7 +21,7 @@ final class NightModeViewModel {
     var didBreakTonight: Bool = false
     var showCompletedButtonStyle: Bool = false
     var minutesLate: Int? = nil
-    private(set) var isAwaitingGracePeriodReconfiguration: Bool = false
+    private var isAwaitingGracePeriodReconfiguration: Bool = false
     var gracePeriodSecondsRemaining: Int?
 
     /// Controls whether the night mode UI is shown.
@@ -115,6 +115,7 @@ final class NightModeViewModel {
 
     /// Reloads data relevant to night mode/session handling.
     func reload() {
+        guard !isAwaitingGracePeriodReconfiguration else { return }
         lastTimerCheckedMinute = nil
         guard loadConfig() else { return }
         checkIfBrokenTonight()
@@ -126,15 +127,31 @@ final class NightModeViewModel {
 
     /// Called after the user saves a new configuration.
     /// Resets the break flag so night mode can re-activate with the new config.
+    ///
+    /// When the change comes from a grace period reconfiguration, the previous session
+    /// is discarded here so it never counts towards stats or streaks.
     func reloadAfterConfigChange() {
-        isAwaitingGracePeriodReconfiguration = false
+        // The flag stays raised until the discarded session is gone, so a concurrent
+        // reload cannot restore the session that is about to be deleted.
+        let sessionToDiscard = isAwaitingGracePeriodReconfiguration ? session : nil
         lastTimerCheckedMinute = nil
         didBreakTonight = false
         session = nil
-        guard loadConfig() else { return }
-        checkIfBrokenTonight()
-        restoreSessionIfNeeded()
+        gracePeriodSecondsRemaining = nil
+        showCompletedButtonStyle = false
+        guard loadConfig() else {
+            isAwaitingGracePeriodReconfiguration = false
+            return
+        }
         Task {
+            if let sessionToDiscard {
+                restSessionManager.stopMonitoringAndUnlockApps()
+                await deleteSessionUseCase.execute(session: sessionToDiscard)
+                notificationManager.cancelSessionCompletionNotification()
+            }
+            isAwaitingGracePeriodReconfiguration = false
+            checkIfBrokenTonight()
+            restoreSessionIfNeeded()
             await checkNightWindow()
         }
     }
@@ -157,7 +174,6 @@ final class NightModeViewModel {
     func checkNightWindow() async {
         guard !isAwaitingGracePeriodReconfiguration else { return }
         checkIfBrokenTonight()
-        let wasInWindow = isWithinNightWindow
         isWithinNightWindow = Self.isCurrentlyInNightWindow(config: config)
 
         if didBreakTonight {
@@ -179,20 +195,14 @@ final class NightModeViewModel {
             return
         }
 
-        if isWithinNightWindow && !wasInWindow {
-            await startRestSession()
-        }
-
-        // Removed automatic completion logic
         // Session will only be completed when user explicitly terminates it
+        guard isWithinNightWindow else { return }
 
-        if isWithinNightWindow && !didBreakTonight && session == nil {
+        if session == nil {
             await startRestSession()
         }
 
-        if isWithinNightWindow && !didBreakTonight {
-            restSessionManager.startMonitoringIfNeeded(configuration: config)
-        }
+        restSessionManager.startMonitoringIfNeeded(configuration: config)
     }
     
 
@@ -235,19 +245,28 @@ final class NightModeViewModel {
         return .needsManualBreak
     }
 
-    /// Requests reconfiguration of the rest schedule during the grace period.
+    /// Marks the start of a reconfiguration of the rest schedule during the grace period.
     ///
-    /// Unlike breaking the rest, this deletes the current session from persistence
-    /// entirely, so it never counts towards stats or streaks. Apps are unlocked and
-    /// auto-start of a new session is suspended until `reloadAfterConfigChange()` runs.
-    func requestGracePeriodReconfiguration() async {
-        guard let currentSession = session else { return }
-        restSessionManager.stopMonitoringAndUnlockApps()
-        await deleteSessionUseCase.execute(session: currentSession)
-        session = nil
-        gracePeriodSecondsRemaining = nil
-        notificationManager.cancelSessionCompletionNotification()
+    /// The ongoing session is kept untouched and its grace period keeps counting down,
+    /// so cancelling the configuration leaves the session exactly as it was. Discarding
+    /// the session only happens if the user saves a different night schedule.
+    /// Auto-start of a new session is suspended meanwhile.
+    func beginGracePeriodReconfiguration() {
+        guard session != nil else { return }
         isAwaitingGracePeriodReconfiguration = true
+    }
+
+    /// Called when the configuration modal is dismissed without changing the schedule,
+    /// either because it was cancelled or because only the blocked apps were edited.
+    ///
+    /// The ongoing session and its grace period are resumed untouched, and monitoring is
+    /// refreshed so that a new blocked apps selection applies right away.
+    func resumeAfterConfigDismissal() {
+        isAwaitingGracePeriodReconfiguration = false
+        refreshButtonStyleState()
+        Task {
+            await checkNightWindow()
+        }
     }
 
     /// Restores the in-memory session from persistence if we're in the night window
