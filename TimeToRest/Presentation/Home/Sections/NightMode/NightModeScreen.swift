@@ -189,7 +189,7 @@ struct NightModeScreen: View {
             handleReconfigureAction()
         } label: {
             VStack {
-                Image(systemName: "gearshape.fill")
+                Image(systemName: "clock.arrow.trianglehead.2.counterclockwise.rotate.90")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 25, height: 25)

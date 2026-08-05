@@ -7,6 +7,25 @@ struct BigGlassCard: View {
     let value: String
     let color: Color
     let content: (() -> any View)?
+    let animateNumbers: Bool
+    
+    init(
+        icon: String,
+        title: String,
+        subtitle: String,
+        value: String,
+        color: Color,
+        animateNumbers: Bool = false,
+        content: (() -> any View)? = nil
+    ) {
+        self.icon = icon
+        self.title = title
+        self.subtitle = subtitle
+        self.value = value
+        self.color = color
+        self.animateNumbers = animateNumbers
+        self.content = content
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -29,6 +48,8 @@ struct BigGlassCard: View {
                     Text(subtitle)
                         .font(.system(size: 14, weight: .regular))
                         .foregroundStyle(.white.opacity(0.5))
+                        .contentTransition(animateNumbers ? .numericText(countsDown: false) : .identity)
+                        .animation(animateNumbers ? .default : nil, value: subtitle)
                 }
                 
                 Spacer()
@@ -36,6 +57,8 @@ struct BigGlassCard: View {
                 Text(value)
                     .font(.system(size: 24, weight: .bold))
                     .foregroundStyle(.white.opacity(0.9))
+                    .contentTransition(animateNumbers ? .numericText(countsDown: false) : .identity)
+                    .animation(animateNumbers ? .default : nil, value: value)
             }
             
             if let content {

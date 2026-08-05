@@ -4,6 +4,12 @@ extension StatsScreen {
     
     struct BreakRateDailyChart: View {
         let values: [Bool]
+        let isVisible: Bool
+        
+        init(values: [Bool], isVisible: Bool = false) {
+            self.values = values
+            self.isVisible = isVisible
+        }
 
         var body: some View {
             GeometryReader { proxy in
@@ -47,7 +53,9 @@ extension StatsScreen {
                             }
                         }
                     }
+                    .trim(from: 0, to: isVisible ? 1 : 0)
                     .stroke(Color.white.opacity(0.25), style: StrokeStyle(lineWidth: 1.5, lineCap: .round, lineJoin: .round))
+                    .animation(.easeInOut(duration: 0.8).delay(0.2), value: isVisible)
 
                     ForEach(Array(safeValues.enumerated()), id: \.offset) { index, didBreak in
                         let x = (CGFloat(index) / denominator) * width
@@ -57,6 +65,13 @@ extension StatsScreen {
                             .fill(didBreak ? Color.red : Color.green)
                             .frame(width: 6, height: 6)
                             .position(x: x, y: y)
+                            .opacity(isVisible ? 1 : 0)
+                            .scaleEffect(isVisible ? 1 : 0.4)
+                            .animation(
+                                .smooth(duration: 0.35, extraBounce: 0.1)
+                                    .delay(0.45 + Double(index) * 0.02),
+                                value: isVisible
+                            )
                     }
 
                     VStack {

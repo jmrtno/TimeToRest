@@ -7,6 +7,21 @@ struct StatsGlassCardSectionView: View {
     let title: String
     let value: String
     let iconColor: Color
+    let animateNumbers: Bool
+    
+    init(
+        icon: String,
+        title: String,
+        value: String,
+        iconColor: Color,
+        animateNumbers: Bool = false
+    ) {
+        self.icon = icon
+        self.title = title
+        self.value = value
+        self.iconColor = iconColor
+        self.animateNumbers = animateNumbers
+    }
 
     var body: some View {
         HStack {
@@ -28,6 +43,8 @@ struct StatsGlassCardSectionView: View {
                     Text(value)
                         .font(.system(size: 32, weight: .medium))
                         .foregroundStyle(.white.opacity(0.9))
+                        .contentTransition(animateNumbers ? .numericText(countsDown: false) : .identity)
+                        .animation(animateNumbers ? .default : nil, value: value)
                 }
             }
         }
