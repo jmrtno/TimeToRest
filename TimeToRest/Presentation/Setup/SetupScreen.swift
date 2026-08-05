@@ -7,8 +7,11 @@ import FamilyControls
 /// In editable mode: can be cancelled.
 struct SetupScreen: View {
 
-    @State var viewModel: SetupViewModel
+    @Bindable var viewModel: SetupViewModel
     @Environment(Router.self) private var router
+    @Environment(\.accessibilityReduceMotion)
+    private var reduceMotion
+    @State private var isContentSolid = false
     
     var body: some View {
         ZStack {
@@ -16,11 +19,11 @@ struct SetupScreen: View {
             
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    headerSection
-                    timePickersSection
-                    notAllowedAppsSection
-                    coachText
-                    footerText
+                    materialize(header, delay: 0.0)
+                    materialize(SetupTimePickerSectionView(startTime: $viewModel.startTime, endTime: $viewModel.endTime), delay: 0.3)
+                    materialize(SetupNotAllowedAppsSectionView(viewModel: viewModel), delay: 0.6)
+                    materialize(SetupAICoachSectionView(viewModel: viewModel), delay: 0.9)
+                    materialize(footerText, delay: 1.2)
                 }
                 .padding(.horizontal, 24)
             }
@@ -46,9 +49,13 @@ struct SetupScreen: View {
             }
         }
         .onAppear {
-            viewModel.onSave = {
-                router.dismissRestConfiguration()
+            viewModel.onSave = { didChangeSchedule in
+                router.dismissRestConfiguration(didChangeSchedule: didChangeSchedule)
             }
+        }
+        .task {
+            try? await Task.sleep(for: .seconds(0.2))
+            isContentSolid = true
         }
         .task {
             await viewModel.loadSleepTip()
@@ -65,15 +72,15 @@ struct SetupScreen: View {
 private extension SetupScreen {
 
     // MARK: - Header
-
-    private var headerSection: some View {
+    
+    private var header: some View {
         VStack(alignment: .leading, spacing: 12) {
             if viewModel.mode == .mandatory {
                 Text("Let's set a limit for tonight.")
                     .font(.title.bold())
                     .foregroundStyle(.white)
                     .padding(.top, 12)
-
+                
                 Text("It takes less than 30 seconds")
                     .font(.subheadline)
                     .foregroundStyle(.white.opacity(0.5))
@@ -85,133 +92,7 @@ private extension SetupScreen {
             }
         }
     }
-
-    // MARK: - Time Pickers
-
-    private var timePickersSection: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            Text("Night Schedule")
-                .textCase(.uppercase)
-                .font(.system(size: 14, weight: .bold))
-                .foregroundStyle(.white.opacity(0.4))
-            timeRow(label: "Start time", selection: $viewModel.startTime)
-            timeRow(label: "End time", selection: $viewModel.endTime)
-        }
-        .padding(20)
-        .glassEffect(in: .rect(cornerRadius: 24))
-    }
-
-    private func timeRow(label: String, selection: Binding<Date>) -> some View {
-        HStack {
-            Text(label)
-                .font(.body)
-                .foregroundStyle(.white.opacity(0.8))
-
-            Spacer()
-
-            DatePicker(
-                "",
-                selection: selection,
-                displayedComponents: .hourAndMinute
-            )
-            .labelsHidden()
-            .tint(.orange)
-            .colorScheme(.dark)
-        }
-    }
     
-    // MARK: - Blocked Apps
-
-    private var notAllowedAppsSection: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Blocks during your rest")
-                    .textCase(.uppercase)
-                    .font(.system(size: 14, weight: .bold))
-                    .foregroundStyle(.white.opacity(0.4))
-                    .padding(.bottom, 16)
-
-                Text("Selected apps will be blocked automatically while you rest.")
-                    .font(.headline)
-                    .foregroundStyle(.white)
-
-                Button {
-                    viewModel.isFamilyActivityPickerPresented = true
-                } label: {
-                    HStack {
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(.orange.opacity(0.1))
-                                .frame(width: 48, height: 48)
-                            Image(systemName: "lock.app.dashed")
-                                .font(.system(size: 24, weight: .medium))
-                                .foregroundStyle(.orange)
-                        }
-                        Text("Select apps")
-                            .font(.subheadline.weight(.semibold))
-                            .foregroundStyle(.orange)
-                    }
-                }
-                
-                Text("Apps blocked: \(viewModel.blockedSocialAppsDescription).")
-                    .font(.subheadline)
-                    .foregroundStyle(.white.opacity(0.75))
-            }
-            
-            Spacer()
-        }
-        .padding(16)
-        .glassEffect(in: .rect(cornerRadius: 24))
-    }
-    
-    // MARK: - Coach
-
-    private var coachText: some View {
-        Group {
-            if viewModel.mode == .editable {
-                HStack {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text("AI Coach:")
-                            .textCase(.uppercase)
-                            .font(.system(size: 14, weight: .bold))
-                            .foregroundStyle(.white.opacity(0.5))
-                            .padding(.bottom, 16)
-                        
-                        if viewModel.isTipLoading {
-                            HStack(spacing: 8) {
-                                ProgressView()
-                                    .tint(.orange)
-                                Text("Generating tip...")
-                                    .font(.subheadline)
-                                    .foregroundStyle(.white.opacity(0.5))
-                            }
-                        } else {
-                            VStack(alignment: .leading, spacing: 8) {
-                                Text(viewModel.sleepTip)
-                                    .font(.subheadline)
-                                    .foregroundStyle(.white.opacity(0.85))
-                                
-                                if viewModel.sleepTip.contains("Apple Intelligence is not enabled") {
-                                    Button("Open Settings") {
-                                        if let url = URL(string: UIApplication.openSettingsURLString) {
-                                            UIApplication.shared.open(url)
-                                        }
-                                    }
-                                    .font(.subheadline.weight(.semibold))
-                                    .foregroundStyle(.orange)
-                                }
-                            }
-                        }
-                    }
-                    
-                    Spacer()
-                }
-                .padding(16)
-                .glassEffect(.regular.tint(.orange.opacity(0.15)), in: .rect(cornerRadius: 24))
-            }
-        }
-    }
-
     // MARK: - Footer
 
     private var footerText: some View {
@@ -224,6 +105,46 @@ private extension SetupScreen {
         }
         .padding(.bottom, 40)
     }
+
+    // MARK: - Materialize
+
+    /// Condenses a section into place: it gains presence first, then sharpens and
+    /// recovers its colour, without ever changing position or size.
+    @ViewBuilder
+    private func materialize<Content: View>(_ view: Content, delay: TimeInterval) -> some View {
+        if reduceMotion {
+            view
+                .opacity(isContentSolid ? 1 : 0)
+                .animation(.calmMaterialize.delay(delay), value: isContentSolid)
+        } else {
+            view
+                .compositingGroup()
+                .opacity(isContentSolid ? 1 : 0)
+                .animation(.calmMaterialize.delay(delay), value: isContentSolid)
+                .compositingGroup()
+                .blur(radius: isContentSolid ? 0 : 14)
+                .saturation(isContentSolid ? 1 : 0.4)
+                .animation(.calmCondense.delay(delay), value: isContentSolid)
+                .scrollTransition(.animated(.calmScroll)) { content, phase in
+                    content
+                        .opacity(phase.isIdentity ? 1 : 0.5)
+                        .blur(radius: phase.isIdentity ? 0 : 2)
+                }
+        }
+    }
+}
+
+// MARK: - Animation Curves
+
+private extension Animation {
+    /// Smooth spring with no bounce as the section gains presence.
+    static let calmMaterialize = Animation.smooth(duration: 1.1, extraBounce: 0)
+
+    /// Same smooth spring, stretched so the focus and colour condense slowly.
+    static let calmCondense = Animation.smooth(duration: 1.4, extraBounce: 0)
+
+    /// Shorter curve for motion driven by the user's scrolling.
+    static let calmScroll = Animation.easeInOut(duration: 0.45)
 }
 
 #if DEBUG
