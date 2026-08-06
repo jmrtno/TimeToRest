@@ -7,7 +7,7 @@ import SwiftUI
 /// No separate night mode screen — the home screen itself changes.
 struct StatsScreen: View {
 
-    var statsViewModel: StatsViewModel
+    @Bindable var statsViewModel: StatsViewModel
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     
     @State private var isContentVisible = false

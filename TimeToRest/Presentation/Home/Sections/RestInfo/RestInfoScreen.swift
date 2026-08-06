@@ -4,7 +4,7 @@ import SwiftUI
 
 struct RestInfoScreen: View {
 
-    var viewModel: RestInfoViewModel
+    @Bindable var viewModel: RestInfoViewModel
     @Environment(Router.self) private var router
     @Environment(\.verticalSizeClass) private var vSizeClass
     @Environment(\.accessibilityReduceMotion) private var reduceMotion

@@ -4,7 +4,7 @@ import SwiftUI
 
 struct NightModeScreen: View {
 
-    var viewModel: NightModeViewModel
+    @Bindable var viewModel: NightModeViewModel
     @Environment(Router.self) private var router
     @State private var stars: [StarSpec] = StarSpec.generate(count: 20)
     @State private var showLateMessage = false
