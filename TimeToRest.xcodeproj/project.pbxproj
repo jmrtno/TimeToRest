@@ -57,6 +57,14 @@
 		EDE25B753021EC2900A8416B /* SetupTimePickerSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE25B743021EC2900A8416B /* SetupTimePickerSectionView.swift */; };
 		EDE25B773021ECCE00A8416B /* SetupNotAllowedAppsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE25B763021ECBE00A8416B /* SetupNotAllowedAppsSectionView.swift */; };
 		EDE25B793021ED7700A8416B /* SetupAICoachSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE25B783021ED5A00A8416B /* SetupAICoachSectionView.swift */; };
+		EDE25B7C30235F1600A8416B /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE25B7B30235F1200A8416B /* SettingsScreen.swift */; };
+		EDE25B803023650E00A8416B /* AppSettingsEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE25B7F3023650E00A8416B /* AppSettingsEntity.swift */; };
+		EDE25B823023671F00A8416B /* AppSettingsDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE25B813023670200A8416B /* AppSettingsDTO.swift */; };
+		EDE25B873023687300A8416B /* FetchAppSettingsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE25B863023687300A8416B /* FetchAppSettingsUseCase.swift */; };
+		EDE25B893024C36600A8416B /* AppSettingsRepositoryContract.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE25B883024C36600A8416B /* AppSettingsRepositoryContract.swift */; };
+		EDE25B8D3024C3CA00A8416B /* AppSettingsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE25B8C3024C3CA00A8416B /* AppSettingsRepository.swift */; };
+		EDE25B8F3024C48900A8416B /* SaveAppSettingsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE25B8E3024C48900A8416B /* SaveAppSettingsUseCase.swift */; };
+		EDE25B913024C54100A8416B /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE25B903024C54100A8416B /* SettingsViewModel.swift */; };
 		EDE2F94A2F374530006CB2F6 /* TimeToRestApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE2F9472F374530006CB2F6 /* TimeToRestApp.swift */; };
 		EDFB504E2F43416500FEA44F /* RestSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB504D2F43416500FEA44F /* RestSessionManager.swift */; };
 		EDFB50522F43419800FEA44F /* RestSessionDeviceActivityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB504F2F43419800FEA44F /* RestSessionDeviceActivityIdentifiers.swift */; };
@@ -167,6 +175,14 @@
 		EDE25B743021EC2900A8416B /* SetupTimePickerSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupTimePickerSectionView.swift; sourceTree = "<group>"; };
 		EDE25B763021ECBE00A8416B /* SetupNotAllowedAppsSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupNotAllowedAppsSectionView.swift; sourceTree = "<group>"; };
 		EDE25B783021ED5A00A8416B /* SetupAICoachSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupAICoachSectionView.swift; sourceTree = "<group>"; };
+		EDE25B7B30235F1200A8416B /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
+		EDE25B7F3023650E00A8416B /* AppSettingsEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsEntity.swift; sourceTree = "<group>"; };
+		EDE25B813023670200A8416B /* AppSettingsDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsDTO.swift; sourceTree = "<group>"; };
+		EDE25B863023687300A8416B /* FetchAppSettingsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchAppSettingsUseCase.swift; sourceTree = "<group>"; };
+		EDE25B883024C36600A8416B /* AppSettingsRepositoryContract.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsRepositoryContract.swift; sourceTree = "<group>"; };
+		EDE25B8C3024C3CA00A8416B /* AppSettingsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettingsRepository.swift; sourceTree = "<group>"; };
+		EDE25B8E3024C48900A8416B /* SaveAppSettingsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveAppSettingsUseCase.swift; sourceTree = "<group>"; };
+		EDE25B903024C54100A8416B /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		EDE2F9372F3744ED006CB2F6 /* TimeToRest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeToRest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDE2F9472F374530006CB2F6 /* TimeToRestApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeToRestApp.swift; sourceTree = "<group>"; };
 		EDFB504C2F433B5100FEA44F /* TimeToRest.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TimeToRest.entitlements; sourceTree = "<group>"; };
@@ -275,6 +291,7 @@
 		ED0450812F407BAB001EDDE8 /* Sections */ = {
 			isa = PBXGroup;
 			children = (
+				EDE25B7A30235F0400A8416B /* Settings */,
 				ED0450802F407B53001EDDE8 /* NightMode */,
 				ED3E1E8B2F3FBE750098B03E /* RestInfo */,
 				AA000010AAAA001000000001 /* Stats */,
@@ -413,6 +430,7 @@
 			children = (
 				EDA78B002F374CF900181F03 /* TimeToRestRepository.swift */,
 				EDA78B222F388EA000181F03 /* RestSessionRepository.swift */,
+				EDE25B8C3024C3CA00A8416B /* AppSettingsRepository.swift */,
 			);
 			path = Repositories;
 			sourceTree = "<group>";
@@ -420,6 +438,7 @@
 		EDA78B022F374D5100181F03 /* Contracts */ = {
 			isa = PBXGroup;
 			children = (
+				EDE25B883024C36600A8416B /* AppSettingsRepositoryContract.swift */,
 				EDA78B052F374D7600181F03 /* TimeToRestRepositoryContract.swift */,
 				EDA78B202F388E0200181F03 /* RestSessionRepositoryContract.swift */,
 			);
@@ -432,6 +451,7 @@
 				EDA78B152F37A9FB00181F03 /* RestStatsEntity.swift */,
 				EDA78B132F37A9DE00181F03 /* RestSessionEntity.swift */,
 				EDA78B072F374D9000181F03 /* TimeToRestEntity.swift */,
+				EDE25B7F3023650E00A8416B /* AppSettingsEntity.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -439,6 +459,7 @@
 		EDA78B042F374D5E00181F03 /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
+				EDE25B833023684C00A8416B /* AppSettings */,
 				ED29B0462F39089D00ADC708 /* RestSession */,
 				EDA78B1B2F37AEFC00181F03 /* CalculateStats */,
 				EDA78B1A2F37AEE700181F03 /* BreakRestTime */,
@@ -482,6 +503,24 @@
 				EDE25B743021EC2900A8416B /* SetupTimePickerSectionView.swift */,
 			);
 			path = Sections;
+			sourceTree = "<group>";
+		};
+		EDE25B7A30235F0400A8416B /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				EDE25B7B30235F1200A8416B /* SettingsScreen.swift */,
+				EDE25B903024C54100A8416B /* SettingsViewModel.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		EDE25B833023684C00A8416B /* AppSettings */ = {
+			isa = PBXGroup;
+			children = (
+				EDE25B863023687300A8416B /* FetchAppSettingsUseCase.swift */,
+				EDE25B8E3024C48900A8416B /* SaveAppSettingsUseCase.swift */,
+			);
+			path = AppSettings;
 			sourceTree = "<group>";
 		};
 		EDE2F92E2F3744ED006CB2F6 = {
@@ -567,6 +606,7 @@
 		EDFCA0042F50043200B55A1D /* DTO */ = {
 			isa = PBXGroup;
 			children = (
+				EDE25B813023670200A8416B /* AppSettingsDTO.swift */,
 				EDFCA0002F5003B800B55A1D /* TimeToRestDTO.swift */,
 				EDFCA0022F5003CC00B55A1D /* RestSessionDTO.swift */,
 			);
@@ -745,19 +785,24 @@
 				EDA78AFD2F374CA900181F03 /* AppCoordinator.swift in Sources */,
 				ED3E1E8D2F3FBE840098B03E /* RestInfoScreen.swift in Sources */,
 				EDA78B162F37A9FB00181F03 /* RestStatsEntity.swift in Sources */,
+				EDE25B913024C54100A8416B /* SettingsViewModel.swift in Sources */,
 				EDE25B753021EC2900A8416B /* SetupTimePickerSectionView.swift in Sources */,
 				EDA78B0A2F374DA900181F03 /* FetchRestTimeUseCase.swift in Sources */,
 				ED0450832F407C1C001EDDE8 /* NightModeScreen.swift in Sources */,
+				EDE25B873023687300A8416B /* FetchAppSettingsUseCase.swift in Sources */,
+				EDE25B8D3024C3CA00A8416B /* AppSettingsRepository.swift in Sources */,
 				EDA78B062F374D7600181F03 /* TimeToRestRepositoryContract.swift in Sources */,
 				EDA78B212F388E0200181F03 /* RestSessionRepositoryContract.swift in Sources */,
 				EDFB50522F43419800FEA44F /* RestSessionDeviceActivityIdentifiers.swift in Sources */,
 				EDA78B0C2F3766DC00181F03 /* NotificationManager.swift in Sources */,
 				EDA78B142F37A9DE00181F03 /* RestSessionEntity.swift in Sources */,
 				ED49C33C2F3F891E00ED2EFF /* CustomTabBar.swift in Sources */,
+				EDE25B7C30235F1600A8416B /* SettingsScreen.swift in Sources */,
 				EDA78B1D2F37AF1600181F03 /* BreakRestUseCase.swift in Sources */,
 				EDA78AF72F374C0400181F03 /* Router.swift in Sources */,
 				ED6B34422F3FF2590097D632 /* StatsScreen+Components.swift in Sources */,
 				EDA78AF12F374BCB00181F03 /* AppDependencies.swift in Sources */,
+				EDE25B823023671F00A8416B /* AppSettingsDTO.swift in Sources */,
 				ED3E1E8A2F3FB8650098B03E /* StatsScreen.swift in Sources */,
 				EDA78B232F388EA000181F03 /* RestSessionRepository.swift in Sources */,
 				EDBF044E2F4A638F004887DB /* BackgroundTaskManager.swift in Sources */,
@@ -774,9 +819,11 @@
 				AA000002AAAA000200000001 /* RestInfoViewModel.swift in Sources */,
 				AA000003AAAA000300000001 /* SetupViewModel.swift in Sources */,
 				AA000005AAAA000500000001 /* BreakBlockViewModel.swift in Sources */,
+				EDE25B893024C36600A8416B /* AppSettingsRepositoryContract.swift in Sources */,
 				AA000006AAAA000600000001 /* StatsViewModel.swift in Sources */,
 				AA000007AAAA000700000001 /* HomeScreen.swift in Sources */,
 				AA000008AAAA000800000001 /* SetupScreen.swift in Sources */,
+				EDE25B8F3024C48900A8416B /* SaveAppSettingsUseCase.swift in Sources */,
 				EDE25B773021ECCE00A8416B /* SetupNotAllowedAppsSectionView.swift in Sources */,
 				AA00000AAAAA000A00000001 /* BreakBlockTimerScreen.swift in Sources */,
 				AA00000CAAAA000C00000001 /* GlassCard.swift in Sources */,
@@ -786,6 +833,7 @@
 				ED29B04A2F39091500ADC708 /* FetchCurrentSessionUseCase.swift in Sources */,
 				EDE096B6301CFC0B00C6F5B1 /* NightModeViewModel+Preview.swift in Sources */,
 				ED29B04B2F39091500ADC709 /* DeleteSessionUseCase.swift in Sources */,
+				EDE25B803023650E00A8416B /* AppSettingsEntity.swift in Sources */,
 				ED7B51742F5220D500E318D4 /* BreakBlockCelebrationScreen.swift in Sources */,
 				ED6B34442F3FFDEF0097D632 /* BigGlassCard.swift in Sources */,
 				EDE25B793021ED7700A8416B /* SetupAICoachSectionView.swift in Sources */,

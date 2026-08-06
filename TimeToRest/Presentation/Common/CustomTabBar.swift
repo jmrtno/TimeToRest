@@ -29,7 +29,7 @@ struct CustomTabBar: View {
             }
             .buttonStyle(PlainButtonStyle())
             
-            // Botón de Estadísticas
+            // Stats button
             Button {
                 currentView = .stats
             } label: {
@@ -41,6 +41,24 @@ struct CustomTabBar: View {
                     Text("Statistics")
                         .font(.system(size: 11, weight: .medium))
                         .foregroundStyle(currentView == .stats ? .orange : .gray)
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 8)
+            }
+            .buttonStyle(PlainButtonStyle())
+
+            // Settings button
+            Button {
+                currentView = .settings
+            } label: {
+                VStack(spacing: 4) {
+                    Image(systemName: currentView == .settings ? "gearshape.fill" : "gearshape")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundStyle(currentView == .settings ? .orange : .gray)
+                    
+                    Text("Settings")
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundStyle(currentView == .settings ? .orange : .gray)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 8)

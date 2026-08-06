@@ -47,7 +47,7 @@ struct TimeToRestEntity: Identifiable, Equatable {
         "resttime_\(id.uuidString)"
     }
 
-    // MARK: - Init vacío (primer render / preview)
+    // MARK: - Empty init (first render / preview)
     static let firstConfig = TimeToRestEntity(
         id: UUID(),
         startTime: DateComponents(hour: 23, minute: 30),

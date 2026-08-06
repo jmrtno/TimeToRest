@@ -21,6 +21,11 @@ extension NightModeViewModel {
         }
         let mockTimeRepo = MockTimeRepo()
         let mockSessionRepo = MockSessionRepo()
+        struct MockAppSettingsRepo: AppSettingsRepositoryContract {
+            func fetch() -> AppSettingsEntity { .defaultSettings }
+            func save(_ configuration: AppSettingsEntity) async {}
+        }
+        let mockAppConfigRepo = MockAppSettingsRepo()
         return NightModeViewModel(
             fetchRestTimeUseCase: FetchRestTimeUseCase(repository: mockTimeRepo),
             startRestSessionUseCase: StartRestSessionUseCase(
@@ -29,6 +34,7 @@ extension NightModeViewModel {
             ),
             completeRestSessionUseCase: CompleteRestSessionUseCase(repository: mockSessionRepo),
             fetchCurrentSessionUseCase: FetchCurrentSessionUseCase(repository: mockSessionRepo),
+            fetchAppSettingsUseCase: FetchAppSettingsUseCase(repository: mockAppConfigRepo),
             deleteSessionUseCase: DeleteSessionUseCase(repository: mockSessionRepo),
             restSessionManager: RestSessionManager(
                 breakRestUseCase: BreakRestUseCase(repository: mockSessionRepo),
@@ -56,6 +62,11 @@ extension NightModeViewModel {
         }
         let mockTimeRepo = MockTimeRepo()
         let mockSessionRepo = MockSessionRepo()
+        struct MockAppSettingsRepo: AppSettingsRepositoryContract {
+            func fetch() -> AppSettingsEntity { .defaultSettings }
+            func save(_ configuration: AppSettingsEntity) async {}
+        }
+        let mockAppConfigRepo = MockAppSettingsRepo()
         let viewModel = NightModeViewModel(
             fetchRestTimeUseCase: FetchRestTimeUseCase(repository: mockTimeRepo),
             startRestSessionUseCase: StartRestSessionUseCase(
@@ -64,6 +75,7 @@ extension NightModeViewModel {
             ),
             completeRestSessionUseCase: CompleteRestSessionUseCase(repository: mockSessionRepo),
             fetchCurrentSessionUseCase: FetchCurrentSessionUseCase(repository: mockSessionRepo),
+            fetchAppSettingsUseCase: FetchAppSettingsUseCase(repository: mockAppConfigRepo),
             deleteSessionUseCase: DeleteSessionUseCase(repository: mockSessionRepo),
             restSessionManager: RestSessionManager(
                 breakRestUseCase: BreakRestUseCase(repository: mockSessionRepo),

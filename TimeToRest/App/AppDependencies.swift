@@ -30,6 +30,10 @@ final class AppDependencies {
         RestSessionRepository()
     }()
 
+    lazy var appSettingsRepository: AppSettingsRepositoryContract = {
+        AppSettingsRepository()
+    }()
+
     lazy var notificationManager: NotificationManager = {
         NotificationManager()
     }()
@@ -98,5 +102,15 @@ final class AppDependencies {
         DeleteSessionUseCase(
             repository: restSessionRepository
         )
+    }()
+
+    // MARK: - Use Cases (App Settings)
+
+    lazy var fetchAppSettingsUseCase: FetchAppSettingsUseCase = {
+        FetchAppSettingsUseCase(repository: appSettingsRepository)
+    }()
+
+    lazy var saveAppSettingsUseCase: SaveAppSettingsUseCase = {
+        SaveAppSettingsUseCase(repository: appSettingsRepository)
     }()
 }
