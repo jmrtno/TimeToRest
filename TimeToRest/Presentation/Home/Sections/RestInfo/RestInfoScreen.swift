@@ -130,11 +130,11 @@ struct RestInfoScreen: View {
                     }
                     
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Rest Schedule")
+                        Text("Schedule")
                             .font(.headline)
                             .foregroundStyle(.black)
                         
-                        Text("Configuration")
+                        Text("Rest Configuration")
                             .font(.subheadline)
                             .foregroundStyle(.black.opacity(0.6))
                     }

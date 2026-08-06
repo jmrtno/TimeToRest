@@ -13,6 +13,7 @@ struct AppCoordinator: View {
     @State private var nightModeViewModel: NightModeViewModel
     @State private var restViewModel: RestInfoViewModel
     @State private var statsViewModel: StatsViewModel
+    @State private var settingsViewModel: SettingsViewModel
     private let viewFactory: RouteViewFactory
     private let restSessionManager: RestSessionManager
     private let notificationManager: NotificationManager
@@ -25,6 +26,7 @@ struct AppCoordinator: View {
             startRestSessionUseCase: dependencies.startRestSessionUseCase,
             completeRestSessionUseCase: dependencies.completeRestSessionUseCase,
             fetchCurrentSessionUseCase: dependencies.fetchCurrentSessionUseCase,
+            fetchAppSettingsUseCase: dependencies.fetchAppSettingsUseCase,
             deleteSessionUseCase: dependencies.deleteSessionUseCase,
             restSessionManager: dependencies.restSessionManager,
             notificationManager: dependencies.notificationManager
@@ -36,6 +38,12 @@ struct AppCoordinator: View {
         _statsViewModel = State(initialValue: StatsViewModel(
             calculateStatsUseCase: dependencies.calculateStatsUseCase
         ))
+        _settingsViewModel = State(initialValue: SettingsViewModel(
+            fetchAppSettingsUseCase: dependencies.fetchAppSettingsUseCase,
+            saveAppSettingsUseCase: dependencies.saveAppSettingsUseCase,
+            notificationManager: dependencies.notificationManager,
+            fetchRestTimeUseCase: dependencies.fetchRestTimeUseCase
+        ))
         self.viewFactory = RouteViewFactory(dependencies: dependencies)
         self.restSessionManager = dependencies.restSessionManager
         self.notificationManager = dependencies.notificationManager
@@ -46,7 +54,8 @@ struct AppCoordinator: View {
             HomeScreen(
                 nightModeViewModel: nightModeViewModel,
                 restViewModel: restViewModel,
-                statsViewModel: statsViewModel
+                statsViewModel: statsViewModel,
+                settingsViewModel: settingsViewModel
             )
                 .navigationDestination(for: Route.self) { route in
                     viewFactory.view(for: route)

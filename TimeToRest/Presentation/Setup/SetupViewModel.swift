@@ -23,6 +23,7 @@ final class SetupViewModel {
     private let saveRestTimeUseCase: SaveRestTimeUseCase
     private let fetchRestTimeUseCase: FetchRestTimeUseCase
     private let getSleepTipUseCase: GetSleepTipUseCase
+    private let fetchAppSettingsUseCase: FetchAppSettingsUseCase
     private let notificationManager: NotificationManager
     private let restSessionManager: RestSessionManager
 
@@ -37,6 +38,7 @@ final class SetupViewModel {
         saveRestTimeUseCase: SaveRestTimeUseCase,
         fetchRestTimeUseCase: FetchRestTimeUseCase,
         getSleepTipUseCase: GetSleepTipUseCase,
+        fetchAppSettingsUseCase: FetchAppSettingsUseCase,
         notificationManager: NotificationManager,
         restSessionManager: RestSessionManager
     ) {
@@ -44,6 +46,7 @@ final class SetupViewModel {
         self.saveRestTimeUseCase = saveRestTimeUseCase
         self.fetchRestTimeUseCase = fetchRestTimeUseCase
         self.getSleepTipUseCase = getSleepTipUseCase
+        self.fetchAppSettingsUseCase = fetchAppSettingsUseCase
         self.notificationManager = notificationManager
         self.restSessionManager = restSessionManager
         self.blockedSelection = restSessionManager.currentBlockedSelection
@@ -85,7 +88,12 @@ final class SetupViewModel {
             await saveRestTimeUseCase.execute(restTime: entity, isNew: mode == .mandatory)
         }
 
-        notificationManager.scheduleRestReminder(for: entity)
+        let appSettings = fetchAppSettingsUseCase.execute()
+        if appSettings.isNotificationsEnabled {
+            notificationManager.scheduleRestReminder(for: entity)
+        } else {
+            notificationManager.cancelAllRestNotifications()
+        }
 
         if isBlockedSelectionDifferentFromSaved() {
             restSessionManager.updateBlockedSelection(blockedSelection)
@@ -168,11 +176,16 @@ extension SetupViewModel {
             func update(_ session: RestSessionEntity) async {}
             func delete(_ session: RestSessionEntity) async {}
         }
+        struct MockAppSettingsRepo: AppSettingsRepositoryContract {
+            func fetch() -> AppSettingsEntity { .defaultSettings }
+            func save(_ configuration: AppSettingsEntity) async {}
+        }
         return SetupViewModel(
             mode: .editable,
             saveRestTimeUseCase: SaveRestTimeUseCase(repository: MockTimeRepo()),
             fetchRestTimeUseCase: FetchRestTimeUseCase(repository: MockTimeRepo()),
             getSleepTipUseCase: GetSleepTipUseCase(),
+            fetchAppSettingsUseCase: FetchAppSettingsUseCase(repository: MockAppSettingsRepo()),
             notificationManager: NotificationManager(),
             restSessionManager: RestSessionManager(
                 breakRestUseCase: BreakRestUseCase(repository: MockSessionRepo()),

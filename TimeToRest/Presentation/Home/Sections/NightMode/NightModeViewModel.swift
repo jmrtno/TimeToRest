@@ -55,6 +55,7 @@ final class NightModeViewModel {
     private let completeRestSessionUseCase: CompleteRestSessionUseCase
     private let fetchCurrentSessionUseCase: FetchCurrentSessionUseCase
     private let deleteSessionUseCase: DeleteSessionUseCase
+    private let fetchAppSettingsUseCase: FetchAppSettingsUseCase
     private let restSessionManager: RestSessionManager
     private let notificationManager: NotificationManager
 
@@ -62,13 +63,15 @@ final class NightModeViewModel {
     private var lastTimerCheckedMinute: Int?
     private var buttonStyleTimer: Timer?
 
-    private static let gracePeriodDuration: TimeInterval = 10 * 60
+    private var appSettings: AppSettingsEntity = .defaultSettings
+    private var gracePeriodDuration: TimeInterval = 10 * 60
 
     init(
         fetchRestTimeUseCase: FetchRestTimeUseCase,
         startRestSessionUseCase: StartRestSessionUseCase,
         completeRestSessionUseCase: CompleteRestSessionUseCase,
         fetchCurrentSessionUseCase: FetchCurrentSessionUseCase,
+        fetchAppSettingsUseCase: FetchAppSettingsUseCase,
         deleteSessionUseCase: DeleteSessionUseCase,
         restSessionManager: RestSessionManager,
         notificationManager: NotificationManager
@@ -77,6 +80,7 @@ final class NightModeViewModel {
         self.startRestSessionUseCase = startRestSessionUseCase
         self.completeRestSessionUseCase = completeRestSessionUseCase
         self.fetchCurrentSessionUseCase = fetchCurrentSessionUseCase
+        self.fetchAppSettingsUseCase = fetchAppSettingsUseCase
         self.deleteSessionUseCase = deleteSessionUseCase
         self.restSessionManager = restSessionManager
         self.notificationManager = notificationManager
@@ -166,6 +170,8 @@ final class NightModeViewModel {
         }
         hasConfiguration = true
         config = fetched
+        appSettings = fetchAppSettingsUseCase.execute()
+        gracePeriodDuration = TimeInterval(appSettings.gracePeriodMinutes) * 60
         return true
     }
 
@@ -219,11 +225,15 @@ final class NightModeViewModel {
             minutesLate = calculateMinutesLate(session: newSession)
 
             // Schedule completion notification for this session
-            notificationManager.scheduleSessionCompletionNotification(for: config)
+            if appSettings.isNotificationsEnabled {
+                notificationManager.scheduleSessionCompletionNotification(for: config)
+            }
         } else {
             restoreSessionIfNeeded()
             if session != nil {
+                if appSettings.isNotificationsEnabled {
                 notificationManager.scheduleSessionCompletionNotification(for: config)
+            }
             }
         }
     }
@@ -457,7 +467,7 @@ final class NightModeViewModel {
     private func remainingGracePeriodSeconds(for session: RestSessionEntity, now: Date) -> Int? {
         guard !session.didBreakRest, !session.isCompleted else { return nil }
         let elapsed = now.timeIntervalSince(session.startedAt)
-        let remaining = Self.gracePeriodDuration - elapsed
+        let remaining = gracePeriodDuration - elapsed
         return remaining > 0 ? Int(remaining) : nil
     }
 

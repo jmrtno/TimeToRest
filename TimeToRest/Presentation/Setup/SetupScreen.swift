@@ -85,7 +85,7 @@ private extension SetupScreen {
                     .font(.subheadline)
                     .foregroundStyle(.white.opacity(0.5))
             } else {
-                Text("Configuration")
+                Text("Rest Configuration")
                     .font(.title.bold())
                     .foregroundStyle(.white)
                     .padding(.top, 12)
