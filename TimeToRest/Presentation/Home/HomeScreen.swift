@@ -6,10 +6,10 @@ import SwiftUI
 /// No separate night mode screen — the home screen itself changes.
 struct HomeScreen: View {
 
-    var nightModeViewModel: NightModeViewModel
-    var restViewModel: RestInfoViewModel
-    var statsViewModel: StatsViewModel
-    var settingsViewModel: SettingsViewModel
+    @Bindable var nightModeViewModel: NightModeViewModel
+    @Bindable var restViewModel: RestInfoViewModel
+    @Bindable var statsViewModel: StatsViewModel
+    @Bindable var settingsViewModel: SettingsViewModel
     @Environment(Router.self) private var router
     @State private var currentView: ViewType = .home
 

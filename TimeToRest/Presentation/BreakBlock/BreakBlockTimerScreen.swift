@@ -5,7 +5,7 @@ import SwiftUI
 /// Shows a countdown, psychological messages, and the final break button.
 struct BreakBlockTimerScreen: View {
 
-    let viewModel: BreakBlockViewModel
+    @Bindable var viewModel: BreakBlockViewModel
     @Environment(Router.self) private var router
 
     var body: some View {

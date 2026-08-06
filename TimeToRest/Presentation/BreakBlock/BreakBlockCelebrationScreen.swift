@@ -3,7 +3,7 @@ import SwiftUI
 struct BreakBlockCelebrationScreen: View {
     @Environment(Router.self) private var router
     @State private var didScheduleDismiss = false
-    let viewModel: BreakBlockViewModel
+    @Bindable var viewModel: BreakBlockViewModel
 
     var body: some View {
         VStack(spacing: 24) {

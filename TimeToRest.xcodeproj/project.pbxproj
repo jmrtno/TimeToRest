@@ -18,6 +18,9 @@
 		AA00000CAAAA000C00000001 /* GlassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000CAAAA000C00000002 /* GlassCard.swift */; };
 		AA00000DAAAA000D00000001 /* CountdownSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000DAAAA000D00000002 /* CountdownSectionView.swift */; };
 		AA000012AAAA001200000001 /* NightModeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000012AAAA001200000002 /* NightModeViewModel.swift */; };
+		ED0B2B0B0000000000000001 /* NightModeViewModel+Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0B2B0B0000000000000002 /* NightModeViewModel+Session.swift */; };
+		ED0B3B0B0000000000000001 /* NightModeViewModel+Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0B3B0B0000000000000002 /* NightModeViewModel+Timers.swift */; };
+		ED0B4B0B0000000000000001 /* NightModeViewModel+WindowCalculation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0B4B0B0000000000000002 /* NightModeViewModel+WindowCalculation.swift */; };
 		ED0450832F407C1C001EDDE8 /* NightModeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0450822F407C1C001EDDE8 /* NightModeScreen.swift */; };
 		ED29B0482F3908B500ADC708 /* CompleteRestSessionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED29B0472F3908B500ADC708 /* CompleteRestSessionUseCase.swift */; };
 		ED29B04A2F39091500ADC708 /* FetchCurrentSessionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED29B0492F39091500ADC708 /* FetchCurrentSessionUseCase.swift */; };
@@ -136,6 +139,9 @@
 		AA00000CAAAA000C00000002 /* GlassCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassCard.swift; sourceTree = "<group>"; };
 		AA00000DAAAA000D00000002 /* CountdownSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownSectionView.swift; sourceTree = "<group>"; };
 		AA000012AAAA001200000002 /* NightModeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightModeViewModel.swift; sourceTree = "<group>"; };
+		ED0B2B0B0000000000000002 /* NightModeViewModel+Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NightModeViewModel+Session.swift"; sourceTree = "<group>"; };
+		ED0B3B0B0000000000000002 /* NightModeViewModel+Timers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NightModeViewModel+Timers.swift"; sourceTree = "<group>"; };
+		ED0B4B0B0000000000000002 /* NightModeViewModel+WindowCalculation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NightModeViewModel+WindowCalculation.swift"; sourceTree = "<group>"; };
 		ED0450822F407C1C001EDDE8 /* NightModeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightModeScreen.swift; sourceTree = "<group>"; };
 		ED29B0472F3908B500ADC708 /* CompleteRestSessionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteRestSessionUseCase.swift; sourceTree = "<group>"; };
 		ED29B0492F39091500ADC708 /* FetchCurrentSessionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCurrentSessionUseCase.swift; sourceTree = "<group>"; };
@@ -283,6 +289,9 @@
 			children = (
 				ED0450822F407C1C001EDDE8 /* NightModeScreen.swift */,
 				AA000012AAAA001200000002 /* NightModeViewModel.swift */,
+				ED0B2B0B0000000000000002 /* NightModeViewModel+Session.swift */,
+				ED0B3B0B0000000000000002 /* NightModeViewModel+Timers.swift */,
+				ED0B4B0B0000000000000002 /* NightModeViewModel+WindowCalculation.swift */,
 				EDE096B5301CFC0B00C6F5B1 /* NightModeViewModel+Preview.swift */,
 			);
 			path = NightMode;
@@ -839,6 +848,9 @@
 				EDE25B793021ED7700A8416B /* SetupAICoachSectionView.swift in Sources */,
 				ED3E1E912F3FD0730098B03E /* StatsGlassCardSectionView.swift in Sources */,
 				AA000012AAAA001200000001 /* NightModeViewModel.swift in Sources */,
+				ED0B2B0B0000000000000001 /* NightModeViewModel+Session.swift in Sources */,
+				ED0B3B0B0000000000000001 /* NightModeViewModel+Timers.swift in Sources */,
+				ED0B4B0B0000000000000001 /* NightModeViewModel+WindowCalculation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
