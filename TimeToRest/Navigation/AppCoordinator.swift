@@ -66,12 +66,16 @@ struct AppCoordinator: View {
             item: $router.restConfigurationMode,
             onDismiss: {
                 router.popToRoot()
-                guard router.consumeDidChangeRestSchedule() else {
+                switch router.consumeRestConfigurationDismissReason() {
+                case .cancelled:
                     nightModeViewModel.resumeAfterConfigDismissal()
-                    return
+                case .savedWithoutChanges:
+                    nightModeViewModel.handleSaveWithoutChanges()
+                    restViewModel.reloadAfterConfigChange()
+                case .savedWithChanges:
+                    nightModeViewModel.reloadAfterConfigChange()
+                    restViewModel.reloadAfterConfigChange()
                 }
-                nightModeViewModel.reloadAfterConfigChange()
-                restViewModel.reloadAfterConfigChange()
             },
             content: { mode in
                 viewFactory.restConfigurationView(mode: mode)

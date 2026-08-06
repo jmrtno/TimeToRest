@@ -34,7 +34,7 @@ struct SetupScreen: View {
             if viewModel.canCancel {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") {
-                        router.dismissRestConfiguration()
+                        router.dismissRestConfiguration(reason: .cancelled)
                     }
                     .foregroundStyle(.white.opacity(0.6))
                 }
@@ -50,7 +50,9 @@ struct SetupScreen: View {
         }
         .onAppear {
             viewModel.onSave = { didChangeSchedule in
-                router.dismissRestConfiguration(didChangeSchedule: didChangeSchedule)
+                router.dismissRestConfiguration(
+                    reason: didChangeSchedule ? .savedWithChanges : .savedWithoutChanges
+                )
             }
         }
         .task {

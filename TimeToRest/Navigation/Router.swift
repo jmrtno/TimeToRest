@@ -1,5 +1,17 @@
 import SwiftUI
 
+// MARK: - RestConfigurationDismissReason
+/// Describes how the rest configuration modal was dismissed, so the
+/// coordinator can decide whether to restart the rest session.
+enum RestConfigurationDismissReason {
+    /// The user cancelled without saving.
+    case cancelled
+    /// The user pressed Save but the night schedule did not change.
+    case savedWithoutChanges
+    /// The user pressed Save and the night schedule changed.
+    case savedWithChanges
+}
+
 // MARK: - Router
 /// A Router that manages the navigation stack for the application.
 ///
@@ -34,10 +46,9 @@ final class Router {
     /// The currently presented rest configuration modal mode, if any.
     var restConfigurationMode: RestConfigurationMode?
 
-    /// Whether the rest configuration modal was dismissed after saving a different
-    /// night schedule. Lets the dismissal handler tell a real schedule change from a
-    /// cancellation or a save that only touched the blocked apps.
-    private var didChangeRestSchedule: Bool = false
+    /// How the rest configuration modal was dismissed, consumed by the
+    /// sheet's onDismiss handler.
+    private var restConfigurationDismissReason: RestConfigurationDismissReason?
 
     /// Pushes a new route onto the navigation stack.
     /// - Parameter route: The route to navigate to
@@ -59,20 +70,20 @@ final class Router {
 
     // MARK: - Modal control
     func presentRestConfiguration(mode: RestConfigurationMode) {
-        didChangeRestSchedule = false
+        restConfigurationDismissReason = nil
         restConfigurationMode = mode
     }
 
-    func dismissRestConfiguration(didChangeSchedule: Bool = false) {
-        didChangeRestSchedule = didChangeSchedule
+    func dismissRestConfiguration(reason: RestConfigurationDismissReason) {
+        restConfigurationDismissReason = reason
         restConfigurationMode = nil
     }
 
-    /// Reads and clears the schedule change flag of the last rest configuration presentation.
-    func consumeDidChangeRestSchedule() -> Bool {
-        let didChangeSchedule = didChangeRestSchedule
-        didChangeRestSchedule = false
-        return didChangeSchedule
+    /// Reads and clears the dismiss reason of the last rest configuration presentation.
+    func consumeRestConfigurationDismissReason() -> RestConfigurationDismissReason {
+        let reason = restConfigurationDismissReason ?? .cancelled
+        restConfigurationDismissReason = nil
+        return reason
     }
     
     func presentBreakBlock(mode: BreakBlockMode) {
