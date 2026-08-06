@@ -82,11 +82,10 @@ final class SetupViewModel {
 
         let entity = TimeToRestEntity(startTime: startComponents, endTime: endComponents)
 
-        // Persisting an unchanged schedule would renew its creation date and
-        // discard the ongoing session for nothing, so it is skipped entirely.
-        if didChangeSchedule {
-            await saveRestTimeUseCase.execute(restTime: entity, isNew: mode == .mandatory)
-        }
+        // Always persist on Save. Even when the schedule is unchanged, renewing
+        // createdAt lets the caller decide whether a previous broken session
+        // should be superseded by a fresh rest window.
+        await saveRestTimeUseCase.execute(restTime: entity, isNew: mode == .mandatory)
 
         let appSettings = fetchAppSettingsUseCase.execute()
         if appSettings.isNotificationsEnabled {

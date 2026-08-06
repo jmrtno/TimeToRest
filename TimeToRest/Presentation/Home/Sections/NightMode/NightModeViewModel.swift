@@ -160,6 +160,21 @@ final class NightModeViewModel {
         }
     }
 
+    /// Called after the user saves a configuration without changing the night schedule.
+    ///
+    /// If there is an active (non-broken) session, the save only refreshed the blocked
+    /// apps or notifications, so the session is resumed untouched. If there is no active
+    /// session (e.g. the user previously broke rest), the config was already re-saved
+    /// with a new `createdAt`, so `reloadAfterConfigChange` will treat any previous break
+    /// as belonging to an older window and start a fresh session.
+    func handleSaveWithoutChanges() {
+        if session != nil && !didBreakTonight {
+            resumeAfterConfigDismissal()
+        } else {
+            reloadAfterConfigChange()
+        }
+    }
+
     // MARK: - Data loading
 
     @discardableResult
