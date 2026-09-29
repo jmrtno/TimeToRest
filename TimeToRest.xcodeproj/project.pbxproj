@@ -18,10 +18,10 @@
 		AA00000CAAAA000C00000001 /* GlassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000CAAAA000C00000002 /* GlassCard.swift */; };
 		AA00000DAAAA000D00000001 /* CountdownSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA00000DAAAA000D00000002 /* CountdownSectionView.swift */; };
 		AA000012AAAA001200000001 /* NightModeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000012AAAA001200000002 /* NightModeViewModel.swift */; };
+		ED0450832F407C1C001EDDE8 /* NightModeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0450822F407C1C001EDDE8 /* NightModeScreen.swift */; };
 		ED0B2B0B0000000000000001 /* NightModeViewModel+Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0B2B0B0000000000000002 /* NightModeViewModel+Session.swift */; };
 		ED0B3B0B0000000000000001 /* NightModeViewModel+Timers.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0B3B0B0000000000000002 /* NightModeViewModel+Timers.swift */; };
 		ED0B4B0B0000000000000001 /* NightModeViewModel+WindowCalculation.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0B4B0B0000000000000002 /* NightModeViewModel+WindowCalculation.swift */; };
-		ED0450832F407C1C001EDDE8 /* NightModeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED0450822F407C1C001EDDE8 /* NightModeScreen.swift */; };
 		ED29B0482F3908B500ADC708 /* CompleteRestSessionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED29B0472F3908B500ADC708 /* CompleteRestSessionUseCase.swift */; };
 		ED29B04A2F39091500ADC708 /* FetchCurrentSessionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED29B0492F39091500ADC708 /* FetchCurrentSessionUseCase.swift */; };
 		ED29B04B2F39091500ADC709 /* DeleteSessionUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED29B04C2F39091500ADC70A /* DeleteSessionUseCase.swift */; };
@@ -54,8 +54,6 @@
 		EDA78B232F388EA000181F03 /* RestSessionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B222F388EA000181F03 /* RestSessionRepository.swift */; };
 		EDA78B252F38985300181F03 /* RestConfigurationMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDA78B242F38985300181F03 /* RestConfigurationMode.swift */; };
 		EDA78B282F389D3900181F03 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EDA78B272F389D3900181F03 /* Assets.xcassets */; };
-		EDBF044D2F4A611C004887DB /* BackgroundTasks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDBF044C2F4A611C004887DB /* BackgroundTasks.framework */; };
-		EDBF044E2F4A638F004887DB /* BackgroundTaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBF044F2F4A6120004887DB /* BackgroundTaskManager.swift */; };
 		EDE096B6301CFC0B00C6F5B1 /* NightModeViewModel+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE096B5301CFC0B00C6F5B1 /* NightModeViewModel+Preview.swift */; };
 		EDE25B753021EC2900A8416B /* SetupTimePickerSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE25B743021EC2900A8416B /* SetupTimePickerSectionView.swift */; };
 		EDE25B773021ECCE00A8416B /* SetupNotAllowedAppsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE25B763021ECBE00A8416B /* SetupNotAllowedAppsSectionView.swift */; };
@@ -75,7 +73,6 @@
 		EDFB50622F43584F00FEA44F /* TimeToRestMonitorExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = EDFB50572F43584F00FEA44F /* TimeToRestMonitorExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		EDFB50682F43586900FEA44F /* RestSessionDeviceActivityMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB50502F43419800FEA44F /* RestSessionDeviceActivityMonitor.swift */; };
 		EDFB50692F43587C00FEA44F /* RestSessionDeviceActivityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB504F2F43419800FEA44F /* RestSessionDeviceActivityIdentifiers.swift */; };
-		EDFB506E2F4358B500FEA44F /* DeviceActivityMonitorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB506A2F4358B500FEA44F /* DeviceActivityMonitorExtension.swift */; };
 		EDFB507E2F438B2800FEA44F /* ManagedSettings.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDFB507D2F438B2800FEA44F /* ManagedSettings.framework */; };
 		EDFB50862F438B2800FEA44F /* TimeToRestShieldActionExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = EDFB507C2F438B2800FEA44F /* TimeToRestShieldActionExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		EDFB50962F438B4700FEA44F /* ManagedSettings.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDFB507D2F438B2800FEA44F /* ManagedSettings.framework */; };
@@ -83,6 +80,7 @@
 		EDFB50A02F438B4700FEA44F /* TimeToRestShieldConfigurationExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = EDFB50952F438B4700FEA44F /* TimeToRestShieldConfigurationExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		EDFB50AB2F438CB400FEA44F /* ShieldActionExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB50712F438ADE00FEA44F /* ShieldActionExtension.swift */; };
 		EDFB50AC2F438CBD00FEA44F /* ShieldConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB50752F438AF300FEA44F /* ShieldConfigurationExtension.swift */; };
+		EDFB50AD2F438CB400FEA44F /* RestSessionDeviceActivityIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFB504F2F43419800FEA44F /* RestSessionDeviceActivityIdentifiers.swift */; };
 		EDFCA0012F5003B800B55A1D /* TimeToRestDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFCA0002F5003B800B55A1D /* TimeToRestDTO.swift */; };
 		EDFCA0032F5003CC00B55A1D /* RestSessionDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDFCA0022F5003CC00B55A1D /* RestSessionDTO.swift */; };
 /* End PBXBuildFile section */
@@ -139,10 +137,10 @@
 		AA00000CAAAA000C00000002 /* GlassCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassCard.swift; sourceTree = "<group>"; };
 		AA00000DAAAA000D00000002 /* CountdownSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CountdownSectionView.swift; sourceTree = "<group>"; };
 		AA000012AAAA001200000002 /* NightModeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightModeViewModel.swift; sourceTree = "<group>"; };
+		ED0450822F407C1C001EDDE8 /* NightModeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightModeScreen.swift; sourceTree = "<group>"; };
 		ED0B2B0B0000000000000002 /* NightModeViewModel+Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NightModeViewModel+Session.swift"; sourceTree = "<group>"; };
 		ED0B3B0B0000000000000002 /* NightModeViewModel+Timers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NightModeViewModel+Timers.swift"; sourceTree = "<group>"; };
 		ED0B4B0B0000000000000002 /* NightModeViewModel+WindowCalculation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NightModeViewModel+WindowCalculation.swift"; sourceTree = "<group>"; };
-		ED0450822F407C1C001EDDE8 /* NightModeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NightModeScreen.swift; sourceTree = "<group>"; };
 		ED29B0472F3908B500ADC708 /* CompleteRestSessionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteRestSessionUseCase.swift; sourceTree = "<group>"; };
 		ED29B0492F39091500ADC708 /* FetchCurrentSessionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCurrentSessionUseCase.swift; sourceTree = "<group>"; };
 		ED29B04C2F39091500ADC70A /* DeleteSessionUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteSessionUseCase.swift; sourceTree = "<group>"; };
@@ -175,8 +173,6 @@
 		EDA78B242F38985300181F03 /* RestConfigurationMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestConfigurationMode.swift; sourceTree = "<group>"; };
 		EDA78B272F389D3900181F03 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EDBF044B2F4A5E62004887DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		EDBF044C2F4A611C004887DB /* BackgroundTasks.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BackgroundTasks.framework; path = System/Library/Frameworks/BackgroundTasks.framework; sourceTree = SDKROOT; };
-		EDBF044F2F4A6120004887DB /* BackgroundTaskManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundTaskManager.swift; sourceTree = "<group>"; };
 		EDE096B5301CFC0B00C6F5B1 /* NightModeViewModel+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NightModeViewModel+Preview.swift"; sourceTree = "<group>"; };
 		EDE25B743021EC2900A8416B /* SetupTimePickerSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupTimePickerSectionView.swift; sourceTree = "<group>"; };
 		EDE25B763021ECBE00A8416B /* SetupNotAllowedAppsSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupNotAllowedAppsSectionView.swift; sourceTree = "<group>"; };
@@ -197,7 +193,6 @@
 		EDFB50502F43419800FEA44F /* RestSessionDeviceActivityMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestSessionDeviceActivityMonitor.swift; sourceTree = "<group>"; };
 		EDFB50572F43584F00FEA44F /* TimeToRestMonitorExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TimeToRestMonitorExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDFB50592F43584F00FEA44F /* DeviceActivity.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DeviceActivity.framework; path = System/Library/Frameworks/DeviceActivity.framework; sourceTree = SDKROOT; };
-		EDFB506A2F4358B500FEA44F /* DeviceActivityMonitorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceActivityMonitorExtension.swift; sourceTree = "<group>"; };
 		EDFB506B2F4358B500FEA44F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EDFB506C2F4358B500FEA44F /* TimeToRestMonitorExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TimeToRestMonitorExtension.entitlements; sourceTree = "<group>"; };
 		EDFB50702F438ADE00FEA44F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -219,7 +214,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EDBF044D2F4A611C004887DB /* BackgroundTasks.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,9 +421,7 @@
 			children = (
 				EDFB504D2F43416500FEA44F /* RestSessionManager.swift */,
 				EDA78B0B2F3766DC00181F03 /* NotificationManager.swift */,
-				EDBF044F2F4A6120004887DB /* BackgroundTaskManager.swift */,
 				EDFB504F2F43419800FEA44F /* RestSessionDeviceActivityIdentifiers.swift */,
-				EDFB50502F43419800FEA44F /* RestSessionDeviceActivityMonitor.swift */,
 			);
 			path = Infraestructure;
 			sourceTree = "<group>";
@@ -574,7 +566,6 @@
 		EDFB50582F43584F00FEA44F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				EDBF044C2F4A611C004887DB /* BackgroundTasks.framework */,
 				EDFB50592F43584F00FEA44F /* DeviceActivity.framework */,
 				EDFB507D2F438B2800FEA44F /* ManagedSettings.framework */,
 				EDFB50972F438B4700FEA44F /* ManagedSettingsUI.framework */,
@@ -585,8 +576,8 @@
 		EDFB506D2F4358B500FEA44F /* TimeToRestMonitorExtension */ = {
 			isa = PBXGroup;
 			children = (
-				EDFB506A2F4358B500FEA44F /* DeviceActivityMonitorExtension.swift */,
 				EDFB506B2F4358B500FEA44F /* Info.plist */,
+				EDFB50502F43419800FEA44F /* RestSessionDeviceActivityMonitor.swift */,
 				EDFB506C2F4358B500FEA44F /* TimeToRestMonitorExtension.entitlements */,
 			);
 			path = TimeToRestMonitorExtension;
@@ -814,7 +805,6 @@
 				EDE25B823023671F00A8416B /* AppSettingsDTO.swift in Sources */,
 				ED3E1E8A2F3FB8650098B03E /* StatsScreen.swift in Sources */,
 				EDA78B232F388EA000181F03 /* RestSessionRepository.swift in Sources */,
-				EDBF044E2F4A638F004887DB /* BackgroundTaskManager.swift in Sources */,
 				EDFCA0032F5003CC00B55A1D /* RestSessionDTO.swift in Sources */,
 				EDA78B012F374CF900181F03 /* TimeToRestRepository.swift in Sources */,
 				EDA78AFB2F374C2800181F03 /* RouteViewFactory.swift in Sources */,
@@ -859,7 +849,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EDFB50682F43586900FEA44F /* RestSessionDeviceActivityMonitor.swift in Sources */,
-				EDFB506E2F4358B500FEA44F /* DeviceActivityMonitorExtension.swift in Sources */,
 				EDFB50692F43587C00FEA44F /* RestSessionDeviceActivityIdentifiers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -869,6 +858,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EDFB50AB2F438CB400FEA44F /* ShieldActionExtension.swift in Sources */,
+				EDFB50AD2F438CB400FEA44F /* RestSessionDeviceActivityIdentifiers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1044,7 +1034,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1058,7 +1048,7 @@
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1083,7 +1073,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1097,7 +1087,7 @@
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1113,6 +1103,7 @@
 				INFOPLIST_FILE = TimeToRestMonitorExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TimeToRestMonitorExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1127,7 +1118,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1143,6 +1134,7 @@
 				INFOPLIST_FILE = TimeToRestMonitorExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TimeToRestMonitorExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1157,7 +1149,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1173,6 +1165,7 @@
 				INFOPLIST_FILE = TimeToRestShieldActionExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TimeToRestShieldActionExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1187,7 +1180,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1203,6 +1196,7 @@
 				INFOPLIST_FILE = TimeToRestShieldActionExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TimeToRestShieldActionExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1217,7 +1211,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1233,6 +1227,7 @@
 				INFOPLIST_FILE = TimeToRestShieldConfigurationExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TimeToRestShieldConfigurationExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1247,7 +1242,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1263,6 +1258,7 @@
 				INFOPLIST_FILE = TimeToRestShieldConfigurationExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = TimeToRestShieldConfigurationExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1277,7 +1273,7 @@
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

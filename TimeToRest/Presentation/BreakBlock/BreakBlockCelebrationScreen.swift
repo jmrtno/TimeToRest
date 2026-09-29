@@ -31,10 +31,9 @@ struct BreakBlockCelebrationScreen: View {
         .task {
             viewModel.pickCongratulationRandomMessage()
             try? await Task.sleep(for: .seconds(4))
-            await MainActor.run {
-                router.dismissBreakBlock()
-                router.popToRoot()
-            }
+            guard !Task.isCancelled else { return }
+            router.dismissBreakBlock()
+            router.popToRoot()
         }
     }
 }

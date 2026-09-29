@@ -6,6 +6,10 @@ extension NightModeViewModel {
     // MARK: - Night window
 
     func checkNightWindow() async {
+        // Without a saved configuration there is no real night window —
+        // config is just .firstConfig defaults, and monitoring would run
+        // against times the user never chose.
+        guard hasConfiguration else { return }
         guard !isAwaitingGracePeriodReconfiguration else { return }
         checkIfBrokenTonight()
         isWithinNightWindow = Self.isCurrentlyInNightWindow(config: config)
@@ -51,16 +55,20 @@ extension NightModeViewModel {
             // Calculate if user started late
             minutesLate = calculateMinutesLate(session: newSession)
 
-            // Schedule completion notification for this session
+            // Schedule completion notification for this session.
+            // Fire-and-forget: it must not block checkNightWindow (and with it
+            // startMonitoringIfNeeded) if UN calls stall.
             if appSettings.isNotificationsEnabled {
-                notificationManager.scheduleSessionCompletionNotification(for: config)
+                Task {
+                    await notificationManager.scheduleSessionCompletionNotification(for: config)
+                }
             }
         } else {
             restoreSessionIfNeeded()
-            if session != nil {
-                if appSettings.isNotificationsEnabled {
-                notificationManager.scheduleSessionCompletionNotification(for: config)
-            }
+            if session != nil, appSettings.isNotificationsEnabled {
+                Task {
+                    await notificationManager.scheduleSessionCompletionNotification(for: config)
+                }
             }
         }
     }

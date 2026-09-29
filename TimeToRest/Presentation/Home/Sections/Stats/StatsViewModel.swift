@@ -8,7 +8,7 @@ import Foundation
 final class StatsViewModel {
 
     // MARK: - Published state
-    var stats: RestStatsEntity = .empty
+    private(set) var stats: RestStatsEntity = .empty
 
     // MARK: - Dependencies
     private let calculateStatsUseCase: CalculateStatsUseCase

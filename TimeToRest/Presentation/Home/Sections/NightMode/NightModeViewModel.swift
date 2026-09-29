@@ -87,20 +87,6 @@ final class NightModeViewModel {
 
         // Cancel any residual completion notifications on init
         notificationManager.cancelSessionCompletionNotification()
-
-        // Listen for background task notifications
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handleBackgroundNightCheck),
-            name: .nightCheckBackgroundTask,
-            object: nil
-        )
-    }
-
-    @objc private func handleBackgroundNightCheck() {
-        Task {
-            await checkNightWindow()
-        }
     }
 
     // MARK: - Lifecycle
@@ -147,6 +133,9 @@ final class NightModeViewModel {
             isAwaitingGracePeriodReconfiguration = false
             return
         }
+        // Recompute now, synchronously: checkNightWindow inside the Task would
+        // leave the previous value visible for a frame, flashing night mode on.
+        isWithinNightWindow = Self.isCurrentlyInNightWindow(config: config)
         Task {
             if let sessionToDiscard {
                 restSessionManager.stopMonitoringAndUnlockApps()

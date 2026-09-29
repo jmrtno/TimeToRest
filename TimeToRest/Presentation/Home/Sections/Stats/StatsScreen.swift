@@ -98,8 +98,7 @@ struct StatsScreen: View {
                        subtitle: "This week",
                        value: "\(displayedBreaksThisWeek)",
                        color: .red,
-                       animateNumbers: true,
-                       content: nil)
+                       animateNumbers: true)
     }
     
     // MARK: - Stats Break Rate Chart
@@ -146,8 +145,7 @@ struct StatsScreen: View {
                        title: "Average start time",
                        subtitle: "Last 15 days",
                        value: statsViewModel.formattedAverageStartTime,
-                       color: .green,
-                       content: nil)
+                       color: .green)
     }
 }
 

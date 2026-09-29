@@ -17,7 +17,7 @@ import Foundation
 /// ```swift
 /// let item = TimeToRestEntity(id: UUID(), name: "Example")
 /// ```
-struct TimeToRestEntity: Identifiable, Equatable {
+struct TimeToRestEntity: Identifiable, Equatable, Sendable {
 
     // MARK: - Identity
     let id: UUID

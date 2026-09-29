@@ -1,5 +1,4 @@
 import SwiftUI
-import BackgroundTasks
 
 @main
 struct TimeToRestApp: App {
@@ -10,9 +9,6 @@ struct TimeToRestApp: App {
         WindowGroup {
             AppCoordinator(dependencies: dependencies)
                 .preferredColorScheme(.dark)
-                .onAppear {
-                    dependencies.backgroundTaskManager.registerBackgroundTasks()
-                }
         }
     }
 }

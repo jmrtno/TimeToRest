@@ -19,7 +19,6 @@ struct SetupNotAllowedAppsSectionView: View {
                 Text("Selected apps will be blocked automatically while you rest.")
                     .font(.headline)
                     .foregroundStyle(.white)
-
                 Button {
                     viewModel.isFamilyActivityPickerPresented = true
                 } label: {

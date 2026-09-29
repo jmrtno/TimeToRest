@@ -44,10 +44,6 @@ final class AppDependencies {
             fetchCurrentSessionUseCase: fetchCurrentSessionUseCase
         )
     }()
-    
-    lazy var backgroundTaskManager: BackgroundTaskManager = {
-        BackgroundTaskManager()
-    }()
 
     // MARK: - Use Cases (AI Coach)
 

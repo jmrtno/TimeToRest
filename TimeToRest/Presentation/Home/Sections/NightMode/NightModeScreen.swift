@@ -132,11 +132,8 @@ struct NightModeScreen: View {
                     .opacity(showLateMessage ? 1 : 0)
             }
         }
-        .onAppear {
-            triggerLateMessageAnimation()
-        }
-        .onChange(of: viewModel.minutesLate) {
-            triggerLateMessageAnimation()
+        .task(id: viewModel.minutesLate) {
+            await runLateMessageAnimation()
         }
     }
     
@@ -216,17 +213,17 @@ struct NightModeScreen: View {
 
 private extension NightModeScreen {
 
-    private func triggerLateMessageAnimation() {
+    private func runLateMessageAnimation() async {
         guard viewModel.minutesLate != nil else {
             showLateMessage = false
             return
         }
 
         showLateMessage = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            withAnimation(.easeOut(duration: 3)) {
-                showLateMessage = false
-            }
+        try? await Task.sleep(for: .seconds(5))
+        guard !Task.isCancelled else { return }
+        withAnimation(.easeOut(duration: 3)) {
+            showLateMessage = false
         }
     }
 

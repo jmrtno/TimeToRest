@@ -1,11 +1,12 @@
 import CoreFoundation
+import Foundation
 import ManagedSettings
 import UserNotifications
 
 final class ShieldActionExtension: ShieldActionDelegate {
-    private static let managedSettingsStoreName = "RestSessionStore"
-    private static let shieldUnlockRequestedDarwinNotification = "com.timetorest.rest.shield-unlock-requested"
-    private static let appGroupIdentifier = "group.com.javidev.TimeToRest"
+    /// Must match the raw value of `RestSessionEntity.BreakReason.blockedSocialAppUsage`
+    /// in the main app, otherwise the reason is silently dropped when decoding.
+    private static let blockedSocialAppUsageBreakReason = "blockedSocialAppUsage"
 
     override func handle(
         action: ShieldAction,
@@ -53,7 +54,9 @@ final class ShieldActionExtension: ShieldActionDelegate {
     }
 
     private func unlockAppsAndBreakRest() {
-        let settingsStore = ManagedSettingsStore(named: .init(Self.managedSettingsStoreName))
+        let settingsStore = ManagedSettingsStore(
+            named: .init(RestSessionDeviceActivityIdentifiers.managedSettingsStoreName)
+        )
         settingsStore.shield.applications = nil
         settingsStore.shield.applicationCategories = nil
         settingsStore.shield.webDomains = nil
@@ -63,7 +66,9 @@ final class ShieldActionExtension: ShieldActionDelegate {
         // Notify the main app that rest was broken
         CFNotificationCenterPostNotification(
             CFNotificationCenterGetDarwinNotifyCenter(),
-            CFNotificationName(Self.shieldUnlockRequestedDarwinNotification as CFString),
+            CFNotificationName(
+                RestSessionDeviceActivityIdentifiers.shieldUnlockRequestedDarwinNotification as CFString
+            ),
             nil,
             nil,
             true
@@ -91,9 +96,11 @@ final class ShieldActionExtension: ShieldActionDelegate {
     
     /// Marks the current session as broken in UserDefaults
     private func markSessionAsBroken() {
-        guard let userDefaults = UserDefaults(suiteName: Self.appGroupIdentifier) else { return }
-        
-        let storageKey = "RestSessions"
+        guard let userDefaults = UserDefaults(
+            suiteName: RestSessionDeviceActivityIdentifiers.appGroupIdentifier
+        ) else { return }
+
+        let storageKey = RestSessionDeviceActivityIdentifiers.sessionStorageKey
         guard let data = userDefaults.data(forKey: storageKey) else { return }
         
         let decoder = JSONDecoder()
@@ -115,7 +122,7 @@ final class ShieldActionExtension: ShieldActionDelegate {
         guard !session.didBreakRest, !session.isCompleted else { return }
         
         session.didBreakRest = true
-        session.breakReason = "User unlocked blocked app"
+        session.breakReason = Self.blockedSocialAppUsageBreakReason
         session.brokenAt = Date()
         sessions[index] = session
         
@@ -125,6 +132,8 @@ final class ShieldActionExtension: ShieldActionDelegate {
 }
 
 // MARK: - Session DTO for Shield Extension
+/// Mirrors every field of the app's `RestSessionDTO`. The extension rewrites the whole
+/// stored array, so any field missing here would be dropped for all sessions.
 private struct SessionDTO: Codable {
     let id: UUID
     let day: Date
@@ -134,6 +143,9 @@ private struct SessionDTO: Codable {
     var brokenAt: Date?
     var isCompleted: Bool
     let avoidedMinutes: Int
+    let startTime: DateComponents
+    let endTime: DateComponents
+    let createdAt: Date
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -145,5 +157,10 @@ private struct SessionDTO: Codable {
         brokenAt = try container.decodeIfPresent(Date.self, forKey: .brokenAt)
         isCompleted = try container.decodeIfPresent(Bool.self, forKey: .isCompleted) ?? false
         avoidedMinutes = try container.decode(Int.self, forKey: .avoidedMinutes)
+        startTime = try container.decodeIfPresent(DateComponents.self, forKey: .startTime)
+        ?? DateComponents(hour: 23, minute: 30)
+        endTime = try container.decodeIfPresent(DateComponents.self, forKey: .endTime)
+        ?? DateComponents(hour: 7, minute: 0)
+        createdAt = try container.decodeIfPresent(Date.self, forKey: .createdAt) ?? day
     }
 }

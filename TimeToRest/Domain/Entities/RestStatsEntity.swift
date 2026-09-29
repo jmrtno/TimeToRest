@@ -1,6 +1,6 @@
 import Foundation
 
-struct DailyBreakStatusPoint: Equatable {
+struct DailyBreakStatusPoint: Equatable, Sendable {
     let day: Date
     let didBreak: Bool
 }
@@ -21,7 +21,7 @@ struct DailyBreakStatusPoint: Equatable {
 /// ```swift
 /// let item = RestStatsEntity(id: UUID(), name: "Example")
 /// ```
-struct RestStatsEntity: Equatable {
+struct RestStatsEntity: Equatable, Sendable {
 
     let currentStreak: Int
     let bestStreak: Int

@@ -42,17 +42,13 @@ struct SetupScreen: View {
             ToolbarItem(placement: .confirmationAction) {
                 Button(viewModel.mode == .mandatory ? "Start Resting" : "Save") {
                     Task {
-                        await viewModel.save()
+                        let didChangeSchedule = await viewModel.save()
+                        router.dismissRestConfiguration(
+                            reason: didChangeSchedule ? .savedWithChanges : .savedWithoutChanges
+                        )
                     }
                 }
                 .foregroundStyle(.white.opacity(0.6))
-            }
-        }
-        .onAppear {
-            viewModel.onSave = { didChangeSchedule in
-                router.dismissRestConfiguration(
-                    reason: didChangeSchedule ? .savedWithChanges : .savedWithoutChanges
-                )
             }
         }
         .task {

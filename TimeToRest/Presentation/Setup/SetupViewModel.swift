@@ -27,12 +27,6 @@ final class SetupViewModel {
     private let notificationManager: NotificationManager
     private let restSessionManager: RestSessionManager
 
-    // MARK: - Callbacks
-    /// Called once the configuration has been saved.
-    /// `didChangeSchedule` reports whether the night schedule actually changed,
-    /// so the caller can decide whether the ongoing rest session must be restarted.
-    var onSave: ((_ didChangeSchedule: Bool) -> Void)?
-
     init(
         mode: RestConfigurationMode,
         saveRestTimeUseCase: SaveRestTimeUseCase,
@@ -71,7 +65,10 @@ final class SetupViewModel {
         isTipLoading = false
     }
 
-    func save() async {
+    /// Saves the configuration.
+    /// - Returns: whether the night schedule actually changed, so the caller
+    ///   can decide how the ongoing rest session must be handled.
+    func save() async -> Bool {
         let calendar = Calendar.current
         let startComponents = calendar.dateComponents([.hour, .minute], from: startTime)
         let endComponents = calendar.dateComponents([.hour, .minute], from: endTime)
@@ -88,17 +85,22 @@ final class SetupViewModel {
         await saveRestTimeUseCase.execute(restTime: entity, isNew: mode == .mandatory)
 
         let appSettings = fetchAppSettingsUseCase.execute()
-        if appSettings.isNotificationsEnabled {
-            notificationManager.scheduleRestReminder(for: entity)
-        } else {
-            notificationManager.cancelAllRestNotifications()
+        // Notification scheduling is best-effort and must not block saving:
+        // UNUserNotificationCenter calls can stall while the authorization
+        // prompt is pending, which would leave the sheet open forever.
+        Task {
+            if appSettings.isNotificationsEnabled {
+                await notificationManager.scheduleRestReminder(for: entity)
+            } else {
+                await notificationManager.cancelAllRestNotifications()
+            }
         }
 
         if isBlockedSelectionDifferentFromSaved() {
             restSessionManager.updateBlockedSelection(blockedSelection)
         }
         restSessionManager.prepareAuthorization()
-        onSave?(didChangeSchedule)
+        return didChangeSchedule
     }
 
     var canCancel: Bool {
