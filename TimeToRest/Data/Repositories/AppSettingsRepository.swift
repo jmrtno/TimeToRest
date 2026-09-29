@@ -1,4 +1,5 @@
 import Foundation
+import os
 
 // MARK: - AppSettingsRepository
 /// A concrete repository implementation for data persistence and retrieval.
@@ -19,25 +20,37 @@ import Foundation
 /// let repository = AppSettingsRepository()
 /// let useCase = SomeUseCase(repository: repository)
 /// ```
-final class AppSettingsRepository: AppSettingsRepositoryContract {
+struct AppSettingsRepository: AppSettingsRepositoryContract {
     private let storageKey = "AppConfiguration"
     private let userDefaults: UserDefaults
+    private static let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier ?? "TimeToRest",
+        category: "AppSettingsRepository"
+    )
 
     init(userDefaults: UserDefaults = UserDefaults(suiteName: RestSessionDeviceActivityIdentifiers.appGroupIdentifier) ?? .standard) {
         self.userDefaults = userDefaults
     }
 
     func fetch() -> AppSettingsEntity {
-        guard let data = userDefaults.data(forKey: storageKey),
-              let dto = try? JSONDecoder().decode(AppSettingsDTO.self, from: data) else {
+        guard let data = userDefaults.data(forKey: storageKey) else {
             return .defaultSettings
         }
-        return dto.toEntity()
+        do {
+            return try JSONDecoder().decode(AppSettingsDTO.self, from: data).toEntity()
+        } catch {
+            Self.logger.error("Failed to decode app settings: \(error.localizedDescription)")
+            return .defaultSettings
+        }
     }
 
     func save(_ settings: AppSettingsEntity) async {
         let dto = AppSettingsDTO(entity: settings)
-        guard let data = try? JSONEncoder().encode(dto) else { return }
-        userDefaults.set(data, forKey: storageKey)
+        do {
+            let data = try JSONEncoder().encode(dto)
+            userDefaults.set(data, forKey: storageKey)
+        } catch {
+            Self.logger.error("Failed to encode app settings: \(error.localizedDescription)")
+        }
     }
 }

@@ -1,4 +1,5 @@
 import Foundation
+import os
 
 // MARK: - TimeToRest
 /// A concrete repository implementation for data persistence and retrieval.
@@ -19,9 +20,13 @@ import Foundation
 /// let repository = TimeToRest()
 /// let useCase = SomeUseCase(repository: repository)
 /// ```
-final class TimeToRestRepository: TimeToRestRepositoryContract {
+struct TimeToRestRepository: TimeToRestRepositoryContract {
     private let storageKey = "TimeToRest"
     private let userDefaults: UserDefaults
+    private static let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier ?? "TimeToRest",
+        category: "TimeToRestRepository"
+    )
     
     init(userDefaults: UserDefaults = UserDefaults(suiteName: RestSessionDeviceActivityIdentifiers.appGroupIdentifier) ?? .standard) {
         self.userDefaults = userDefaults
@@ -40,6 +45,7 @@ final class TimeToRestRepository: TimeToRestRepositoryContract {
             let dto = try JSONDecoder().decode(TimeToRestDTO.self, from: data)
             return dto.toEntity()
         } catch {
+            Self.logger.error("Failed to decode rest time configuration: \(error.localizedDescription)")
             return .firstConfig
         }
     }
@@ -54,14 +60,13 @@ final class TimeToRestRepository: TimeToRestRepositoryContract {
     
     // MARK: - Private Helpers
     
-    @MainActor
     private func persist(_ restTime: TimeToRestEntity) {
         do {
             let dto = TimeToRestDTO(entity: restTime)
             let data = try JSONEncoder().encode(dto)
             userDefaults.set(data, forKey: storageKey)
         } catch {
-            // Handle encoding error appropriately
+            Self.logger.error("Failed to encode rest time configuration: \(error.localizedDescription)")
         }
     }
 }

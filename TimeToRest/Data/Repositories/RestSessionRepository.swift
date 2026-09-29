@@ -1,4 +1,5 @@
 import Foundation
+import os
 
 // MARK: - RestSessionRepository
 /// A concrete repository implementation for data persistence and retrieval.
@@ -19,11 +20,15 @@ import Foundation
 /// let repository = RestSessionRepository()
 /// let useCase = SomeUseCase(repository: repository)
 /// ```
-final class RestSessionRepository: RestSessionRepositoryContract {
+struct RestSessionRepository: RestSessionRepositoryContract {
 
     // MARK: - Storage
     private let storageKey = "RestSessions"
     private let userDefaults: UserDefaults
+    private static let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier ?? "TimeToRest",
+        category: "RestSessionRepository"
+    )
 
     // MARK: - Init
     init(userDefaults: UserDefaults = UserDefaults(suiteName: RestSessionDeviceActivityIdentifiers.appGroupIdentifier) ?? .standard) {
@@ -41,6 +46,7 @@ final class RestSessionRepository: RestSessionRepositoryContract {
             let dtoList = try JSONDecoder().decode([RestSessionDTO].self, from: data)
             return dtoList.map { $0.toEntity() }
         } catch {
+            Self.logger.error("Failed to decode rest sessions: \(error.localizedDescription)")
             return []
         }
     }
@@ -80,14 +86,13 @@ final class RestSessionRepository: RestSessionRepositoryContract {
 
     // MARK: - Private helpers
 
-    @MainActor
     private func persistAll(_ sessions: [RestSessionEntity]) {
         do {
             let dtoList = sessions.map(RestSessionDTO.init(entity:))
             let data = try JSONEncoder().encode(dtoList)
             userDefaults.set(data, forKey: storageKey)
         } catch {
-            // Aquí podrías loggear si quieres
+            Self.logger.error("Failed to encode rest sessions: \(error.localizedDescription)")
         }
     }
 }

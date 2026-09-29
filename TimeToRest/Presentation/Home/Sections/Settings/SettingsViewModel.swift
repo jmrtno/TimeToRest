@@ -58,15 +58,19 @@ final class SettingsViewModel {
         )
         await saveAppSettingsUseCase.execute(settings)
 
-        if isNotificationsEnabled,
-           let restTime = fetchRestTimeUseCase.execute() {
-            notificationManager.scheduleRestReminder(for: restTime)
-        } else {
-            notificationManager.cancelAllRestNotifications()
+        // Fire-and-forget: notification scheduling must not block the save
+        // confirmation (UN calls can stall while authorization is pending).
+        Task {
+            if isNotificationsEnabled,
+               let restTime = fetchRestTimeUseCase.execute() {
+                await notificationManager.scheduleRestReminder(for: restTime)
+            } else {
+                await notificationManager.cancelAllRestNotifications()
+            }
         }
 
         saveConfirmationVisible = true
-        try? await Task.sleep(nanoseconds: 1_500_000_000)
+        try? await Task.sleep(for: .seconds(1.5))
         saveConfirmationVisible = false
     }
 }

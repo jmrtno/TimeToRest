@@ -8,10 +8,9 @@ import Foundation
 final class RestInfoViewModel {
 
     // MARK: - Published state
-    var config: TimeToRestEntity = .firstConfig
-    var stats: RestStatsEntity = .empty
-    var hasConfiguration: Bool = false
-    var isPressed: Bool = false
+    private(set) var config: TimeToRestEntity = .firstConfig
+    private(set) var stats: RestStatsEntity = .empty
+    private(set) var hasConfiguration: Bool = false
 
     // MARK: - Dependencies
     private let fetchRestTimeUseCase: FetchRestTimeUseCase

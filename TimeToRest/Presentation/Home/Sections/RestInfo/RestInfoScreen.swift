@@ -13,6 +13,7 @@ struct RestInfoScreen: View {
     @State private var isStreakVisible = false
     @State private var displayedCurrentStreak = 0
     @State private var displayedBestStreak = 0
+    @State private var isScheduleCardPressed = false
 
     var isLandscapeCompact: Bool {
         vSizeClass == .compact
@@ -145,8 +146,8 @@ struct RestInfoScreen: View {
                 Image(systemName: "chevron.right")
                     .font(.system(size: 16, weight: .medium))
                     .foregroundStyle(.black.opacity(0.5))
-                    .offset(x: viewModel.isPressed ? 5 : 0)
-                    .animation(.easeInOut(duration: 0.15), value: viewModel.isPressed)
+                    .offset(x: isScheduleCardPressed ? 5 : 0)
+                    .animation(.easeInOut(duration: 0.15), value: isScheduleCardPressed)
             }
             .padding(.horizontal, 24)
             .padding(.vertical, 24)
@@ -155,12 +156,12 @@ struct RestInfoScreen: View {
                     .fill(Color.white)
             )
             .foregroundStyle(.black)
-            .scaleEffect(viewModel.isPressed ? 0.95 : 1.0)
-            .animation(.easeInOut(duration: 0.1), value: viewModel.isPressed)
+            .scaleEffect(isScheduleCardPressed ? 0.95 : 1.0)
+            .animation(.easeInOut(duration: 0.1), value: isScheduleCardPressed)
         }
         .buttonStyle(PlainButtonStyle())
         .onLongPressGesture(minimumDuration: 0, maximumDistance: .infinity, pressing: { pressing in
-            viewModel.isPressed = pressing
+            isScheduleCardPressed = pressing
         }, perform: {})
     }
 

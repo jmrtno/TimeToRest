@@ -1,10 +1,3 @@
-//
-//  FetchCurrentSessionUseCase.swift
-//  TimeToRest
-//
-//  Created by Javier Martín on 8/2/26.
-//
-
 import Foundation
 
 // MARK: - FetchCurrentSessionUseCase

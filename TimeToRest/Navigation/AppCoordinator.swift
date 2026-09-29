@@ -98,8 +98,10 @@ struct AppCoordinator: View {
             .presentationDetents([.medium])
             .presentationDragIndicator(.visible)
         }
+        .task {
+            await notificationManager.requestAuthorization()
+        }
         .onAppear {
-            notificationManager.requestAuthorization { _ in }
             restSessionManager.prepareAuthorization()
             checkInitialConfiguration()
         }

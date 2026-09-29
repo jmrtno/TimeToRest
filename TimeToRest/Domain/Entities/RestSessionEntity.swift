@@ -17,8 +17,8 @@ import Foundation
 /// ```swift
 /// let item = RestSessionEntity(id: UUID(), name: "Example")
 /// ```
-struct RestSessionEntity: Identifiable, Equatable {
-    enum BreakReason: String, Equatable {
+struct RestSessionEntity: Identifiable, Equatable, Sendable {
+    enum BreakReason: String, Equatable, Sendable {
         case manualCancellation
         case blockedSocialAppUsage
     }

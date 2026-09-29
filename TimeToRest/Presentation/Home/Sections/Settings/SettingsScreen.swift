@@ -76,7 +76,9 @@ struct SettingsScreen: View {
     }
 }
 
+#if DEBUG
 #Preview {
     SettingsScreen(settingsViewModel: .preview)
         .preferredColorScheme(.dark)
 }
+#endif

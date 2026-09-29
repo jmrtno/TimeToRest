@@ -3,6 +3,7 @@ import CoreFoundation
 import FamilyControls
 import DeviceActivity
 import ManagedSettings
+import os
 
 @MainActor
 @Observable
@@ -31,6 +32,10 @@ final class RestSessionManager {
     )
     private let userDefaults: UserDefaults
     private static let blockedSelectionStorageKey = "RestSessionManager.BlockedSelection"
+    private static let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier ?? "TimeToRest",
+        category: "RestSessionManager"
+    )
 
     private var monitoredApplicationTokens: Set<ApplicationToken> = []
     private var isShieldObserverRegistered = false
@@ -72,7 +77,14 @@ final class RestSessionManager {
         }
 
         Task {
-            guard try await requestAuthorizationIfNeeded() else { return }
+            do {
+                guard try await requestAuthorizationIfNeeded() else { return }
+            } catch {
+                Self.logger.error(
+                    "Screen Time authorization failed: \(error.localizedDescription, privacy: .public)"
+                )
+                return
+            }
             guard !isSelectionEmpty(blockedSelection) else { return }
 
             let tokens = blockedSelection.applicationTokens
@@ -87,12 +99,6 @@ final class RestSessionManager {
             )
             state = .active
         }
-    }
-
-    func endMonitoringAfterSuccessfulRest() {
-        // Automatic monitoring termination removed
-        // User must explicitly terminate rest session
-        // This method is no longer used
     }
 
     func cancelRestManually() {
